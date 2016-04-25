@@ -1,4 +1,8 @@
-package services;
+package servicesImplementations;
+
+import enumeration.EtatLemming;
+import services.IGameEng;
+import services.ILemming;
 
 public class Lemming implements ILemming {
 

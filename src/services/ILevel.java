@@ -1,5 +1,7 @@
 package services;
 
+import enumeration.Nature;
+
 public interface ILevel {
 	
 	/* Observateur */

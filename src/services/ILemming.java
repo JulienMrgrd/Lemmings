@@ -1,5 +1,7 @@
 package services;
 
+import enumeration.EtatLemming;
+
 public interface ILemming {
 
 	/* Observations */

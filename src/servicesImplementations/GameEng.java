@@ -1,6 +1,11 @@
-package services;
+package servicesImplementations;
 
 import java.util.Set;
+
+import enumeration.Nature;
+import services.IGameEng;
+import services.ILemming;
+import services.ILevel;
 
 public class GameEng implements IGameEng {
 	

@@ -1,6 +1,7 @@
-package services;
+package servicesImplementations;
 
-import services.Nature;
+import enumeration.Nature;
+import services.ILevel;
 
 public class Level implements ILevel {
 
