@@ -1,55 +1,110 @@
 package services;
 
-import java.util.Set;
+import java.util.List;
 
 public interface IGameEng {
-
-	/* Observators */
-	public ILevel getLevel();
 	
 	/**
-	 * pre : 0 <= h <= getLevel().getHeight() ^ 0 <= w <= getLevel().getWidth()
+	*   Service: GameEng
+	*   Types: int, bool, double, ILemming
+	*/
+	/**
+	 * [invariants]
+	 * 	gameOver() min= (getColony().size() == 0 ^ getSpawned() == getSizeColony())
+	 * 	0 <= getSpawned() <= getSizeColony()
+	 * 	0 <= getNbSauves() <= getSizeColony()
 	 */
-	public boolean isObstacle(int h, int w);
-	public int getSizeColony();
-	public int getSpawnSpeed();
-	public boolean gameOver();
 	
-	/** pre : gameOver() */
-	public double score();
 	
-	/** pre : getLevel().isEditing() == false */
-	public int getNbTours();
 	
-	/** pre : !gameOver() */
-	public Set<ILemming> getAllLemInLife();
+	/* ============   Observators ============ */
+	List<ILemming> getColony();
+	/** pre : getLemm(int ln) require 0 < ln <= getSizeColony() */
+	ILemming getLemming(int ln);
+	int getSizeColony(); //Nombre de Lemming a créer
+	int getSpawned(); //Nombre de Lemming créé
+	int getSpawnSpeed(); //Vitesse d'apparition des Lemming
+	ILevel getLevel();
+	int getNbTours(); //INVARIANTS
+	int getNbSauves(); //INVARIANTS
 	
-	/** pre : !gameOver()
-	 * pre : i in getNbLemInLife()
-	 */
-	public ILemming getLemming(int i);
-	public int getNbLemSave();
-	public int getNbLemDead();
-	public int getNbLemInLife();
-	public int getNbLemCreate();
-
-	
-	/* Constructors */
-	/** pre : sizeColony > 0
-	 * pre : spawnSpeed > 0
-	 */
-	public void init(int sizeColony, int spawnSpeed);
-
-
-	/* Operators */
+	/** pre : getScore() require gameOver() */
+	double getScore();
 	
 	/**
-	 * pre : !gameOver()
-	 * pre : getNbLemInLife() > 0
+	 * pre : obstacle(h, w) require 0 <= h < level().getHeight() 
+	 * 		                    ^ 0 <= w < level().getWidth()
 	 */
-	public void step();
-	public void tuerLemming(int i);
-	public void sauverLemming(int i);
+	boolean isObstacle(int h, int w);
+	
+	/**
+	 * invariants: gameOver() == min(getColony()==0) && getSpawned()>0  
+	 */
+	boolean gameOver(); //INVARIANTS
+	
+	// CONSTRUCTORS
+	/** pre : init(lvl, sizeColony, spawnSpeed) require sizeColony > 0 ^ spawnSpeed > 0 
+	 *  post : getLevel == level ^ getSizeColony() == sizeColony 
+	 *  						 ^ getSpawnSpeed() == spawnSpeed
+	 *  						 ^ getColony() == new ArrayList() ??
+	 *  						 ^ getSpawned() == 0
+	 *  						 ^ getNbTours() == 0
+	 *  						 ^ getNbSauves() == 0
+	 *  						 ^ getScore() == 0
+	 *  						 ^ gameOver() == false
+	 *  */
+	void init(ILevel level, int sizeColony, int spawnSpeed);
+	
+	// OPERATORS
+	
 
+	/**
+	 * pre : addLemming(lem) require getSpawned() < getSizeColony()
+	 * post: getSpawned() == getSpawned()@pre + 1 ^
+	 * 	     getColony().size() == getColony().size()@pre + 1 ^
+	 * 		 getColony.add(l) 
+	 * 		 getSizeColony()== getSizeColony()@pre
+	 */
+	void addLemming(ILemming l);
+
+	/**
+	 * pre : killLemming(idLem) require getColony().size()>0 ^ containsIdColony(idLem)
+	 * post: getColony().size() == getColony().size()@pre - 1 ^
+	 * 		 getSizeColony()== getSizeColony()@pre 
+	 * 		 for(int i=0; i < getColony().size()@pre; i++)
+	 * 			if(getColony().get(i).getId()==idLem) getColony.remove(i)
+	 */
+	void killLemming(int idLem);
+
+	/**
+	 * pre : saveLemming(idLem) require 0 <= idLem < getSizeColony() ^ containsIdColony(idLem)
+	 * post: getNbSauves() == getNbSauves()@pre + 1 ^
+	 * 		 getColony().size() == getColony().size()@pre - 1 ^
+	 * 		 for(int i=0; i < getColony().size()@pre; i++)
+	 *			if(getColony().get(i).getId()==idLem) getColony.remove(i)
+	 */	
+	void saveLemming(int idLem);
+	
+	/**
+	 * post: for(int i=0; i < getColony().size()@pre; i++)
+	 * 			  getColony.set(i)=getColony().get(i).step()
+	 * 		^ getNbTours() == getNbTours()@pre+1
+	 */
+	void step();
+	
+	/**
+	 * pre : loadLevel(level, sizeColony, spawnSpeed) require sizeColony > 0 ^ spawnSpeed > 0 ^ level != null
+	 * post: getSpawnSpeed() == spawnSpeed ^
+	 * 	     getSizeColony() == sizeColony ^
+	 * 		 getLevel() == level ^
+	 * 		 getSpawned() == 0 ^
+	 *  	 getNbTours() == 0 ^
+	 *  	 getNbSauves() == 0 ^
+	 *  	 getScore() == 0 ^
+	 *  	 gameOver() == false
+	 */
+	void loadLevel(ILevel level, int sizeColony, int spawnSpeed);
+	
+	boolean containsIdColony(int idLem);
 
 }
