@@ -3,79 +3,102 @@ package services;
 import enumeration.EtatLemming;
 
 public interface ILemming {
+	
+	
+	/*
+	 * TODO : Invariants
+	 */
 
-	/* Observations */
+	// ============= Observations ===============
 	int getWidth();
 	int getHeight();
+	int getId();
 	boolean isDroitier();
 	EtatLemming getEtat();
-	int getId();
 	IGameEng getGameEng();
 	int nbCasesFalling();
 	
 	
-	/* Constructors */
+	// ============= Constructors ============== 
+	/** post : getGameEng() == gameEng */
 	void init(IGameEng gameEng);
 	
-	/* Operators */
-	/** Pre : setWidth(width) require width>0 
-     * Post : getWidth() == width */
+	
+	// ============= Operators ============= 
+	/** pre : setHeight(height) require height>0 ^ height<getGameEng().getLevel().getHeight()
+     * post : getHeight() == height */
+	void setHeight(int height);
+
+	/** pre : setWidth(width) require width>0 ^ width<getGameEng().getLevel().getWidth()
+     *  post : getWidth() == width */
 	void setWidth(int width);
 	
-	/** Pre : setHeight(height) require height>0 
-     * Post : getHeight() == height */
-	void setHeight(int height);
-	
-	/**  Post : isDroitier()= !@pre */
+	/**  post : isDroitier() != isDroitier()@pre */
 	void setDirection();
 	
-    /** Post :  getEtat() == etat */
+    /** post :  etat == getEtat() */
 	void setEtat(EtatLemming etat);
 	
-	/** Post :
-	 * 	if(getEtat() == WALKER){
-	 * 		if (getGameEng().getLevel().getNature(getWidth()@pre, getHeight()@pre+1) == EMPTY){ 
-     *          getEtat() == FALLER; 
+	/** post :
+	 * 	if(getEtat()@pre == EtatLemming.WALKER){
+	 * 		if (getGameEng().getLevel().getNature(getHeight()@pre+1, getWidth()@pre)@pre == Nature.EMPTY){ 
+     *          getEtat() == EtatLemming.FALLER; 
      *          getWidth() == getWidth()@pre; 
      *          getHeight() == getHeight()@pre;
      *      
      *      } else if (isDroitier()@pre){
-     *          if (getGameEng().getLevel().getNature(getWidth()@pre+1, getHeight()@pre) != EMPTY &&
-     *              getGameEng().getLevel().getNature(getWidth()@pre+1, getHeight()@pre-1) != EMPTY){
-     *             isDroitier() == false; 
-     *             getWidth() == getWidth()@pre; 
-     *             getHeight() == getHeight()@pre;
-     *             
-     *          } else {
-     *             getWidth() == getWidth()@pre+1; 
-     *             getHeight() == getHeight()@pre; 
-     *          }
-     *      }else {
-     *          if (getGameEng().getLevel().getNature(getWidth()@pre-1, getHeight()@pre) != EMPTY &&
-     *              getGameEng().getLevel().getNature(getWidth()@pre-1, getHeight()@pre-1) != EMPTY){
+     *          if (getGameEng().getLevel().getNature(getHeight()@pre-1, getWidth()@pre+1)@pre != Nature.EMPTY ||
+     *              (getGameEng().getLevel().getNature(getHeight()@pre, getWidth()@pre+1)@pre != Nature.EMPTY &&
+     *              getGameEng().getLevel().getNature(getHeight()@pre-2, getWidth()@pre+1)@pre != Nature.EMPTY)){
      *             isDroitier() == false; 
      *             getWidth() == getWidth()@pre; 
      *             getHeight() == getHeight()@pre;
      *          
+     *          } else if (getGameEng().getLevel().getNature(getHeight()@pre, getWidth()@pre+1)@pre != Nature.EMPTY){
+     *          	isDroitier() == true;
+     *          	getWidth()==getWidth()@pre+1;
+     *          	getHeight()==getHeight()@pre-1;
+     *          
      *          } else {
+     *             isDroitier() == true;
+     *             getWidth() == getWidth()@pre+1; 
+     *             getHeight() == getHeight()@pre; 
+     *          }
+     *      }else {
+     *         if (getGameEng().getLevel().getNature(getHeight()@pre-1, getWidth()@pre-1)@pre != Nature.EMPTY ||
+     *              (getGameEng().getLevel().getNature(getHeight()@pre, getWidth()@pre-1)@pre != Nature.EMPTY &&
+     *              getGameEng().getLevel().getNature(getHeight()@pre-2, getWidth()@pre-1)@pre != Nature.EMPTY)){
+     *             isDroitier() == true; 
+     *             getWidth() == getWidth()@pre; 
+     *             getHeight() == getHeight()@pre;
+     *          
+     *          } else if (getGameEng().getLevel().getNature(getHeight()@pre, getWidth()@pre-1)@pre != Nature.EMPTY){
+     *          	isDroitier() == false;
+     *          	getWidth() == getWidth()@pre-1;
+     *          	getHeight() == getHeight()@pre-1;
+     *          
+     *          } else {
+     *             isDroitier() == false;
      *             getWidth() == getWidth()@pre-1; 
-     *             getHeight() == getHeight()@pre; 	
+     *             getHeight() == getHeight()@pre; 
      *          }
 	 *  	}
-	 *  } else if (getEtat() == WALKER){
-	 *  	if (getGameEng().getLevel().getNature(getWidth()@pre, getHeight()@pre+1) != EMPTY) {
+	 *  } else if (getEtat() == EtatLemming.FALLER){
+	 *  	if (getGameEng().getLevel().getNature(getHeight()@pre+1, getWidth()@pre)@pre != Nature.EMPTY) {
      *          if (nbCasesFalling() < 8) {
-     *             getEtat = WALKER; 
+     *             getEtat() == EtatLemming.WALKER; 
      *             getWidth() == getWidth()@pre; 
      *             getHeight() == getHeight()@pre;
      *          } else {
-     *             getGameEng().getAllLemInLife()@pre.size() == getGameEng().getAllLemInLife().size()-1;
+     *             getGameEng().getSizeColony()@pre == getGameEng().getSizeColony()-1;
      *          }
      *      } else {
+     *      	nbCasesFalling() == nbCasesFalling()@pre+1;
      *          getWidth() == getWidth()@pre; 
      *          getHeight() == getHeight()@pre+1;
      *      }
 	 *  }
 	 */
 	void step();
+	
 }

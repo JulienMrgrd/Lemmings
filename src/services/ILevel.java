@@ -4,69 +4,72 @@ import enumeration.Nature;
 
 public interface ILevel {
 	
-	/* Observateur */
+	/*
+	 * TODO : Invariants
+	 */
+	
+	//	============= Observations ==============
 	public int getHeight();
 	public int getWidth();
-	public int getInH();
-	public int getInW();
-	public int getOutH();
-	public int getOutW();
+	public int getEntranceHeight();
+	public int getEntranceWidth();
+	public int getExitHeight();
+	public int getExitWidth();
 	public boolean getEditing();
 	
-	/**pre: getNature(h,w) require h>=0 ^ w>=0 ^ h<=getHeight() ^ w<=getWidth()
-	 */
+	/**pre: getNature(h,w) require h>=0 ^ w>=0 ^ h<=getHeight() ^ w<=getWidth() */
 	public Nature getNature(int h, int w);
 	
-
 	
-	/* Constructors */
-	
+	//	============= Constructors ==============
 	/** 
-	 * pre : init(h,w,inH,inW,outH,outW) require h>0 ^ w>0 ^ inH>0 ^ inW>0 ^ outH>0 ^ outW>0
+	 * pre : init(h,w) require h>=5 ^ w>=4
 	 * post : getHeight() == h
 	 * post : getWidth() == w
-	 * post : getEditing();
-	 * post : getInH()==inH ^ getInW()==inW ^ getOutX()==outX ^ getOutW()==outW
+	 * post : getEditing()
 	 */
-	public void init(int h, int w, int inH, int inW, int outH, int outW);
+	public void init(int h, int w);
 	
 	
-	/* Operators */
+	//	============= Operators ==============
 	
-	/** pre: setNature(h,w,nat) require getEditing==true ^ getNature(h,w)!=nat
-	 *  post : getNature(h,y) == nat
+	/** pre: setNature(h,w,nat) require h>=0 ^ w>=0 ^ h<=getHeight() ^ w<=getWidth()
+	 *  post : getNature(h,w) == nat
 	 */
 	public void setNature(int h, int w, Nature nat);
 
 	
-	/**pre: for(i=0; i<getHeight; i++){
+	/**pre: goPlay(entH, entW, exH, exW) require getEditing() ^ 
+	 * 		entH>=0 ^ entW>=0 ^ entH<=getHeight() ^ entW<=getWidth() ^
+	 * 		exH>=0 ^ exW>=0 ^ exH<=getHeight() ^ exW<=getWidth() ^
+	 * 		for(i=0; i<getHeight(); i++){
 	 * 			getNature(i, 0)==Nature.METAL;
-	 * 			getNature(i, getWidth())==Nature.METAL;
-	 * 		}
-	 * 
-	 * pre: for(i=0; i<getWidth; i++){
+	 * 			getNature(i, getWidth()-1)==Nature.METAL;
+	 * 		} ^
+	 *      for(i=0; i<getWidth(); i++){
 	 * 			getNature(0, i)==Nature.METAL;
 	 * 			getNature(getHeight()-1, i)==Nature.METAL;
-	 * 		}
-	 * pre: getEditing()
-	 * Post : !getEditing()
+	 * 		} ^ 
+	 * 		getNature(entranceH-1, entranceW)==Nature.EMPTY ^
+	 * 		getNature(entranceH+1, entranceW)==Nature.EMPTY ^
+	 * 		getNature(exitH-1, exitW)==Nature.EMPTY ^
+	 * 		getNature(exitH+1, exitW)==Nature.METAL 
+	 * 
+	 * post : !getEditing() ^ getEntranceHeight()==entranceH ^  getEntranceWidth()==entranceW ^
+	 * 		  getExitHeight()==exitH ^ getExitWidth()==exitW ^
+	 * 		  getNature(entranceH, entranceW)==Nature.ENTRANCE ^
+	 * 		  getNature(exitH, exitW)==Nature.EXIT
 	 */
-	public void goPlay();
+	public void goPlay(int entranceH, int entranceW, int exitH, int exitW);
 
-	/** pre : remove(h,w) require getNature(h,w)==DIRT ^ !getEditing()
-	 * post : getNature(h,w) == EMPTY;
+	/** pre : remove(h,w) require getNature(h,w)==Nature.DIRT ^ !getEditing()
+	 *  post : getNature(h,w) == EMPTY;
 	 */
 	public void remove(int h, int w);
 
-	/** pre : build(h,w) require getNature(h,w)==EMPTY ^ !getEditing()
+	/** pre : build(h,w) require getNature(h,w)==Nature.EMPTY ^ !getEditing()
 	 * post : getNature(h,w) == DIRT;
 	 */
 	public void build(int h, int w);
-	
-	/** pre : edit(h,w,nat) require getEditing()
-	 * post : getNature(h,w)==nat
-	 */
-	public void edit(int h, int w,Nature nat);
-
 	
 }
