@@ -25,23 +25,23 @@ public interface ILevel {
 	/** 
 	 * pre : init(h,w) require h>=5 ^ w>=4
 	 * post : getHeight() == h
-	 * post : getWidth() == w
-	 * post : getEditing()
+	 * 		^ getWidth() == w
+	 * 		^ getEditing()
 	 */
 	public void init(int h, int w);
 	
 	
 	//	============= Operators ==============
 	
-	/** pre: setNature(h,w,nat) require h>=0 ^ w>=0 ^ h<=getHeight() ^ w<=getWidth()
+	/** pre: setNature(h,w,nat) require h>=0 ^ w>=0 ^ h<=getHeight() ^ w<=getWidth() ^ getEditing()
 	 *  post : getNature(h,w) == nat
 	 */
 	public void setNature(int h, int w, Nature nat);
 
 	
-	/**pre: goPlay(entH, entW, exH, exW) require getEditing() ^ 
-	 * 		entH>=0 ^ entW>=0 ^ entH<=getHeight() ^ entW<=getWidth() ^
-	 * 		exH>=0 ^ exW>=0 ^ exH<=getHeight() ^ exW<=getWidth() ^
+	/**pre: goPlay(entranceH, entranceW, exitH, exitW) require getEditing() ^ 
+	 * 		entranceH>=0 ^ entranceW>=0 ^ entranceH<=getHeight() ^ entranceW<=getWidth() ^
+	 * 		exitH>=0 ^ exitW>=0 ^ exitH<=getHeight() ^ exitW<=getWidth() ^
 	 * 		for(i=0; i<getHeight(); i++){
 	 * 			getNature(i, 0)==Nature.METAL;
 	 * 			getNature(i, getWidth()-1)==Nature.METAL;

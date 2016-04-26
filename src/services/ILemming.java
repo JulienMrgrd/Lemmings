@@ -20,7 +20,14 @@ public interface ILemming {
 	
 	
 	// ============= Constructors ============== 
-	/** post : getGameEng() == gameEng */
+	/** post : getGameEng() == gameEng 
+	 * 			^ getWidth() == gameEng.getLevel().getEntranceWidth()
+	 * 			^ getHeight() == gameEng.getLevel().getEntranceHeight()
+	 * 			^ getId() == gameEng.getSpawned()
+	 * 			^ isDroitier()
+	 * 			^ getEtat() == EtatLemming.FALLER
+	 * 			^ nbCasesFalling() == 0
+	 */
 	void init(IGameEng gameEng);
 	
 	
@@ -36,7 +43,7 @@ public interface ILemming {
 	/**  post : isDroitier() != isDroitier()@pre */
 	void setDirection();
 	
-    /** post :  etat == getEtat() */
+    /** post : getEtat() == etat */
 	void setEtat(EtatLemming etat);
 	
 	/** post :
