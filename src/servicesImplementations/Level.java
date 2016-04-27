@@ -5,83 +5,90 @@ import services.ILevel;
 
 public class Level implements ILevel {
 
+	private int height;
+	private int width;
+	private int entranceHeight;
+	private int entranceWidth;
+	private int exitHeight;
+	private int exitWidth;
+	private boolean editing;
+	private Nature[][] plateau;
+	
+	
 	@Override
 	public int getHeight() {
-		// TODO Auto-generated method stub
-		return 0;
+		return height;
 	}
 
 	@Override
 	public int getWidth() {
-		// TODO Auto-generated method stub
-		return 0;
+		return width;
 	}
 
 	@Override
 	public int getEntranceHeight() {
-		// TODO Auto-generated method stub
-		return 0;
+		return entranceHeight;
 	}
 
 	@Override
 	public int getEntranceWidth() {
-		// TODO Auto-generated method stub
-		return 0;
+		return entranceWidth;
 	}
 
 	@Override
 	public int getExitHeight() {
-		// TODO Auto-generated method stub
-		return 0;
+		return exitHeight;
 	}
 
 	@Override
 	public int getExitWidth() {
-		// TODO Auto-generated method stub
-		return 0;
+		return exitWidth;
 	}
 
 	@Override
 	public boolean getEditing() {
-		// TODO Auto-generated method stub
-		return false;
+		return editing;
 	}
 
 	@Override
 	public Nature getNature(int h, int w) {
-		// TODO Auto-generated method stub
-		return null;
+		return plateau[h][w];
 	}
 
 	@Override
 	public void init(int h, int w) {
-		// TODO Auto-generated method stub
-		
+		height=h;
+		width=w;
+		editing=true;
+		plateau = new Nature[h][w];
+		for(int i=0; i<h; i++){
+			for(int j=0; j<w; j++){
+				plateau[i][j]=Nature.EMPTY;
+			}
+		}
 	}
 
 	@Override
 	public void setNature(int h, int w, Nature nat) {
-		// TODO Auto-generated method stub
-		
+		plateau[h][w]=nat;
 	}
 
 	@Override
 	public void goPlay(int entranceH, int entranceW, int exitH, int exitW) {
-		// TODO Auto-generated method stub
-		
+		entranceHeight=entranceH;
+		entranceWidth=entranceW;
+		exitHeight=exitH;
+		exitWidth=exitW;
+		editing=false;
 	}
 
 	@Override
 	public void remove(int h, int w) {
-		// TODO Auto-generated method stub
-		
+		setNature(h, w, Nature.EMPTY);
 	}
 
 	@Override
 	public void build(int h, int w) {
-		// TODO Auto-generated method stub
-		
+		setNature(h, w, Nature.DIRT);
 	}
-
-
 }
