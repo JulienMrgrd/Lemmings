@@ -6,83 +6,82 @@ import services.ILemming;
 
 public class Lemming implements ILemming {
 
-	int width;
-	int height;
-	boolean droitier;
-	EtatLemming etat;
-	int id;
-	IGameEng gameEng;
-	int nbCaseFalling;
-	
-	
-	
 	@Override
 	public int getWidth() {
-		return width;
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
 	public int getHeight() {
-		return height;
-	}
-
-	@Override
-	public boolean isDroitier() {
-		return droitier;
-	}
-
-	@Override
-	public EtatLemming getEtat() {
-		return etat;
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
 	public int getId() {
-		return id;
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean isDroitier() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public EtatLemming getEtat() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public IGameEng getGameEng() {
-		return gameEng;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public int nbCasesFalling() {
-		return nbCaseFalling;
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
 	public void init(IGameEng gameEng) {
-		this.gameEng=gameEng;
-
-	}
-
-	@Override
-	public void setWidth(int width) {
-		if(width>0) this.width=width;
-
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void setHeight(int height) {
-		if(height>0) this.height=height;
+		// TODO Auto-generated method stub
+		
+	}
 
+	@Override
+	public void setWidth(int width) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void setDirection() {
-		droitier=!isDroitier();
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void setEtat(EtatLemming etat) {
-		this.etat=etat;
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void step() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 }

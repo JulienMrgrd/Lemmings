@@ -5,116 +5,83 @@ import services.ILevel;
 
 public class Level implements ILevel {
 
-	
-	int height;
-	int width;
-	int inH;
-	int inW;
-	int outH;
-	int outW;
-	boolean editing;
-	Nature[][] nat;
-	
 	@Override
 	public int getHeight() {
-		return height;
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
 	public int getWidth() {
-		return width;
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
-	public int getInH() {
-		return inH;
+	public int getEntranceHeight() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
-	public int getInW() {
-		return inW;
+	public int getEntranceWidth() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
-	public int getOutH() {
-		return outH;
+	public int getExitHeight() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
-	public int getOutW() {
-		return outW;
+	public int getExitWidth() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
 	public boolean getEditing() {
-		return editing;
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
 	public Nature getNature(int h, int w) {
-		if(h>=0 && w>=0 && h<=getHeight() && w<=getWidth()){
-			return nat[h][w];
-		}
+		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void init(int h, int w, int inH, int inW, int outH, int outW) { 
-		if(h>=0 && w >= 0 && inH >= 0 && inW >= 0 && outH >= 0 && outW >= 0){
-			height=h;
-			width=w;
-			this.inH=inH;
-			this.inW=inW;
-			this.outH=outH;
-			this.outW=outW;
-			editing=true;
-			nat=new Nature[h][w];
-		}
+	public void init(int h, int w) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void setNature(int h, int w, Nature nat) {
-		if(getEditing()==true && getNature(h, w)!=nat){
-			this.nat[h][w]=nat;
-		}
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
-	public void goPlay() {
-		boolean allMetal = true;
-		for(int i=0;i<getHeight()&&allMetal==true;i++){
-			if((getNature(i, 0)!=Nature.METAL)||
-					getNature(i, getWidth())!=Nature.METAL)
-				allMetal=false;
-		}
-		for(int i=0;i<getWidth()&&allMetal==true;i++){
-			if(getNature(0, i)!=Nature.METAL||
-					getNature(getHeight()-1, i)!=Nature.METAL)
-				allMetal=false;
-		}
-		if(allMetal==false) editing = true;
-		else editing = false;
+	public void goPlay(int entranceH, int entranceW, int exitH, int exitW) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void remove(int h, int w) {
-		if(!getEditing()&&getNature(h, w)==Nature.DIRT){
-			setNature(h,w,Nature.EMPTY);
-		}
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void build(int h, int w) {
-		if(!getEditing()&&getNature(h, w)==Nature.EMPTY){
-			setNature(h,w,Nature.DIRT);
-		}
+		// TODO Auto-generated method stub
+		
 	}
 
-	@Override
-	public void edit(int h, int w, Nature nat) {
-		if(getEditing() && getNature(h,w)!=nat){
-			this.nat[h][w]=nat;
-		}
-	}
 
 }
