@@ -1,112 +1,136 @@
 package servicesImplementations;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import enumeration.Nature;
 import services.IGameEng;
 import services.ILemming;
 import services.ILevel;
 
 public class GameEng implements IGameEng {
 
+	private List<ILemming> lemVivants;
+	private int sizeColony;
+	private int spawned;
+	private int spawnedSpeed;
+	private ILevel level;
+	private int nbTours = 0;
+	private double score;
+	private int nbLemSauves;
+	private boolean gameOver;
+
+	
+	// ============   Observateurs ============
 	@Override
 	public List<ILemming> getLemVivants() {
-		// TODO Auto-generated method stub
+		return lemVivants;
+	}
+
+	@Override
+	public ILemming getLemVivantById(int id) {
+		for(ILemming lem : lemVivants){
+			if(lem.getId()==id) return lem;
+		}
 		return null;
 	}
 
 	@Override
-	public ILemming getLemming(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int getSizeColonyMax() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int getSizeColony() {
+		return sizeColony;
 	}
 
 	@Override
 	public int getSpawned() {
-		// TODO Auto-generated method stub
-		return 0;
+		return spawned;
 	}
 
 	@Override
 	public int getSpawnSpeed() {
-		// TODO Auto-generated method stub
-		return 0;
+		return spawnedSpeed;
 	}
 
 	@Override
 	public ILevel getLevel() {
-		// TODO Auto-generated method stub
-		return null;
+		return level;
 	}
 
 	@Override
 	public int getNbTours() {
-		// TODO Auto-generated method stub
-		return 0;
+		return nbTours;
 	}
 
 	@Override
-	public int getNbSauves() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int getNbLemSauves() {
+		return nbLemSauves;
 	}
 
 	@Override
 	public double getScore() {
-		// TODO Auto-generated method stub
-		return 0;
+		return score;
 	}
 
 	@Override
 	public boolean isObstacle(int h, int w) {
-		// TODO Auto-generated method stub
-		return false;
+		if(level.getNature(h, w).equals(Nature.EMPTY)){
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public boolean gameOver() {
-		// TODO Auto-generated method stub
-		return false;
+		return gameOver;
 	}
+	
+	
+	// ============ CONSTRUCTORS =============
 
 	@Override
 	public void init(ILevel level, int sizeColony, int spawnSpeed) {
-		// TODO Auto-generated method stub
+		this.level = level;
+		this.sizeColony = sizeColony;
+		this.spawnedSpeed = 0;
 		
+		lemVivants = new ArrayList<>();
+		spawned = 0;
+		nbTours = 0;
+		score = 0;
+		nbLemSauves = 0;
+		gameOver = false;
 	}
+	
+	
+	// ============= OPERATORS ==============
 
 	@Override
 	public void addLemming(ILemming lem) {
-		// TODO Auto-generated method stub
-		
+		lemVivants.add(lem);
 	}
 
 	@Override
 	public void killLemming(int idLem) {
-		// TODO Auto-generated method stub
-		
+		lemVivants.remove(getLemVivantById(idLem));
 	}
 
 	@Override
 	public void saveLemming(int idLem) {
-		// TODO Auto-generated method stub
-		
+		killLemming(idLem);
+		nbLemSauves++;
 	}
 
 	@Override
 	public void step() {
-		// TODO Auto-generated method stub
-		
+		for(ILemming lem : lemVivants){
+			lem.step();
+		}
 	}
 
 	@Override
 	public boolean containsIdColony(int idLem) {
-		// TODO Auto-generated method stub
+		for(ILemming lem : lemVivants){
+			if(lem.getId()==idLem) return true;
+		}
 		return false;
 	}
 

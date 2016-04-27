@@ -2,7 +2,7 @@ package services;
 
 import enumeration.Nature;
 
-public interface ILevel {
+public interface ILevel extends Service{
 	
 	/*
 	 * TODO : Invariants
@@ -24,6 +24,7 @@ public interface ILevel {
 	//	============= Constructors ==============
 	/** 
 	 * pre : init(h,w) require h>=5 ^ w>=4
+	 * <br>
 	 * post : getHeight() == h
 	 * 		^ getWidth() == w
 	 * 		^ getEditing()
@@ -34,6 +35,7 @@ public interface ILevel {
 	//	============= Operators ==============
 	
 	/** pre: setNature(h,w,nat) require h>=0 ^ w>=0 ^ h<=getHeight() ^ w<=getWidth() ^ getEditing()
+	 *  <br>
 	 *  post : getNature(h,w) == nat
 	 */
 	public void setNature(int h, int w, Nature nat);
@@ -42,30 +44,35 @@ public interface ILevel {
 	/**pre: goPlay(entranceH, entranceW, exitH, exitW) require getEditing() ^ 
 	 * 		entranceH>=0 ^ entranceW>=0 ^ entranceH<=getHeight() ^ entranceW<=getWidth() ^
 	 * 		exitH>=0 ^ exitW>=0 ^ exitH<=getHeight() ^ exitW<=getWidth() ^
-	 * 		for(i=0; i<getHeight(); i++){
+	 * <br>	
+	 * 		for(i=0; i < getHeight(); i++){
 	 * 			getNature(i, 0)==Nature.METAL;
 	 * 			getNature(i, getWidth()-1)==Nature.METAL;
 	 * 		} ^
-	 *      for(i=0; i<getWidth(); i++){
+	 * <br>
+	 *      for(i=0; i < getWidth(); i++){
 	 * 			getNature(0, i)==Nature.METAL;
 	 * 			getNature(getHeight()-1, i)==Nature.METAL;
 	 * 		} ^ 
+	 * <br>
 	 * 		getNature(entranceH-1, entranceW)==Nature.EMPTY ^
 	 * 		getNature(entranceH+1, entranceW)==Nature.EMPTY ^
 	 * 		getNature(exitH-1, exitW)==Nature.EMPTY ^
 	 * 		getNature(exitH+1, exitW)==Nature.METAL 
-	 * 
+	 * <br>
 	 * post : !getEditing() ^ getEntranceHeight()==entranceH ^  getEntranceWidth()==entranceW ^
 	 * 		  getExitHeight()==exitH ^ getExitWidth()==exitW 
 	 */
 	public void goPlay(int entranceH, int entranceW, int exitH, int exitW);
 
 	/** pre : remove(h,w) require getNature(h,w)==Nature.DIRT ^ !getEditing()
+	 *  <br>
 	 *  post : getNature(h,w) == EMPTY;
 	 */
 	public void remove(int h, int w);
 
 	/** pre : build(h,w) require getNature(h,w)==Nature.EMPTY ^ !getEditing()
+	 * <br>
 	 * post : getNature(h,w) == DIRT;
 	 */
 	public void build(int h, int w);

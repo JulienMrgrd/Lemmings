@@ -20,14 +20,14 @@ public interface IGameEng {
 	
 	List<ILemming> getLemVivants();
 	
-	/** pre : getLemming(id) require 0 < id <= getSizeColonyMax() ^ containsIdColony(id) */
-	ILemming getLemming(int id);
-	int getSizeColonyMax(); //Nombre de Lemming à créer
+	/** pre : getLemVivantById(id) require 0 < id <= getSizeColonyMax() ^ containsIdColony(id) */
+	ILemming getLemVivantById(int id);
+	int getSizeColony(); //Nombre de Lemming à créer
 	int getSpawned(); //Nombre de Lemming créé
 	int getSpawnSpeed(); //Vitesse d'apparition des Lemming
 	ILevel getLevel();
 	int getNbTours();
-	int getNbSauves();
+	int getNbLemSauves();
 	
 	/** pre : getScore() require gameOver() */
 	double getScore();
@@ -45,6 +45,7 @@ public interface IGameEng {
 	// ============ CONSTRUCTORS =============
 	
 	/** pre : init(level, sizeColony, spawnSpeed) require sizeColony > 0 ^ spawnSpeed > 0 
+	 *  <br>
 	 *  post : getLevel() == level ^ getSizeColonyMax() == sizeColony ^ getSpawnSpeed() == spawnSpeed
 	 *  		^ getLemVivants().size()==0 ^ getSpawned()==0 ^ getNbTours()==0 
 	 *  		^ getNbSauves()==0 ^ getScore()==0 ^ gameOver()==false
@@ -55,16 +56,19 @@ public interface IGameEng {
 	// ============= OPERATORS ==============
 
 	/** pre : addLemming(lem) require getSpawned() < getSizeColonyMax() ^ getLemVivants().contains(lem)==false
+	 *  <br>
 	 *  post : getSpawned() == getSpawned()@pre+1 ^ getLemVivants().size()==getLemVivants().size()@pre+1
 	 * 		    ^ getLemVivants().contains(lem) */
 	void addLemming(ILemming lem);
 
 	/** pre : killLemming(idLem) require getLemVivants().size()>0 ^ containsIdColony(idLem)
+	 *  <br>
 	 *  post : getLemVivants().size() == getLemVivants().size()@pre-1
 	 * 		    ^ containsIdColony(idLem)==false */
 	void killLemming(int idLem);
 
 	/** pre : saveLemming(idLem) require 0 <= idLem < getSizeColonyMax() ^ containsIdColony(idLem)
+	 *  <br>
 	 *  post : getNbSauves()==getNbSauves()@pre + 1 ^ getLemVivants().size()==getLemVivants().size()@pre-1*/	
 	void saveLemming(int idLem);
 	
