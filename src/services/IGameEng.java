@@ -16,7 +16,7 @@ public interface IGameEng {
 	
 	
 	
-	// ============   Observateurs ============
+	// ============   Observation ============
 	
 	List<ILemming> getLemVivants();
 	

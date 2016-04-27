@@ -56,9 +56,7 @@ public interface ILevel {
 	 * 		getNature(exitH+1, exitW)==Nature.METAL 
 	 * 
 	 * post : !getEditing() ^ getEntranceHeight()==entranceH ^  getEntranceWidth()==entranceW ^
-	 * 		  getExitHeight()==exitH ^ getExitWidth()==exitW ^
-	 * 		  getNature(entranceH, entranceW)==Nature.ENTRANCE ^
-	 * 		  getNature(exitH, exitW)==Nature.EXIT
+	 * 		  getExitHeight()==exitH ^ getExitWidth()==exitW 
 	 */
 	public void goPlay(int entranceH, int entranceW, int exitH, int exitW);
 

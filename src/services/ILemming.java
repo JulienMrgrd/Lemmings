@@ -47,7 +47,9 @@ public interface ILemming {
 	void setEtat(EtatLemming etat);
 	
 	/** post :
-	 * 	if(getEtat()@pre == EtatLemming.WALKER){
+	 *  if(getGameEng().getLevel().getExitHeight()==getHeight() && getGameEng().getLevel().getExitWidth()==getWidth() ){
+	 *  			 getGameEng().saveLemming(getId());
+	 *  }else if(getEtat()@pre == EtatLemming.WALKER){
 	 * 		if (getGameEng().getLevel().getNature(getHeight()@pre+1, getWidth()@pre)@pre == Nature.EMPTY){ 
      *          getEtat() == EtatLemming.FALLER; 
      *          getWidth() == getWidth()@pre; 
@@ -97,7 +99,7 @@ public interface ILemming {
      *             getWidth() == getWidth()@pre; 
      *             getHeight() == getHeight()@pre;
      *          } else {
-     *             getGameEng().getSizeColony()@pre == getGameEng().getSizeColony()-1;
+     *             getGameEng().killLemming(getId());
      *          }
      *      } else {
      *      	nbCasesFalling() == nbCasesFalling()@pre+1;
