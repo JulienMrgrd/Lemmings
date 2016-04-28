@@ -32,12 +32,12 @@ public interface ILemming {
 	
 	
 	// ============= Operators ============= 
-	/** pre : setHeight(height) require height>0 ^ height<getGameEng().getLevel().getHeight()
+	/** pre : setHeight(height) require height>0 ^ height< getGameEng().getLevel().getHeight()
      * <br>
      * post : getHeight() == height */
 	void setHeight(int height);
 
-	/** pre : setWidth(width) require width>0 ^ width<getGameEng().getLevel().getWidth()
+	/** pre : setWidth(width) require width>0 ^ width< getGameEng().getLevel().getWidth()
      *  <br>
      *  post : getWidth() == width */
 	void setWidth(int width);
@@ -50,7 +50,7 @@ public interface ILemming {
 	
 	/** post :
 	 *  <br>if(getGameEng().getLevel().getExitHeight()==getHeight() && getGameEng().getLevel().getExitWidth()==getWidth() ){
-	 *  <br>		getGameEng().saveLemming(getId());
+	 *  <br>		getGameEng().getNbLemSauves()@pre+1
 	 *  <br>} else if(getEtat()@pre == EtatLemming.WALKER){
 	 * 	<br>	if (getGameEng().getLevel().getNature(getHeight()@pre+1, getWidth()@pre)@pre == Nature.EMPTY){ 
      *  <br>        getEtat() == EtatLemming.FALLER; 
@@ -101,7 +101,7 @@ public interface ILemming {
      *  <br>           getWidth() == getWidth()@pre; 
      *  <br>           getHeight() == getHeight()@pre;
      *  <br>        } else {
-     *  <br>           getGameEng().killLemming(getId());
+     *  <br>           !getGameEng().containsIdColony(getId())
      *  <br>        }
      *  <br>    } else {
      *  <br>    	nbCasesFalling() == nbCasesFalling()@pre+1;
