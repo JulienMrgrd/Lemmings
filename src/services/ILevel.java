@@ -2,7 +2,7 @@ package services;
 
 import enumeration.Nature;
 
-public interface ILevel extends Service{
+public interface ILevel{
 	
 	/*
 	 * TODO : Invariants

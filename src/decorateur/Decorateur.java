@@ -1,9 +1,9 @@
 package decorateur;
 
-import services.Service;
+import errors.InvariantError;
 
 public abstract class Decorateur {
 	
-	public abstract Service getDelegate();
+	protected abstract void checkInvariants() throws InvariantError;
 
 }

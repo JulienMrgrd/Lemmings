@@ -2,6 +2,7 @@ package contrat;
 
 import decorateur.LemmingDecorateur;
 import enumeration.EtatLemming;
+import errors.InvariantError;
 import services.IGameEng;
 import servicesImplementations.Lemming;
 
@@ -85,6 +86,12 @@ public class LemmingContrat extends LemmingDecorateur{
 
 	@Override
 	public void step() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	protected void checkInvariants() throws InvariantError {
 		// TODO Auto-generated method stub
 		
 	}
