@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface IGameEng {
 	
-	/**
+	/*
 	*   Service: GameEng
 	*   Types: int, bool, double, ILemming, ILevel, ???List???
 	*   
@@ -46,7 +46,7 @@ public interface IGameEng {
 	 *  <br>
 	 *  post : getLevel() == level ^ getSizeColony() == sizeColony ^ getSpawnSpeed() == spawnSpeed
 	 *  		^ getNbLemVivants()==0 ^ getSpawned()==0 ^ getNbTours()==0 
-	 *  		^ getNbLemSauves()==0 ^ getScore()==0 ^ gameOver()==false
+	 *  		^ getNbLemSauves()==0 ^ gameOver()==false
 	 *  */
 	void init(ILevel level, int sizeColony, int spawnSpeed);
 	
