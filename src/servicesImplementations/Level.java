@@ -63,7 +63,8 @@ public class Level implements ILevel {
 		plateau = new Nature[h][w];
 		for(int i=0; i<h; i++){
 			for(int j=0; j<w; j++){
-				plateau[i][j]=Nature.EMPTY;
+				if(i==0 || i==(h-1) || j==0 || j==(w-1)) plateau[i][j]=Nature.METAL;
+				else plateau[i][j]=Nature.EMPTY;
 			}
 		}
 	}

@@ -204,6 +204,7 @@ public class LemmingContrat extends LemmingDecorateur{
 					if(! (getEtat() == EtatLemming.WALKER)) throw new PostConditionError("getEtat() != EtatLemming.WALKER"); 
 					if(! (getWidth() == widthPre)) throw new PostConditionError("getWidth() != getWidth()@pre");  
 					if(! (getHeight() == heightPre)) throw new PostConditionError("getHeight() != getHeight()@pre"); 
+					if(! (getNbCasesFalling()==0)) throw new PostConditionError("getNbCasesFalling() != 0"); 
 				} else if(! (!getGameEng().containsIdColony(getId()))){
 					throw new PostConditionError("getHeight() != getHeight()@pre");
 				} 
@@ -218,12 +219,12 @@ public class LemmingContrat extends LemmingDecorateur{
 
 	@Override
 	protected void checkInvariants(){
-		if(! (getWidth()<=getGameEng().getLevel().getWidth())) throw new InvariantError("getWidth() > gameEng().getLevel().getWidth()");
-		if(! (getHeight()<=getGameEng().getLevel().getHeight())) throw new InvariantError("getHeight() > gameEng().getLevel().getWidth()");
-		if(! (getWidth()>=0)) throw new InvariantError("getWidth() < 0");
-		if(! (getHeight()>=0)) throw new InvariantError("getHeight() < 0");
-		if(! (getId()<=getGameEng().getSizeColony())) throw new InvariantError("getId() > getGameEng().getSizeColony()");
-		if(! (getNbCasesFalling()<=getGameEng().getLevel().getHeight())){
+		if(! (delegate.getWidth()<=delegate.getGameEng().getLevel().getWidth())) throw new InvariantError("getWidth() > gameEng().getLevel().getWidth()");
+		if(! (delegate.getHeight()<=delegate.getGameEng().getLevel().getHeight())) throw new InvariantError("getHeight() > gameEng().getLevel().getWidth()");
+		if(! (delegate.getWidth()>=0)) throw new InvariantError("getWidth() < 0");
+		if(! (delegate.getHeight()>=0)) throw new InvariantError("getHeight() < 0");
+		if(! (delegate.getId()<=delegate.getGameEng().getSizeColony())) throw new InvariantError("getId() > getGameEng().getSizeColony()");
+		if(! (delegate.getNbCasesFalling()<=delegate.getGameEng().getLevel().getHeight())){
 			throw new InvariantError("getNbCasesFalling() > getGameEng().getLevel().getHeight()");
 		}
 	}

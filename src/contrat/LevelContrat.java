@@ -85,7 +85,6 @@ public class LevelContrat extends LevelDecorateur{
 
 	@Override
 	public void init(int h, int w) {
-		checkInvariants();
 		if(! (h>=5)) throw new PreConditionError("h<5");
 		if(! (w>=4)) throw new PreConditionError("w<4");
 		
@@ -174,7 +173,7 @@ public class LevelContrat extends LevelDecorateur{
 	
 	@Override
 	protected void checkInvariants(){
-		if(! (getHeight()>=5)) throw new InvariantError("getHeight<5");
-		if(! (getWidth()>=4)) throw new InvariantError("getWidth<4");
+		if(! (delegate.getHeight()>=5)) throw new InvariantError("getHeight<5");
+		if(! (delegate.getWidth()>=4)) throw new InvariantError("getWidth<4");
 	}
 }

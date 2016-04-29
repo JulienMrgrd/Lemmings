@@ -1,7 +1,5 @@
 package contrat;
 
-import java.util.List;
-
 import decorateur.GameEngDecorateur;
 import errors.InvariantError;
 import errors.PostConditionError;
@@ -19,9 +17,9 @@ public class GameEngContrat extends GameEngDecorateur{
 	// ============ Observations ============
 	
 	@Override
-	public List<ILemming> getLemVivants() {
+	public ILemming[] getLemVivants() {
 		checkInvariants();
-		List<ILemming> res = delegate.getLemVivants();
+		ILemming[] res = delegate.getLemVivants();
 		checkInvariants();
 		return res;
 	}
@@ -103,10 +101,10 @@ public class GameEngContrat extends GameEngDecorateur{
 	}
 
 	@Override
-	public double getScore() {
+	public String getScore() {
 		checkInvariants();
 		if(! (gameOver()) ) throw new PreConditionError("gameOver");
-		double res = delegate.getScore();
+		String res = delegate.getScore();
 		checkInvariants();
 		return res;
 	}
@@ -114,9 +112,9 @@ public class GameEngContrat extends GameEngDecorateur{
 	@Override
 	public boolean isObstacle(int h, int w) {
 		checkInvariants();
-		if(! (0 <= h)) throw new PreConditionError("h<0"); 
+		if(! (0 <= h)) throw new PreConditionError("h<0");
 		if(! (h < getLevel().getHeight()) ) throw new PreConditionError("h >= getLevel().getHeight()");
-		if(! (0 <= w) ) throw new PreConditionError("w<0"); 
+		if(! (0 <= w) ) throw new PreConditionError("w<0");
 		if(! (w < getLevel().getWidth()) ) throw new PreConditionError("w >= getLevel().getWidth()");
 		boolean res = delegate.isObstacle(h, w);
 		checkInvariants();
@@ -144,7 +142,7 @@ public class GameEngContrat extends GameEngDecorateur{
 		if(! (getLevel() == level) ) throw new PostConditionError("getLevel() != level");
 		if(! (getSizeColony() == sizeColony) ) throw new PostConditionError("getSizeColony() != sizeColony");
 		if(! (getSpawnSpeed() == spawnSpeed) ) throw new PostConditionError("getSpawnSpeed() != spawnSpeed");
-		if(! (getLemVivants().size()==0) ) throw new PostConditionError("getLemVivants().size()!=0");
+		if(! (getNbLemVivants()==0) ) throw new PostConditionError("getNbLemVivants()!=0");
 		if(! (getSpawned()==0) ) throw new PostConditionError("getSpawned()!=0");
 		if(! (getNbTours()==0 ) ) throw new PostConditionError("getNbTours()!=0");
 		if(! (getNbLemSauves()==0) ) throw new PostConditionError("getNbLemSauves()!=0");
@@ -159,30 +157,29 @@ public class GameEngContrat extends GameEngDecorateur{
 	public void addLemming(ILemming lem) {
 		checkInvariants();
 		if(! (getSpawned() < getSizeColony()) ) throw new PreConditionError("getSpawned() >= getSizeColony()");
-		if(! (getLemVivants().contains(lem)==false) ) throw new PreConditionError("getLemVivants().contains(lem)==true");
+		if(! (containsIdColony(lem.getId())==false) ) throw new PreConditionError("containsIdColony("+lem.getId()+")==true");
 		
 		int preGetSpawned = getSpawned();
-		int preGetLemSize = getLemVivants().size();
+		int preGetLemSize = getNbLemVivants();
 		
 		delegate.addLemming(lem);
 		
 		if(! (getSpawned() == preGetSpawned+1) ) throw new PostConditionError("getSpawned() != preGetSpawned+1");
-		if(! (getLemVivants().size()==preGetLemSize+1) ) throw new PostConditionError("getLemVivants().size()!=preGetLemSize+1");
-		if(! (getLemVivants().contains(lem)) ) throw new PostConditionError("!getLemVivants().contains(lem)");
-		
+		if(! (getNbLemVivants()==preGetLemSize+1) ) throw new PostConditionError("getNbLemVivants()!=preGetLemSize+1");
+		if(! (containsIdColony(lem.getId())==true) ) throw new PreConditionError("containsIdColony("+lem.getId()+")==false");
 		checkInvariants();
 	}
 
 	@Override
 	public void killLemming(int idLem) {
 		checkInvariants();
-		if(! (getLemVivants().size()>0) ) throw new PreConditionError("getLemVivants().size()<=0");
-		if(! (containsIdColony(idLem)) ) throw new PreConditionError("!containsIdColony("+idLem+")");
+		if(! (getNbLemVivants()>0) ) throw new PreConditionError("getNbLemVivants()>0");
+		if(! (containsIdColony(idLem)==true) ) throw new PreConditionError("containsIdColony("+idLem+")==false");
 		
-		int preGetLemVivantsSize = getLemVivants().size();
+		int preGetLemVivantsSize = getNbLemVivants();
 		delegate.killLemming(idLem);
 
-		if(! (getLemVivants().size() == preGetLemVivantsSize-1) ) throw new PostConditionError("getLemVivants().size() != preGetLemVivantsSize-1");
+		if(! (getNbLemVivants() == preGetLemVivantsSize-1) ) throw new PostConditionError("getNbLemVivants() != preGetLemVivantsSize-1");
 		if(! (containsIdColony(idLem)==false) ) throw new PostConditionError("containsIdColony(idLem)==true");
 		checkInvariants();
 	}
@@ -192,14 +189,14 @@ public class GameEngContrat extends GameEngDecorateur{
 		checkInvariants();
 		if(! (0 <= idLem) ) throw new PreConditionError("0 > idLem");
 		if(! (idLem < getSizeColony()) ) throw new PreConditionError("idLem >= getSizeColony()");
-		if(! (containsIdColony(idLem)) ) throw new PreConditionError("!containsIdColony(idLem)");
+		if(! (containsIdColony(idLem)==true) ) throw new PreConditionError("containsIdColony(idLem)==false");
 		
 		int preGetNbLemSauves = getNbLemSauves(); 
-		int preGetLemVivantsSize = getLemVivants().size();
+		int preGetLemVivantsSize = getNbLemVivants();
 		delegate.saveLemming(idLem);
 
 		if(! (getNbLemSauves()==preGetNbLemSauves+1) ) throw new PostConditionError("getNbLemSauves()!=preGetNbLemSauves+1");
-		if(! (getLemVivants().size()==preGetLemVivantsSize-1) ) throw new PostConditionError("getLemVivants().size()!=preGetLemVivantsSize-1");
+		if(! (getNbLemVivants()==preGetLemVivantsSize-1) ) throw new PostConditionError("getNbLemVivants()!=preGetLemVivantsSize-1");
 		checkInvariants();
 	}
 
@@ -234,9 +231,6 @@ public class GameEngContrat extends GameEngDecorateur{
 				throw new InvariantError("Gameover mais getSpawned() != getSizeColony()");
 			}
 		}
-		if(delegate.getNbLemVivants() != delegate.getLemVivants().size()){
-			throw new InvariantError("getNbLemVivants() != getLemVivants().size()");
-		}
 		if(delegate.getNbLemVivants() < 0) throw new InvariantError("getNbLemVivants() < 0");
 		if(delegate.getNbLemMorts() < 0) throw new InvariantError("getNbLemMorts() < 0");
 		if(delegate.getNbLemSauves() < 0) throw new InvariantError("getNbLemSauves() < 0");
@@ -251,6 +245,11 @@ public class GameEngContrat extends GameEngDecorateur{
 		}
 		
 		if(delegate.getNbTours()<0)	throw new InvariantError("getNbTours() < 0");
+	}
+	
+	@Override
+	public String toString() {
+		return delegate.toString();
 	}
 
 }

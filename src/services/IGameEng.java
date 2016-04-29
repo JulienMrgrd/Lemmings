@@ -31,7 +31,7 @@ public interface IGameEng {
 	int getNbLemVivants();
 	
 	/** pre : getScore() require gameOver() */
-	double getScore();
+	String getScore();
 	
 	/** pre : isObstacle(h, w) require 0 <= h < getLevel().getHeight() ^ 0 <= w < getLevel().getWidth() */
 	boolean isObstacle(int h, int w);

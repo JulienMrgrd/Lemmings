@@ -1,8 +1,5 @@
 package servicesImplementations;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import enumeration.Nature;
 import services.IGameEng;
 import services.ILemming;
@@ -10,21 +7,22 @@ import services.ILevel;
 
 public class GameEng implements IGameEng {
 
-	private List<ILemming> lemVivants;
+	private ILemming[] lemVivants;
 	private int sizeColony;
-	
+
 	private int spawnedSpeed;
 	private ILevel level;
 	private int nbTours = 0;
-	private double score;
+	private String score;
 	private int spawned; // lemmings crées
+	private int nbLemVivants; // lemmings sauvés
 	private int nbLemSauves; // lemmings sauvés
 	private boolean gameOver;
 
-	
+
 	// ============   Observateurs ============
 	@Override
-	public List<ILemming> getLemVivants() {
+	public ILemming[] getLemVivants() {
 		return lemVivants;
 	}
 
@@ -65,20 +63,20 @@ public class GameEng implements IGameEng {
 	public int getNbLemSauves() {
 		return nbLemSauves;
 	}
-	
+
 	@Override
 	public int getNbLemMorts() {
-		return getSizeColony()-getNbLemSauves()-getNbLemVivants();
+		return getSizeColony()-(getSizeColony()-getSpawned())-getNbLemSauves()-getNbLemVivants();
 	}
 
 	@Override
 	public int getNbLemVivants() {
-		return getLemVivants().size();
+		return nbLemVivants;
 	}
 
 	@Override
-	public double getScore() {
-		score = getNbLemSauves() / getSizeColony();
+	public String getScore() {
+		score = getNbLemSauves() + "-" + getNbTours();
 		return score;
 	}
 
@@ -94,8 +92,8 @@ public class GameEng implements IGameEng {
 	public boolean gameOver() {
 		return gameOver;
 	}
-	
-	
+
+
 	// ============ CONSTRUCTORS =============
 
 	@Override
@@ -103,27 +101,30 @@ public class GameEng implements IGameEng {
 		this.level = level;
 		this.sizeColony = sizeColony;
 		this.spawnedSpeed = spawnSpeed;
-		
-		lemVivants = new ArrayList<>();
+
+		lemVivants = new ILemming[sizeColony];
 		spawned = 0;
 		nbTours = 0;
-		score = 0;
+		score = "";
+		nbLemVivants = 0;
 		nbLemSauves = 0;
 		gameOver = false;
 	}
-	
-	
+
+
 	// ============= OPERATORS ==============
 
 	@Override
 	public void addLemming(ILemming lem) {
-		lemVivants.add(lem);
+		lemVivants[spawned] = lem;
 		spawned++;
+		nbLemVivants++;
 	}
 
 	@Override
 	public void killLemming(int idLem) {
-		lemVivants.remove(getLemVivantById(idLem));
+		lemVivants[idLem] = null;
+		nbLemVivants--;
 	}
 
 	@Override
@@ -135,13 +136,20 @@ public class GameEng implements IGameEng {
 	@Override
 	public void step() {
 		if(gameOver) return;
-		
+
 		nbTours++;
 		if(getSpawned()==getSizeColony() && getNbLemVivants()==0){ // fin du jeu
 			gameOver = true;
 		} else {
-			for(ILemming lem : lemVivants){
-				lem.step();
+			if(getSpawned()!=getSizeColony() && nbTours%getSpawnSpeed()==0){
+				Lemming newLem = new Lemming();
+				newLem.init(this);
+				addLemming(newLem);
+			}
+			for(ILemming lem : lemVivants) {
+				if(lem!=null){
+					lem.step();
+				}
 			}
 		}
 	}
@@ -154,5 +162,36 @@ public class GameEng implements IGameEng {
 		return false;
 	}
 
-	
+	@Override
+	public String toString() {
+		String [][] res = new String [getLevel().getHeight()][getLevel().getWidth()];
+		for (int i = 0; i < getLevel().getHeight(); i++)
+			for (int j = 0; j < getLevel().getWidth(); j++) {
+				switch (getLevel().getNature(i, j)) {
+				case EMPTY:
+					res[i][j] = " ";
+					break;
+				case METAL:
+					res[i][j] = "M";
+					break;
+				case DIRT:
+					res[i][j] = "D";
+				}
+			}
+		for (ILemming l : getLemVivants()){
+			if(l!=null) res[l.getHeight()][l.getWidth()] = Integer.toString(l.getId());
+		}
+		res[getLevel().getEntranceHeight()][getLevel().getEntranceWidth()] = "E";
+		res[getLevel().getExitHeight()][getLevel().getExitWidth()] = "S";
+		StringBuilder b = new StringBuilder();
+		for (int i = 0; i < getLevel().getHeight(); i++) {
+			for (int j = 0; j < getLevel().getWidth(); j++) {
+				b.append(res[i][j]);
+			}
+			b.append("\n");
+		}
+		return b.toString();
+	}
+
+
 }
