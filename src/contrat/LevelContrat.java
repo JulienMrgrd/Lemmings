@@ -72,10 +72,10 @@ public class LevelContrat extends LevelDecorateur{
 	@Override
 	public Nature getNature(int h, int w) {
 		checkInvariants();
-		if(!(h>=0)) throw new PreConditionError("h<0");
-		if(!(w>=0)) throw new PreConditionError("w<0");
-		if(!(h<= getHeight())) throw new PreConditionError("h>getHeight()");
-		if(!(w<= getWidth())) throw new PreConditionError("w>getWidth()");
+		if(! (h>=0)) throw new PreConditionError("h<0");
+		if(! (w>=0)) throw new PreConditionError("w<0");
+		if(! (h<= getHeight())) throw new PreConditionError("h>getHeight()");
+		if(! (w<= getWidth())) throw new PreConditionError("w>getWidth()");
 		
 		Nature n = delegate.getNature(h,w);
 		
@@ -86,14 +86,14 @@ public class LevelContrat extends LevelDecorateur{
 	@Override
 	public void init(int h, int w) {
 		checkInvariants();
-		if(!(h>=5)) throw new PreConditionError("h<5");
-		if(!(w>=4)) throw new PreConditionError("w<4");
+		if(! (h>=5)) throw new PreConditionError("h<5");
+		if(! (w>=4)) throw new PreConditionError("w<4");
 		
 		delegate.init(h,w);
 		
-		if(!(h== getHeight())) throw new PostConditionError("h!=getHeight()");
-		if(!(w== getWidth())) throw new PostConditionError("w!=getWidth()");
-		if(!(getEditing())) throw new PostConditionError("!getEditing()");
+		if(! (h== getHeight())) throw new PostConditionError("h!=getHeight()");
+		if(! (w== getWidth())) throw new PostConditionError("w!=getWidth()");
+		if(! (getEditing()==true)) throw new PostConditionError("getEditing()==false");
 		checkInvariants();
 	}
 
@@ -101,11 +101,11 @@ public class LevelContrat extends LevelDecorateur{
 	@Override
 	public void setNature(int h, int w, Nature nat) {
 		checkInvariants();
-		if(!(h>=0)) throw new PreConditionError("h<0");
-		if(!(w>=0)) throw new PreConditionError("w<0");
-		if(!(h <= getHeight())) throw new PreConditionError("h > getHeight()");
-		if(!(w <= getWidth())) throw new PreConditionError("w > getWidth()");
-		if(!(getEditing()==true)) throw new PreConditionError("getEditing()==false");
+		if(! (h>=0)) throw new PreConditionError("h<0");
+		if(! (w>=0)) throw new PreConditionError("w<0");
+		if(! (h <= getHeight())) throw new PreConditionError("h > getHeight()");
+		if(! (w <= getWidth())) throw new PreConditionError("w > getWidth()");
+		if(! (getEditing()==true)) throw new PreConditionError("getEditing()==false");
 		
 		delegate.setNature(h, w, nat);
 		
@@ -116,32 +116,32 @@ public class LevelContrat extends LevelDecorateur{
 	@Override
 	public void goPlay(int entranceH, int entranceW, int exitH, int exitW) {
 		checkInvariants();
-		if(!(getEditing()==true)) throw new PreConditionError("getEditing()==false");
-		if(!(entranceH>=0)) throw new PreConditionError("entranceH<0");
-		if(!(entranceW>=0)) throw new PreConditionError("entranceW<0");
-		if(!(exitH>=0)) throw new PreConditionError("exitH<0");
-		if(!(exitW>=0)) throw new PreConditionError("exitW<0");
+		if(! (getEditing()==true)) throw new PreConditionError("getEditing()==false");
+		if(! (entranceH>=0)) throw new PreConditionError("entranceH<0");
+		if(! (entranceW>=0)) throw new PreConditionError("entranceW<0");
+		if(! (exitH>=0)) throw new PreConditionError("exitH<0");
+		if(! (exitW>=0)) throw new PreConditionError("exitW<0");
 		
 		for(int i=0; i < getHeight(); i++){
-			if(!(getNature(i, 0)==Nature.METAL)) throw new PreConditionError("getNature("+i+", 0) != Nature.METAL)");
-			if(!(getNature(i, getWidth()-1)==Nature.METAL)) throw new PreConditionError("getNature("+i+", "+(getWidth()-1)+") != Nature.METAL)");
+			if(! (getNature(i, 0)==Nature.METAL)) throw new PreConditionError("getNature("+i+", 0) != Nature.METAL)");
+			if(! (getNature(i, getWidth()-1)==Nature.METAL)) throw new PreConditionError("getNature("+i+", "+(getWidth()-1)+") != Nature.METAL)");
 		}  
 		for(int i=0; i < getWidth(); i++){
-			if(!(getNature(0, i)==Nature.METAL)) throw new PreConditionError("getNature(0 , "+i+") != Nature.METAL)");
-			if(!(getNature(getHeight()-1, i)==Nature.METAL)) throw new PreConditionError("getNature("+(getHeight()-1)+" , "+i+") != Nature.METAL)");
+			if(! (getNature(0, i)==Nature.METAL)) throw new PreConditionError("getNature(0 , "+i+") != Nature.METAL)");
+			if(! (getNature(getHeight()-1, i)==Nature.METAL)) throw new PreConditionError("getNature("+(getHeight()-1)+" , "+i+") != Nature.METAL)");
 		}
-		if(!(getNature(entranceH-1, entranceW)==Nature.EMPTY)) throw new PreConditionError("getNature(entranceH-1 , entranceW) != Nature.EMPTY)");
-		if(!(getNature(entranceH+1, entranceW)==Nature.EMPTY)) throw new PreConditionError("getNature(entranceH+1 , entranceW) != Nature.EMPTY)");
-		if(!(getNature(exitH-1, exitW)==Nature.EMPTY)) throw new PreConditionError("getNature(exitH-1 , exitW) != Nature.EMPTY)");
-		if(!(getNature(exitH+1, exitW)==Nature.METAL)) throw new PreConditionError("getNature(exitH+1 , exitW) != Nature.METAL)");
+		if(! (getNature(entranceH-1, entranceW)==Nature.EMPTY)) throw new PreConditionError("getNature(entranceH-1 , entranceW) != Nature.EMPTY)");
+		if(! (getNature(entranceH+1, entranceW)==Nature.EMPTY)) throw new PreConditionError("getNature(entranceH+1 , entranceW) != Nature.EMPTY)");
+		if(! (getNature(exitH-1, exitW)==Nature.EMPTY)) throw new PreConditionError("getNature(exitH-1 , exitW) != Nature.EMPTY)");
+		if(! (getNature(exitH+1, exitW)==Nature.METAL)) throw new PreConditionError("getNature(exitH+1 , exitW) != Nature.METAL)");
 		
 		delegate.goPlay(entranceH, entranceW, exitH, exitW);
 		
-		if(!(getEditing()==false)) throw new PreConditionError("getEditing()==true");
-		if(!(getEntranceHeight()==entranceH) ) throw new PostConditionError("getEntranceHeight()!=entranceH");
-		if(!(getEntranceWidth()==entranceW) ) throw new PostConditionError("getEntranceWidth()!=entranceW");
-		if(!(getExitHeight()==exitH) ) throw new PostConditionError("getExitHeight()!=exitH");
-		if(!(getExitWidth()==exitW) ) throw new PostConditionError("getExitWidth()!=exitW");
+		if(! (getEditing()==false)) throw new PostConditionError("getEditing()==true");
+		if(! (getEntranceHeight()==entranceH) ) throw new PostConditionError("getEntranceHeight()!=entranceH");
+		if(! (getEntranceWidth()==entranceW) ) throw new PostConditionError("getEntranceWidth()!=entranceW");
+		if(! (getExitHeight()==exitH) ) throw new PostConditionError("getExitHeight()!=exitH");
+		if(! (getExitWidth()==exitW) ) throw new PostConditionError("getExitWidth()!=exitW");
 		
 		checkInvariants();
 		
@@ -150,31 +150,31 @@ public class LevelContrat extends LevelDecorateur{
 	@Override
 	public void remove(int h, int w) {
 		checkInvariants();
-		if(!(getNature(h, w)==Nature.DIRT)) throw new PreConditionError("getNature(h, w) != Nature.DIRT");
-		if( (getEditing())) throw new PreConditionError("getEditing()");
+		if(! (getNature(h, w)==Nature.DIRT)) throw new PreConditionError("getNature(h, w) != Nature.DIRT");
+		if(! (getEditing()==false)) throw new PreConditionError("getEditing()==true");
 		
 		delegate.remove(h, w);
 		
-		if(!(getNature(h, w)==Nature.EMPTY)) throw new PostConditionError("getNature(h, w) != Nature.EMPTY");
+		if(! (getNature(h, w)==Nature.EMPTY)) throw new PostConditionError("getNature(h, w) != Nature.EMPTY");
 		checkInvariants();
 	}
 
 	@Override
 	public void build(int h, int w) {
 		checkInvariants();
-		if(!(getNature(h, w)==Nature.EMPTY)) throw new PreConditionError("getNature(h, w) != Nature.EMPTY");
+		if(! (getNature(h, w)==Nature.EMPTY)) throw new PreConditionError("getNature(h, w) != Nature.EMPTY");
 		if(! (getEditing()==false)) throw new PreConditionError("getEditing()==true");
 		
 		delegate.build(h, w);
 		
-		if(!(getNature(h, w)==Nature.DIRT)) throw new PostConditionError("getNature(h, w) != Nature.DIRT");
+		if(! (getNature(h, w)==Nature.DIRT)) throw new PostConditionError("getNature(h, w) != Nature.DIRT");
 		checkInvariants();
 	}
 	
 	
 	@Override
 	protected void checkInvariants(){
-		if(!(getHeight()>=5)) throw new InvariantError("getHeight<5");
-		if(!(getWidth()>=4)) throw new InvariantError("getWidth<4");
+		if(! (getHeight()>=5)) throw new InvariantError("getHeight<5");
+		if(! (getWidth()>=4)) throw new InvariantError("getWidth<4");
 	}
 }

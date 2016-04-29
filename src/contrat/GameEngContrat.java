@@ -3,6 +3,7 @@ package contrat;
 import java.util.List;
 
 import decorateur.GameEngDecorateur;
+import errors.InvariantError;
 import errors.PostConditionError;
 import errors.PreConditionError;
 import services.ILemming;
@@ -80,6 +81,23 @@ public class GameEngContrat extends GameEngDecorateur{
 	public int getNbLemSauves() {
 		checkInvariants();
 		int res = delegate.getNbLemSauves();
+		checkInvariants();
+		return res;
+	}
+	
+
+	@Override
+	public int getNbLemMorts() {
+		checkInvariants();
+		int res = delegate.getNbLemMorts();
+		checkInvariants();
+		return res;
+	}
+
+	@Override
+	public int getNbLemVivants() {
+		checkInvariants();
+		int res = delegate.getNbLemVivants();
 		checkInvariants();
 		return res;
 	}
@@ -210,7 +228,33 @@ public class GameEngContrat extends GameEngDecorateur{
 	
 	@Override
 	protected void checkInvariants(){
-		// TODO Auto-generated method stub
+		if(delegate.gameOver()){
+			if(delegate.getNbLemVivants()!= 0){
+				throw new InvariantError("Gameover mais getNbLemVivants()!=0");
+			} else if (delegate.gameOver() && delegate.getSpawned()!=delegate.getSizeColony()){
+				throw new InvariantError("Gameover mais getSpawned() != getSizeColony()");
+			}
+		}
+		if(delegate.getNbLemVivants() != delegate.getLemVivants().size()){
+			throw new InvariantError("getNbLemVivants() != getLemVivants().size()");
+		}
+		if(delegate.getNbLemVivants() < 0) throw new InvariantError("getNbLemVivants() < 0");
+		if(delegate.getNbLemMorts() < 0) throw new InvariantError("getNbLemMorts() < 0");
+		if(delegate.getNbLemSauves() < 0) throw new InvariantError("getNbLemSauves() < 0");
+		if(delegate.getSpawned() < 0) throw new InvariantError("getSpawned() < 0");
+		if(delegate.getNbLemVivants()  > getSizeColony()) throw new InvariantError("getNbLemVivants() > getSizeColony()");
+		if(delegate.getNbLemMorts() > getSizeColony()) throw new InvariantError("getNbLemVivants() > getSizeColony()");
+		if(delegate.getNbLemSauves() > getSizeColony()) throw new InvariantError("getNbLemSauves() > getSizeColony()");
+		if(delegate.getSpawned() > getSizeColony()) throw new InvariantError("getSpawned() > getSizeColony()");
+		
+		if(delegate.getSpawned() != delegate.getNbLemSauves() + delegate .getNbLemVivants() + delegate .getNbLemMorts()){
+			throw new InvariantError("getSpawned() != getNbLemSauves() + getNbLemVivants() + getNbLemMorts()");
+		}
+		
+		if(delegate.getNbTours()<0)	throw new InvariantError("getNbTours() < 0");
+		if(delegate.getScore() != (delegate.getNbLemSauves()/delegate.getSizeColony()) ){
+			throw new InvariantError("getScore() != getNbLemSauves()/getSizeColony()");
+		}
 	}
 
 }

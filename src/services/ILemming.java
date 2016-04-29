@@ -16,7 +16,7 @@ public interface ILemming {
 	boolean isDroitier();
 	EtatLemming getEtat();
 	IGameEng getGameEng();
-	int nbCasesFalling();
+	int getNbCasesFalling();
 	
 	
 	// ============= Constructors ============== 

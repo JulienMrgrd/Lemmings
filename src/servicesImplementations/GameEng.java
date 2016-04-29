@@ -12,12 +12,13 @@ public class GameEng implements IGameEng {
 
 	private List<ILemming> lemVivants;
 	private int sizeColony;
-	private int spawned;
+	
 	private int spawnedSpeed;
 	private ILevel level;
 	private int nbTours = 0;
 	private double score;
-	private int nbLemSauves;
+	private int spawned; // lemmings crées
+	private int nbLemSauves; // lemmings sauvés
 	private boolean gameOver;
 
 	
@@ -64,9 +65,20 @@ public class GameEng implements IGameEng {
 	public int getNbLemSauves() {
 		return nbLemSauves;
 	}
+	
+	@Override
+	public int getNbLemMorts() {
+		return getSizeColony()-getNbLemSauves()-getNbLemVivants();
+	}
+
+	@Override
+	public int getNbLemVivants() {
+		return getLemVivants().size();
+	}
 
 	@Override
 	public double getScore() {
+		score = getNbLemSauves() / getSizeColony();
 		return score;
 	}
 
@@ -90,7 +102,7 @@ public class GameEng implements IGameEng {
 	public void init(ILevel level, int sizeColony, int spawnSpeed) {
 		this.level = level;
 		this.sizeColony = sizeColony;
-		this.spawnedSpeed = 0;
+		this.spawnedSpeed = spawnSpeed;
 		
 		lemVivants = new ArrayList<>();
 		spawned = 0;
@@ -106,6 +118,7 @@ public class GameEng implements IGameEng {
 	@Override
 	public void addLemming(ILemming lem) {
 		lemVivants.add(lem);
+		spawned++;
 	}
 
 	@Override
@@ -121,8 +134,15 @@ public class GameEng implements IGameEng {
 
 	@Override
 	public void step() {
-		for(ILemming lem : lemVivants){
-			lem.step();
+		if(gameOver) return;
+		
+		nbTours++;
+		if(getSpawned()==getSizeColony() && getNbLemVivants()==0){ // fin du jeu
+			gameOver = true;
+		} else {
+			for(ILemming lem : lemVivants){
+				lem.step();
+			}
 		}
 	}
 
@@ -134,6 +154,5 @@ public class GameEng implements IGameEng {
 		return false;
 	}
 
-		
 	
 }
