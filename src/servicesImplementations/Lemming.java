@@ -14,8 +14,8 @@ public class Lemming implements ILemming {
 	private EtatLemming etat;
 	private IGameEng gameEng;
 	private int nbCasesFalling;
-	
-	
+
+
 	@Override
 	public int getWidth() {
 		return width;
@@ -47,7 +47,7 @@ public class Lemming implements ILemming {
 	}
 
 	@Override
-	public int nbCasesFalling() {
+	public int getNbCasesFalling() {
 		return nbCasesFalling;
 	}
 
@@ -85,54 +85,54 @@ public class Lemming implements ILemming {
 	@Override
 	public void step() {
 		if(gameEng.getLevel().getExitHeight() == height && gameEng.getLevel().getExitWidth() == width ){
-			   			 gameEng.saveLemming(id);
-	   }else if(etat == EtatLemming.WALKER){
-	  		if (gameEng.getLevel().getNature(height+1, width) == Nature.EMPTY){ 
-               etat = EtatLemming.FALLER; 
-           
-           } else if (isDroitier){
-               if (gameEng.getLevel().getNature(height-1, width+1) != Nature.EMPTY ||
-                   (gameEng.getLevel().getNature(height, width+1) != Nature.EMPTY &&
-                   gameEng.getLevel().getNature(height-2, width+1) != Nature.EMPTY)){
-                  isDroitier = false; 
-               
-               } else if (gameEng.getLevel().getNature(height, width+1) != Nature.EMPTY){
-	               	isDroitier = true;
-	               	width = width+1;
-	               	height = height-1;
-               
-               } else {
-                  isDroitier = true;
-                  width = width+1; 
-               }
-           }else {
-              if (gameEng.getLevel().getNature(height-1, width-1) != Nature.EMPTY ||
-                   (gameEng.getLevel().getNature(height, width-1) != Nature.EMPTY &&
-                   gameEng.getLevel().getNature(height-2, width-1) != Nature.EMPTY)){
-                  isDroitier = true; 
-               
-               } else if (gameEng.getLevel().getNature(height, width-1) != Nature.EMPTY){
-	               	isDroitier = false;
-	               	width = width-1;
-	               	height = height-1;
-               
-               } else {
-                  isDroitier = false;
-                  width = width-1; 
-               }
-	   		}
-	   } else if (getEtat() == EtatLemming.FALLER){
-		   if (gameEng.getLevel().getNature(height+1, width) != Nature.EMPTY) {
-               if (nbCasesFalling() < 8) {
-                  etat = EtatLemming.WALKER; 
-               }else {
-                  gameEng.killLemming(id);
-               }
-           }else {
-           		nbCasesFalling = nbCasesFalling+1;
-                height = height+1;
-           }
-	   }
+			gameEng.saveLemming(id);
+		}else if(etat == EtatLemming.WALKER){
+			if (gameEng.getLevel().getNature(height+1, width) == Nature.EMPTY){ 
+				etat = EtatLemming.FALLER; 
+
+			} else if (isDroitier){
+				if (gameEng.getLevel().getNature(height-1, width+1) != Nature.EMPTY ||
+						(gameEng.getLevel().getNature(height, width+1) != Nature.EMPTY &&
+						gameEng.getLevel().getNature(height-2, width+1) != Nature.EMPTY)){
+					isDroitier = false; 
+
+				} else if (gameEng.getLevel().getNature(height, width+1) != Nature.EMPTY){
+					isDroitier = true;
+					width = width+1;
+					height = height-1;
+
+				} else {
+					isDroitier = true;
+					width = width+1; 
+				}
+			}else {
+				if (gameEng.getLevel().getNature(height-1, width-1) != Nature.EMPTY ||
+						(gameEng.getLevel().getNature(height, width-1) != Nature.EMPTY &&
+						gameEng.getLevel().getNature(height-2, width-1) != Nature.EMPTY)){
+					isDroitier = true; 
+
+				} else if (gameEng.getLevel().getNature(height, width-1) != Nature.EMPTY){
+					isDroitier = false;
+					width = width-1;
+					height = height-1;
+
+				} else {
+					isDroitier = false;
+					width = width-1; 
+				}
+			}
+		} else if (getEtat() == EtatLemming.FALLER){
+			if (gameEng.getLevel().getNature(height+1, width) != Nature.EMPTY) {
+				if (getNbCasesFalling() < 8) {
+					etat = EtatLemming.WALKER; 
+				}else {
+					gameEng.killLemming(id);
+				}
+			}else {
+				nbCasesFalling = nbCasesFalling+1;
+				height = height+1;
+			}
+		}
 	}
 
 }
