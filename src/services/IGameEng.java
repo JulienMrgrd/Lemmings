@@ -1,6 +1,5 @@
 package services;
 
-import java.util.List;
 
 public interface IGameEng {
 	
@@ -18,7 +17,7 @@ public interface IGameEng {
 	
 	// ============   Observation ============
 	
-	List<ILemming> getLemVivants();
+	ILemming[] getLemVivants();
 	
 	/** pre : getLemVivantById(id) require 0 < id <= getSizeColony() ^ containsIdColony(id) */
 	ILemming getLemVivantById(int id);
@@ -53,7 +52,7 @@ public interface IGameEng {
 	
 	// ============= OPERATORS ==============
 
-	/** pre : addLemming(lem) require getSpawned() < getSizeColony() ^ getLemVivants().contains(lem)==false
+	/** pre : addLemming(lem) require getSpawned() < getSizeColony() ^ getLemVivants()[lem.getId()]==null
 	 *  <br>
 	 *  post : getSpawned() == getSpawned()@pre+1 ^ getNbLemVivants()==getNbLemVivants()@pre+1
 	 * 		    ^ getLemVivants().contains(lem) */

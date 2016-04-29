@@ -26,7 +26,7 @@ public interface ILemming {
 	 * 			^ getId() == gameEng.getSpawned()
 	 * 			^ isDroitier()
 	 * 			^ getEtat() == EtatLemming.FALLER
-	 * 			^ nbCasesFalling() == 0
+	 * 			^ getNbCasesFalling() == 0
 	 */
 	void init(IGameEng gameEng);
 	
@@ -96,7 +96,7 @@ public interface ILemming {
 	 *  <br>	}
 	 *  <br>} else if (getEtat() == EtatLemming.FALLER){
 	 *  <br>	if (getGameEng().getLevel().getNature(getHeight()@pre+1, getWidth()@pre)@pre != Nature.EMPTY) {
-     *  <br>        if (nbCasesFalling() < 8) {
+     *  <br>        if (getNbCasesFalling() < 8) {
      *  <br>           getEtat() == EtatLemming.WALKER; 
      *  <br>           getWidth() == getWidth()@pre; 
      *  <br>           getHeight() == getHeight()@pre;
@@ -104,7 +104,7 @@ public interface ILemming {
      *  <br>           !getGameEng().containsIdColony(getId())
      *  <br>        }
      *  <br>    } else {
-     *  <br>    	nbCasesFalling() == nbCasesFalling()@pre+1;
+     *  <br>    	getNbCasesFalling() == getNbCasesFalling()@pre+1;
      *  <br>        getWidth() == getWidth()@pre; 
      *  <br>        getHeight() == getHeight()@pre+1;
      *  <br>    }
