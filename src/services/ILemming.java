@@ -50,7 +50,7 @@ public interface ILemming {
 	
 	/** post :
 	 *  <br>if(getGameEng().getLevel().getExitHeight()==getHeight() && getGameEng().getLevel().getExitWidth()==getWidth() ){
-	 *  <br>		getGameEng().getNbLemSauves()@pre+1
+	 *  <br>		getGameEng().getNbLemSauves()== getGameEng().getNbLemSauves()@pre+1
 	 *  <br>} else if(getEtat()@pre == EtatLemming.WALKER){
 	 * 	<br>	if (getGameEng().getLevel().getNature(getHeight()@pre+1, getWidth()@pre)@pre == Nature.EMPTY){ 
      *  <br>        getEtat() == EtatLemming.FALLER; 

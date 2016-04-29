@@ -2,6 +2,7 @@ package contrat;
 
 import decorateur.LemmingDecorateur;
 import enumeration.EtatLemming;
+import enumeration.Nature;
 import errors.InvariantError;
 import errors.PostConditionError;
 import errors.PreConditionError;
@@ -72,7 +73,6 @@ public class LemmingContrat extends LemmingDecorateur{
 
 	@Override
 	public void init(IGameEng gameEng) {
-		// TODO Auto-generated method stub
 		
 		checkInvariants();
 		
@@ -95,15 +95,12 @@ public class LemmingContrat extends LemmingDecorateur{
 	public void setHeight(int height) {
 		
 		checkInvariants();
-		//TESTER LES PRECONDITION
-		if(!(height>0)) throw new PreConditionError("setHeight"," height<0");
-		if(!(height<getGameEng().getLevel().getHeight()))  throw new PreConditionError("setHeight"," height<getGameEng().getLevel().getHeight()");
+		if(!(height>0)) throw new PreConditionError(" height<0");
+		if(!(height<getGameEng().getLevel().getHeight()))  throw new PreConditionError(" height<getGameEng().getLevel().getHeight()");
 		
-		//APPEL METHODE
 		delegate.setHeight(height);
 		
-		//TEST POSTCONDITION
-		if(!(height==getHeight())) throw new PostConditionError("setHeight"," height!=getHeight()");
+		if(!(height==getHeight())) throw new PostConditionError(" height!=getHeight()");
 		checkInvariants();
 		
 	}
@@ -112,15 +109,12 @@ public class LemmingContrat extends LemmingDecorateur{
 	public void setWidth(int width) {
 		
 		checkInvariants();
-		//TESTER LES PRECONDITION
-		if(!(width>0)) throw new PreConditionError("setWidth"," width<0");
-		if(!(width<getGameEng().getLevel().getWidth()))  throw new PreConditionError("setWidth"," width<getGameEng().getLevel().getWidth()");
+		if(!(width>0)) throw new PreConditionError(" width<0");
+		if(!(width<getGameEng().getLevel().getWidth()))  throw new PreConditionError(" width<getGameEng().getLevel().getWidth()");
 		
-		//APPEL METHODE
 		delegate.setWidth(width);
 		
-		//TEST POSTCONDITION
-		if(!(width==getWidth())) throw new PostConditionError("setWidth"," width!=getWidth()");
+		if(!(width==getWidth())) throw new PostConditionError(" width!=getWidth()");
 		checkInvariants();
 		
 	}
@@ -134,8 +128,7 @@ public class LemmingContrat extends LemmingDecorateur{
 		
 		delegate.setDirection();
 		
-		//TEST POSTCONDITION
-		if(!(dir!=isDroitier())) throw new PostConditionError("setDirection"," isDroitier==isDroitier()@pre");
+		if(!(dir!=isDroitier())) throw new PostConditionError(" isDroitier==isDroitier()@pre");
 		
 		checkInvariants();
 		
@@ -148,81 +141,88 @@ public class LemmingContrat extends LemmingDecorateur{
 		
 		delegate.setEtat(etat);
 		
-		//TEST POSTCONDITION
-		if(!(etat==getEtat())) throw new PostConditionError("setEtat"," etat != getEtat()");
+		if(!(etat==getEtat())) throw new PostConditionError(" etat != getEtat()");
 		
 		checkInvariants();
 	}
 
 	@Override
 	public void step() {
-		// TODO Auto-generated method stub
 		checkInvariants();
 		
+		//Sauvegardage avant appel methode
 		EtatLemming etatPre = getEtat();
 		int heightPre = getHeight();
 		int widthPre = getWidth();
+		int nbCaseFallingPre=nbCasesFalling();
 		boolean isDroitierPre=isDroitier();
+		int nbSavePre=getGameEng().getNbLemSauves();
+		//P1 == +1;  M1 == -1
+		Nature hPreP1WPre = getGameEng().getLevel().getNature(heightPre+1, widthPre);
+		Nature hPreM1WPreP1 = getGameEng().getLevel().getNature(heightPre-1, widthPre+1);
+		Nature hPreWPreP1 = getGameEng().getLevel().getNature(heightPre, widthPre+1);
+		Nature hPreM2WPreP1 = getGameEng().getLevel().getNature(heightPre-2, widthPre+1);
+		Nature hPreM1WPreM1 = getGameEng().getLevel().getNature(heightPre-1, widthPre-1);
+		Nature hPreWPreM1 = getGameEng().getLevel().getNature(heightPre, widthPre-1);
+		Nature hPreM2WPreM1 = getGameEng().getLevel().getNature(heightPre-2, widthPre-1);
 		
 		delegate.step();
 		
-		//TEST POSTCONDITION
-		if(getGameEng().getLevel().getExitHeight()==getHeight() && delegate.getGameEng().getLevel().getExitWidth()==getWidth() ){ 
-			getGameEng().getNbLemSauves()@pre+1
+		if(getGameEng().getLevel().getExitHeight()==getHeight() && getGameEng().getLevel().getExitWidth()==getWidth()&& 
+				(!(getGameEng().getNbLemSauves()== nbSavePre+1))){ 
+			throw new PostConditionError("getGameEng().getNbLemSauves() != nbSavePre+1");
 		} else if(etatPre == EtatLemming.WALKER){ 
-			if (getGameEng().getLevel().getNature(heightPre+1, widthPre)@pre == Nature.EMPTY){ 
-				if(!(getEtat() == EtatLemming.FALLER)); 
-				if(!(getWidth() == widthPre)); 
-				if(!(getHeight() == heightPre)); 
+			if (hPreP1WPre == Nature.EMPTY){ 
+				if(!(getEtat() == EtatLemming.FALLER)) throw new PostConditionError("getEtat() != EtatLemming.FALLER"); 
+				if(!(getWidth() == widthPre)) throw new PostConditionError("getWidth() != widthPre");  
+				if(!(getHeight() == heightPre)) throw new PostConditionError("getHeight() != heightPre");   
 
 			} else if (isDroitierPre){ 
-			if (getGameEng().getLevel().getNature(heightPre-1, widthPre+1)@pre != Nature.EMPTY || 
-					(getGameEng().getLevel().getNature(heightPre, widthPre+1)@pre != Nature.EMPTY && 
-					getGameEng().getLevel().getNature(heightPre-2, widthPre+1)@pre != Nature.EMPTY)){ 
-				if(!(isDroitier() == false)); 
-				if(!(getWidth() == widthPre)); 
-				if(!(getHeight() == heightPre)); 
+				if ( hPreM1WPreP1 != Nature.EMPTY || (hPreWPreP1 != Nature.EMPTY && hPreM2WPreP1 != Nature.EMPTY)){ 
+					if(!(isDroitier() == false)) throw new PostConditionError("isDroitier()==true");  
+					if(!(getWidth() == widthPre)) throw new PostConditionError("getWidth() != widthPre");  
+					if(!(getHeight() == heightPre)) throw new PostConditionError("getHeight() != heightPre");  
 
-			} else if (getGameEng().getLevel().getNature(heightPre, widthPre+1)@pre != Nature.EMPTY){ 
-				if(!(isDroitier() == true)); 
-				if(!(getWidth()==widthPre+1)); 
-				if(!(getHeight()==heightPre-1)); 
-
-			} else { 
-				if(!(isDroitier() == true)); 
-				if(!(getWidth() == widthPre+1)); 
-				if(!(getHeight() == heightPre)); 
-			} 
+				} else if (hPreWPreP1 != Nature.EMPTY){ 
+					if(!(isDroitier() == true)) throw new PostConditionError("isDroitier()==false");  
+					if(!(getWidth()==widthPre+1)) throw new PostConditionError("getWidth() != widthPre+1");  
+					if(!(getHeight()==heightPre-1)) throw new PostConditionError("getHeight() != heightPre-1"); 
+	
+				} else { 
+					if(!(isDroitier() == true)) throw new PostConditionError("isDroitier()==false");  
+					if(!(getWidth() == widthPre+1)) throw new PostConditionError("getWidth() != widthPre+1");   
+					if(!(getHeight() == heightPre)) throw new PostConditionError("getHeight() != heightPre");  
+				} 
 			}else { 
-			if (getGameEng().getLevel().getNature(heightPre-1, widthPre-1)@pre != Nature.EMPTY || 
-					(getGameEng().getLevel().getNature(heightPre, widthPre-1)@pre != Nature.EMPTY && 
-					getGameEng().getLevel().getNature(heightPre-2, widthPre-1)@pre != Nature.EMPTY)){ 
-				if(!(isDroitier() == true)); 
-				if(!(getWidth() == widthPre)); 
-				if(!(getHeight() == heightPre)); 
-
-			} else if (getGameEng().getLevel().getNature(heightPre, widthPre-1)@pre != Nature.EMPTY){ 
-				if(!(isDroitier() == false)); 
-				if(!(getWidth() == widthPre-1)); 
-				if(!(getHeight() == heightPre-1)); 
-
-			} else { 
-				if(!(isDroitier() == false)); 
-				if(!(getWidth() == widthPre-1)); 
-				if(!(getHeight() == heightPre)); 
+				if (hPreM1WPreM1 != Nature.EMPTY || (hPreWPreM1 != Nature.EMPTY && hPreM2WPreM1 != Nature.EMPTY)){ 
+					if(!(isDroitier() == true)) throw new PostConditionError("isDroitier()==false"); 
+					if(!(getWidth() == widthPre)) throw new PostConditionError("getWidth() != widthPre"); 
+					if(!(getHeight() == heightPre)) throw new PostConditionError("getHeight() != heightPre");  
+	
+				} else if (hPreWPreM1 != Nature.EMPTY){ 
+					if(!(isDroitier() == false)) throw new PostConditionError("isDroitier()==true");  
+					if(!(getWidth() == widthPre-1)) throw new PostConditionError("getWidth() != widthPre-1");  
+					if(!(getHeight() == heightPre-1)) throw new PostConditionError("getHeight() != heightPre-1");  
+	
+				} else { 
+					if(!(isDroitier() == false)) throw new PostConditionError("isDroitier()==true");   
+					if(!(getWidth() == widthPre-1)) throw new PostConditionError("getWidth() != widthPre-1"); 
+					if(!(getHeight() == heightPre)) throw new PostConditionError("getHeight() != heightPre"); 
+				} 
 			} 
-			} 
-			} else if (getEtat() == EtatLemming.FALLER){ 
-			if (getGameEng().getLevel().getNature(heightPre+1, widthPre)@pre != Nature.EMPTY) { 
+		} else if (getEtat() == EtatLemming.FALLER){ 
+			if (hPreP1WPre != Nature.EMPTY) { 
 				if (nbCasesFalling() < 8) { 
-					if(!(getEtat() == EtatLemming.WALKER)); 
-					if(!(getWidth() == widthPre)); 
-					if(!(getHeight() == heightPre)); 
+					if(!(getEtat() == EtatLemming.WALKER)) throw new PostConditionError("getEtat() != EtatLemming.WALKER"); 
+					if(!(getWidth() == widthPre)) throw new PostConditionError("getWidth() != widthPre");  
+					if(!(getHeight() == heightPre)) throw new PostConditionError("getHeight() != heightPre"); 
+				}else {
+					if(!(!getGameEng().containsIdColony(getId()))) throw new PostConditionError("getHeight() != heightPre");
 				} 
 			} else { 
-				if(!(nbCasesFalling() == nbCasesFalling()@pre+1)); 
-				if(!(getWidth() == widthPre)); 
-				if(!(getHeight() == heightPre+1)); 
+				if(!(nbCasesFalling() == nbCaseFallingPre+1)) throw new PostConditionError("nbCasesFalling() != nbCaseFallingPre+1");  
+				if(!(getWidth() == widthPre)) throw new PostConditionError("getWidth() != widthPre");   
+				if(!(getHeight() == heightPre+1)) throw new PostConditionError("getHeight() != heightPre+1"); 
 			} 
 		}
 		
@@ -230,6 +230,12 @@ public class LemmingContrat extends LemmingDecorateur{
 	
 	@Override
 	protected void checkInvariants(){
+		if(!(getWidth()<=getGameEng().getLevel().getWidth())) throw new InvariantError("getWidth() > gameEng().getLevel().getWidth()");
+		if(!(getHeight()<=getGameEng().getLevel().getHeight())) throw new InvariantError("getHeight() > gameEng().getLevel().getWidth()");
+		if(!(getWidth()>=0)) throw new InvariantError("getWidth() < 0");
+		if(!(getHeight()>=0)) throw new InvariantError("getHeight() < 0");
+		if(!(getId()<=getGameEng().getSizeColony())) throw new InvariantError("getId() > getGameEng().getSizeColony()");
+		if(!(nbCasesFalling()<=getGameEng().getLevel().getHeight())) throw new InvariantError("nbCasesFalling() >getGameEng().getLevel().getHeight()");
 		// TODO Auto-generated method stub
 		
 	}
