@@ -1,5 +1,7 @@
 package contrat;
 
+import java.util.List;
+
 import decorateur.LemmingDecorateur;
 import enumeration.EtatLemming;
 import enumeration.Nature;
@@ -48,9 +50,9 @@ public class LemmingContrat extends LemmingDecorateur{
 	}
 
 	@Override
-	public EtatLemming getEtat() {
+	public List<EtatLemming> getEtat() {
 		checkInvariants();
-		EtatLemming res = delegate.getEtat();
+		List<EtatLemming> res = delegate.getEtat();
 		checkInvariants();
 		return res;
 	}
@@ -70,6 +72,38 @@ public class LemmingContrat extends LemmingDecorateur{
 		checkInvariants();
 		return res;
 	}
+	
+	@Override
+	public int getNbToursBomber() {
+		checkInvariants();
+		int res = delegate.getNbToursBomber();
+		checkInvariants();
+		return res;
+	}
+	
+	@Override
+	public int getNbTourBuilder() {
+		checkInvariants();
+		int res = delegate.getNbTourBuilder();
+		checkInvariants();
+		return res;
+	}
+	
+	@Override
+	public int getNbDallePose() {
+		checkInvariants();
+		int res = delegate.getNbDallePose();
+		checkInvariants();
+		return res;
+	}
+	
+	@Override
+	public int getNbCreuse() {
+		checkInvariants();
+		int res = delegate.getNbCreuse();
+		checkInvariants();
+		return res;
+	}
 
 	@Override
 	public void init(IGameEng gameEng) {
@@ -86,7 +120,7 @@ public class LemmingContrat extends LemmingDecorateur{
 		}
 		if(! (getId() == gameEng.getSpawned())) throw new PostConditionError("getId() != gameEng.getSpawned()");
 		if(! (isDroitier()==true)) throw new PostConditionError("isDroitier()==false");
-		if(! (getEtat() == EtatLemming.WALKER)) throw new PostConditionError("getEtat() != EtatLemming.WALKER");
+		if(! (getEtat().contains(EtatLemming.FALLER))) throw new PostConditionError("!getEtat().contains(EtatLemming.FALLER)");
 		if(! (getNbCasesFalling() == 0))  throw new PostConditionError("getNbCasesFalling() != 0");
 		checkInvariants();
 	}
@@ -131,7 +165,7 @@ public class LemmingContrat extends LemmingDecorateur{
 		checkInvariants();
 		delegate.setEtat(etat);
 
-		if(! (etat==getEtat())) throw new PostConditionError("etat != getEtat()");
+		if(! (getEtat().contains(etat))) throw new PostConditionError("!getEtat().contains(etat))");
 		checkInvariants();
 	}
 
@@ -139,7 +173,7 @@ public class LemmingContrat extends LemmingDecorateur{
 	public void step() {
 		checkInvariants();
 
-		EtatLemming etatPre = getEtat();
+		List<EtatLemming> etatPre = getEtat();
 		int heightPre = getHeight();
 		int widthPre = getWidth();
 		int nbCaseFallingPre=getNbCasesFalling();
@@ -159,9 +193,9 @@ public class LemmingContrat extends LemmingDecorateur{
 		if(getGameEng().getLevel().getExitHeight()==getHeight() && getGameEng().getLevel().getExitWidth()==getWidth() // Lemming sur le exit
 				&& (!(getGameEng().getNbLemSauves() == nbSavePre+1))){ 
 			throw new PostConditionError("getGameEng().getNbLemSauves() != getNbLemSauves()@pre+1");
-		} else if(etatPre == EtatLemming.WALKER){ 
+		} else if(etatPre.contains(EtatLemming.WALKER)){ 
 			if (hPreP1WPre == Nature.EMPTY){ 
-				if(! (getEtat() == EtatLemming.FALLER)) throw new PostConditionError("getEtat() != EtatLemming.FALLER"); 
+				if(! (getEtat().contains(EtatLemming.FALLER))) throw new PostConditionError("getEtat() != EtatLemming.FALLER"); 
 				if(! (getWidth() == widthPre)) throw new PostConditionError("getWidth() != getWidth()@pre");  
 				if(! (getHeight() == heightPre)) throw new PostConditionError("getHeight() != getHeight()@pre");   
 
@@ -198,10 +232,10 @@ public class LemmingContrat extends LemmingDecorateur{
 					if(! (getHeight() == heightPre)) throw new PostConditionError("getHeight() != getHeight()@pre"); 
 				} 
 			} 
-		} else if (getEtat() == EtatLemming.FALLER){ 
+		} else if (getEtat().contains(EtatLemming.FALLER)){ 
 			if (hPreP1WPre != Nature.EMPTY) { 
 				if (getNbCasesFalling() < 8) { 
-					if(! (getEtat() == EtatLemming.WALKER)) throw new PostConditionError("getEtat() != EtatLemming.WALKER"); 
+					if(! (getEtat().contains(EtatLemming.WALKER))) throw new PostConditionError("getEtat() != EtatLemming.WALKER"); 
 					if(! (getWidth() == widthPre)) throw new PostConditionError("getWidth() != getWidth()@pre");  
 					if(! (getHeight() == heightPre)) throw new PostConditionError("getHeight() != getHeight()@pre"); 
 					if(! (getNbCasesFalling()==0)) throw new PostConditionError("getNbCasesFalling() != 0"); 

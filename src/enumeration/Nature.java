@@ -1,5 +1,5 @@
 package enumeration;
 
 public enum Nature {
-	EMPTY, DIRT, METAL
+	EMPTY, DIRT, METAL, STOPPER
 }
