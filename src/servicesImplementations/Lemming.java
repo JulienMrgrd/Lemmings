@@ -64,12 +64,12 @@ public class Lemming implements ILemming {
 	
 	@Override
 	public int getNbTourBuilder() {
-		return nbTourBomber;
+		return nbTourBuilder;
 	}
 
 	@Override
 	public int getNbDallePose() {
-		return nbTourBuilder;
+		return nbDallePose;
 	}
 	
 	@Override
@@ -150,6 +150,7 @@ public class Lemming implements ILemming {
 				}
 					
 				
+				
 			}
 			if (getEtat().contains(EtatLemming.CLIMBER)){ //GRIMPEUR
 				if(isDroitier){
@@ -177,6 +178,7 @@ public class Lemming implements ILemming {
 				}
 				
 			}
+			
 			if(!canMonter){
 				if(etat.contains(EtatLemming.WALKER)){ //MARCHEUR
 					if (gameEng.getLevel().getNature(height+1, width) == Nature.EMPTY){ 
@@ -249,15 +251,51 @@ public class Lemming implements ILemming {
 						height++;
 					}
 					
-				}else if (getEtat().contains(EtatLemming.BUILDER)){//TODO CONSTRUCTEUR
-					
-					
-					
+				}else if (getEtat().contains(EtatLemming.BUILDER)){//TODO CONSTRUCTEUR Faire Contrat et interface
+					if(isDroitier){
+						 if(width+3<gameEng.getLevel().getWidth() && height-2>=0
+								 && gameEng.getLevel().getNature(height-2, width+2)==Nature.EMPTY
+								 && gameEng.getLevel().getNature(height-2, width+1)==Nature.EMPTY
+								 && gameEng.getLevel().getNature(height, width+1)==Nature.EMPTY
+								 && gameEng.getLevel().getNature(height, width+2)==Nature.EMPTY
+								 && gameEng.getLevel().getNature(height, width+3)==Nature.EMPTY){
+							 if(nbTourBuilder%3==0){
+								 gameEng.getLevel().build(height, width+1);
+								 gameEng.getLevel().build(height, width+2);
+								 gameEng.getLevel().build(height, width+3);
+								 nbDallePose++;
+								 height--;
+								 width+=2;
+							 }
+							 nbTourBuilder++;
+						 }else{
+							 setEtat(EtatLemming.WALKER);
+						 }
+					}else{
+						 if(width-3>=0 && height-2>=0
+								 && gameEng.getLevel().getNature(height-2, width-2)==Nature.EMPTY
+								 && gameEng.getLevel().getNature(height-2, width-1)==Nature.EMPTY
+								 && gameEng.getLevel().getNature(height, width-1)==Nature.EMPTY
+								 && gameEng.getLevel().getNature(height, width-2)==Nature.EMPTY
+								 && gameEng.getLevel().getNature(height, width-3)==Nature.EMPTY){
+							 if(nbTourBuilder%3==0){
+								 gameEng.getLevel().build(height, width-1);
+								 gameEng.getLevel().build(height, width-2);
+								 gameEng.getLevel().build(height, width-3);
+								 nbDallePose++;
+								 height--;
+								 width-=2;
+							 }
+							 nbTourBuilder++;
+						 }else{
+							 setEtat(EtatLemming.WALKER);
+						 }
+					}
 					
 				}else if (getEtat().contains(EtatLemming.STOPPER)){//STOPPER
-					
-					//RIEN A FAIRE
-					
+					if(gameEng.getLevel().getNature(height+1, width)==Nature.EMPTY){
+						setEtat(EtatLemming.FALLER);
+					}
 					
 				}else if (getEtat().contains(EtatLemming.BASHER)){ //DETRUIT LES MURS DANS SA DIRECTION
 					if(gameEng.getLevel().getNature(height+1, width)==Nature.EMPTY) setEtat(EtatLemming.FALLER);
@@ -314,8 +352,6 @@ public class Lemming implements ILemming {
 							}
 						}
 					}
-					
-					
 					
 				}else if (getEtat().contains(EtatLemming.MINER)){ // CREUSEUR EN DIAGONALE
 					if(isDroitier){

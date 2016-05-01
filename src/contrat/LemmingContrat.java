@@ -176,12 +176,15 @@ public class LemmingContrat extends LemmingDecorateur{
 		List<EtatLemming> etatPre = getEtat();
 		int heightPre = getHeight();
 		int widthPre = getWidth();
+		int heightPreLevel= getGameEng().getLevel().getHeight();
+		int widthPreLevel= getGameEng().getLevel().getWidth();
 		int nbCaseFallingPre=getNbCasesFalling();
 		boolean isDroitierPre=isDroitier();
 		int nbSavePre=getGameEng().getNbLemSauves();
 		int nbCreusePre=getNbCreuse();
 		
 		//P1 == +1;  M1 == -1
+		//TODO VERIFIER QUE C BIEN DANS LE PLATEAU
 		Nature hPreP1WPre = getGameEng().getLevel().getNature(heightPre+1, widthPre);
 		Nature hPreM1WPreP1 = getGameEng().getLevel().getNature(heightPre-1, widthPre+1);
 		Nature hPreP1WPreP1 = getGameEng().getLevel().getNature(heightPre+1, widthPre+1);
@@ -191,7 +194,18 @@ public class LemmingContrat extends LemmingDecorateur{
 		Nature hPreM1WPreM1 = getGameEng().getLevel().getNature(heightPre-1, widthPre-1);
 		Nature hPreWPreM1 = getGameEng().getLevel().getNature(heightPre, widthPre-1);
 		Nature hPreM2WPreM1 = getGameEng().getLevel().getNature(heightPre-2, widthPre-1);
-		Nature hPreM2WPre = getGameEng().getLevel().getNature(getHeight()-2, getWidth());
+		Nature hPreM2WPre = getGameEng().getLevel().getNature(heightPre-2, widthPre);
+		
+		Nature hPreWPreP2 = getGameEng().getLevel().getNature(heightPre, widthPre+2);
+		Nature hPreWPreP3 = getGameEng().getLevel().getNature(heightPre, widthPre+3);
+		Nature hPreWPreM2 = getGameEng().getLevel().getNature(heightPre, widthPre-2);
+		Nature hPreWPreM3 = getGameEng().getLevel().getNature(heightPre, widthPre-3);
+		
+		Nature hPreM2WPreP2 = getGameEng().getLevel().getNature(heightPre-2, widthPre+2);
+		Nature hPreM2WPreM2 = getGameEng().getLevel().getNature(heightPre-2, widthPre-2);
+		int nBTourBuilderPre=getNbTourBuilder();
+		int nbDallesPosesPre=getNbDallePose();
+		
 		delegate.step();
 
 		boolean canMonter=false;
@@ -341,15 +355,55 @@ public class LemmingContrat extends LemmingDecorateur{
 				
 				}else if(etatPre.contains(EtatLemming.BUILDER)){
 					
-					//TODO
-					
+					if(isDroitierPre){
+						 if( widthPre+3<widthPreLevel && heightPre-2>=0
+								 && hPreM2WPreP2==Nature.EMPTY
+								 && hPreM2WPreP1==Nature.EMPTY
+								 && hPreWPreP1==Nature.EMPTY
+								 && hPreWPreP2==Nature.EMPTY
+								 && hPreWPreP3==Nature.EMPTY){
+							 if( nBTourBuilderPre%3==0 ){
+								 if(!(getGameEng().getLevel().getNature(heightPre, widthPre+1)==Nature.DIRT)) throw new PostConditionError("getGameEng().getLevel().getNature(heightPre, widthPre+1)!=Nature.DIRT");
+								 if(!(getGameEng().getLevel().getNature(heightPre, widthPre+2)==Nature.DIRT)) throw new PostConditionError("getGameEng().getLevel().getNature(heightPre, widthPre+2)!=Nature.DIRT");
+								 if(!(getGameEng().getLevel().getNature(heightPre, widthPre+3)==Nature.DIRT)) throw new PostConditionError("getGameEng().getLevel().getNature(heightPre, widthPre+3)!=Nature.DIRT");
+								
+								 if(!(getNbDallePose()==nbDallesPosesPre+1)) throw new PostConditionError("getNbDallePose()!=nbDallesPosesPre+1");
+								 if(!(getHeight()==heightPre-1))  throw new PostConditionError("getHeight()!=heightPre-1");
+								 if(!(getWidth()==widthPre+2))  throw new PostConditionError("getWidth()!=widthPre+2");
+							 }
+							 if(!(getNbTourBuilder()==nBTourBuilderPre+1)) throw new PostConditionError("getNbTourBuilder()!=nbDallesPosesPre+1");
+						 }else{
+							 if(!(getEtat().contains(EtatLemming.WALKER))) throw new PostConditionError("!getEtat().contains(EtatLemming.WALKER)");
+						 }
+					}else{
+						 if( widthPre-3>=0 && heightPre-2>=0
+								 && hPreM2WPreM2==Nature.EMPTY
+								 && hPreM2WPreM1==Nature.EMPTY
+								 && hPreWPreM1==Nature.EMPTY
+								 && hPreWPreM2==Nature.EMPTY
+								 && hPreWPreM3==Nature.EMPTY){
+							 if(nBTourBuilderPre%3==0){
+								 if(!(getGameEng().getLevel().getNature(heightPre, widthPre-1)==Nature.DIRT)) throw new PostConditionError("getGameEng().getLevel().getNature(heightPre, widthPre-1)!=Nature.DIRT");
+								 if(!(getGameEng().getLevel().getNature(heightPre, widthPre-2)==Nature.DIRT)) throw new PostConditionError("getGameEng().getLevel().getNature(heightPre, widthPre-2)!=Nature.DIRT");
+								 if(!(getGameEng().getLevel().getNature(heightPre, widthPre-3)==Nature.DIRT)) throw new PostConditionError("getGameEng().getLevel().getNature(heightPre, widthPre-3)!=Nature.DIRT");
+								
+								 if(!(getNbDallePose()==nbDallesPosesPre+1)) throw new PostConditionError("getNbDallePose()!=nbDallesPosesPre+1");
+								 if(!(getHeight()==heightPre-1))  throw new PostConditionError("getHeight()!=heightPre-1");
+								 if(!(getWidth()==widthPre-2))  throw new PostConditionError("getWidth()!=widthPre-2");
+							 	 
+							 }
+							 if(!(getNbTourBuilder()==nBTourBuilderPre+1)) throw new PostConditionError("getNbTourBuilder()!=nbDallesPosesPre+1");
+ 						 }else{
+ 							if(!(getEtat().contains(EtatLemming.WALKER))) throw new PostConditionError("!getEtat().contains(EtatLemming.WALKER)");
+						 }
+					}
 				
 				}else if(etatPre.contains(EtatLemming.STOPPER)){
 					
-					//RIEN A FAIRE
-					
+					if( hPreP1WPre==Nature.EMPTY){
+						if(!(getEtat().contains(EtatLemming.FALLER))) throw new PostConditionError("!getEtat().contains(EtatLemming.FALLER)");
+					}
 				
-					
 					
 				}else if (etatPre.contains(EtatLemming.BASHER)){ //DETRUIT LES MURS SUR SA LIGNE
 					if(hPreP1WPre==Nature.EMPTY){

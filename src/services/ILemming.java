@@ -3,6 +3,8 @@ package services;
 import java.util.List;
 
 import enumeration.EtatLemming;
+import enumeration.Nature;
+import errors.PostConditionError;
 
 public interface ILemming {
 	
@@ -205,18 +207,52 @@ public interface ILemming {
 					
 					
 					
+					
+					if(isDroitier()@pre){
+						 if(getWidth()@pre+3<getGameEng().getLevel().getWidth()@pre && getHeight()@pre-2>=0
+								 && getGameEng().getLevel().getNature(getHeight()@pre-2, getWidth()@pre+2)==Nature.EMPTY
+								 && getGameEng().getLevel().getNature(getHeight()@pre-2, getWidth()@pre+1)==Nature.EMPTY
+								 && getGameEng().getLevel().getNature(getHeight()@pre, getWidth()@pre+1)==Nature.EMPTY
+								 && getGameEng().getLevel().getNature(getHeight()@pre, getWidth()@pre+2)==Nature.EMPTY
+								 && getGameEng().getLevel().getNature(getHeight()@pre, getWidth()@pre+3)==Nature.EMPTY){
+							 if(getNbTourBuilder()@pre%3==0){
+								 getGameEng().getLevel().getNature(getHeight()@pre, getWidth()@pre+1)==Nature.DIRT;
+								 getGameEng().getLevel().getNature(getHeight()@pre, getWidth()@pre+2)==Nature.DIRT;
+								 getGameEng().getLevel().getNature(getHeight()@pre, getWidth()@pre+3)==Nature.DIRT;
+								 getNbDallePose()==getNbDallePose()@pre+1;
+								 getHeight()@pre==getHeight()@pre-1;
+								 getWidth()==getWidth()@pre+2;
+							 }
+							 getNbTourBuilder()==getNbTourBuilder()@pre+1;
+						 }else{
+							 getEtat().contains(EtatLemming.WALKER);
+						 }
+					}else{
+						 if(getWidth()@pre-3>=0 && getHeight()@pre-2>=0
+								 && getGameEng().getLevel().getNature(getHeight()@pre-2, getWidth()@pre-2)==Nature.EMPTY
+								 && getGameEng().getLevel().getNature(getHeight()@pre-2, getWidth()@pre-1)==Nature.EMPTY
+								 && getGameEng().getLevel().getNature(getHeight()@pre, getWidth()@pre-1)==Nature.EMPTY
+								 && getGameEng().getLevel().getNature(getHeight()@pre, getWidth()@pre-2)==Nature.EMPTY
+								 && getGameEng().getLevel().getNature(getHeight()@pre, getWidth()@pre-3)==Nature.EMPTY){
+							 if(getNbTourBuilder()@pre%3==0){
+							 	 getGameEng().getLevel().getNature(getHeight()@pre, getWidth()@pre-1)==Nature.DIRT;
+								 getGameEng().getLevel().getNature(getHeight()@pre, getWidth()@pre-2)==Nature.DIRT;
+								 getGameEng().getLevel().getNature(getHeight()@pre, getWidth()@pre-3)==Nature.DIRT;
+								 getNbDallePose()==getNbDallePose()@pre+1;
+								 getHeight()@pre==getHeight()@pre-1;
+								 getWidth()==getWidth()@pre-2;
+							 }
+							  getNbTourBuilder()==getNbTourBuilder()@pre+1;
+  						 }else{
+							 getEtat().contains(EtatLemming.WALKER);
+						 }
+					}
+					
 				}else if (getEtat().contains(EtatLemming.STOPPER)@pre){
+					if( getGameEng().getLevel().getNature(getHeight()@pre+1, getWidth()@pre)==Nature.EMPTY){
+						getEtat().contains(EtatLemming.FALLER))
+					}
 					
-					//RIEN A FAIRE
-					
-					
-	
-	
-	
-	
-	
-	
-	
 				}else if (getEtat().contains(EtatLemming.BASHER)@pre){ //DETRUIT LES MURS SUR SA LIGNE
 					if(getGameEng().getLevel().getNature(getHeight()@pre+1, getWidth()@pre)@pre==Nature.EMPTY) getEtat().contains(EtatLemming.FALLER);
 					else {
