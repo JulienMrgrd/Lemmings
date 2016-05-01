@@ -176,4 +176,9 @@ public class LevelContrat extends LevelDecorateur{
 		if(! (delegate.getHeight()>=5)) throw new InvariantError("getHeight<5");
 		if(! (delegate.getWidth()>=4)) throw new InvariantError("getWidth<4");
 	}
+
+	@Override
+	public void reset() {
+		init(getHeight(), getWidth());
+	}
 }

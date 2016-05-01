@@ -92,4 +92,9 @@ public class Level implements ILevel {
 	public void build(int h, int w) {
 		setNature(h, w, Nature.DIRT);
 	}
+	
+	@Override
+	public void reset(){
+		init(getHeight(), getWidth());
+	}
 }

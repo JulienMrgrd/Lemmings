@@ -176,6 +176,9 @@ public class GameEng implements IGameEng {
 					break;
 				case DIRT:
 					res[i][j] = "D";
+				case STOPPER:
+					res[i][j] = "S";
+					break;
 				}
 			}
 		for (ILemming l : getLemVivants()){
@@ -191,6 +194,21 @@ public class GameEng implements IGameEng {
 			b.append("\n");
 		}
 		return b.toString();
+	}
+
+	@Override
+	public void changeSpawnSpeed(int newSpawnSpeed) {
+		spawnedSpeed = newSpawnSpeed;
+	}
+	
+	@Override
+	public void changeSizeColony(int newSizeColony) {
+		sizeColony = newSizeColony;
+	}
+	
+	@Override
+	public void reset(){
+		init(getLevel(), getSizeColony(), getSpawnSpeed());
 	}
 
 

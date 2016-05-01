@@ -74,5 +74,9 @@ public interface IGameEng {
 	
 	/** pre : containsIdColony(idLem) require 0 < idLem <= getSizeColony() */
 	boolean containsIdColony(int idLem);
+	
+	void changeSpawnSpeed(int newSpawnSpeed);
+	void changeSizeColony(int newSizeColony);
+	void reset();
 
 }

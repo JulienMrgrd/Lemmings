@@ -77,4 +77,6 @@ public interface ILevel{
 	 */
 	public void build(int h, int w);
 	
+	public void reset();
+	
 }

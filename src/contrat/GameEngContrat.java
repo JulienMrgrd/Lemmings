@@ -223,6 +223,35 @@ public class GameEngContrat extends GameEngDecorateur{
 	}
 	
 	@Override
+	public void changeSpawnSpeed(int newSpawnSpeed) {
+		checkInvariants();
+		if(! (newSpawnSpeed > 0) ) throw new PreConditionError("newSpawnSpeed <= 0");
+		
+		delegate.changeSpawnSpeed(newSpawnSpeed);
+		
+		if(! (getSpawnSpeed() == newSpawnSpeed) ) throw new PostConditionError("getSpawnSpeed() != newSpawnSpeed");
+		checkInvariants();
+	}
+
+	@Override
+	public void changeSizeColony(int newSizeColony) {
+		checkInvariants();
+		if(! (newSizeColony > 0) ) throw new PreConditionError("newSizeColony <= 0");
+		if(! (getLevel().getEditing()==true)) throw new PreConditionError("getLevel().getEditing()==false");
+		
+		delegate.changeSizeColony(newSizeColony);
+		
+		if(! (getSizeColony() == newSizeColony) ) throw new PostConditionError("getSizeColony() != newSizeColony");
+		checkInvariants();
+	}
+
+	@Override
+	public void reset() {
+		init(getLevel(), getSizeColony(), getSpawnSpeed());
+		checkInvariants();
+	}
+	
+	@Override
 	protected void checkInvariants(){
 		if(delegate.gameOver()){
 			if(delegate.getNbLemVivants()!= 0){
