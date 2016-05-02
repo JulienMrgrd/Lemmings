@@ -185,24 +185,87 @@ public class LemmingContrat extends LemmingDecorateur{
 		
 		//P1 == +1;  M1 == -1
 		//TODO VERIFIER QUE C BIEN DANS LE PLATEAU
-		Nature hPreP1WPre = getGameEng().getLevel().getNature(heightPre+1, widthPre);
-		Nature hPreM1WPreP1 = getGameEng().getLevel().getNature(heightPre-1, widthPre+1);
-		Nature hPreP1WPreP1 = getGameEng().getLevel().getNature(heightPre+1, widthPre+1);
-		Nature hPreP1WPreM1 = getGameEng().getLevel().getNature(heightPre+1, widthPre-1);
-		Nature hPreWPreP1 = getGameEng().getLevel().getNature(heightPre, widthPre+1);
-		Nature hPreM2WPreP1 = getGameEng().getLevel().getNature(heightPre-2, widthPre+1);
-		Nature hPreM1WPreM1 = getGameEng().getLevel().getNature(heightPre-1, widthPre-1);
-		Nature hPreWPreM1 = getGameEng().getLevel().getNature(heightPre, widthPre-1);
-		Nature hPreM2WPreM1 = getGameEng().getLevel().getNature(heightPre-2, widthPre-1);
-		Nature hPreM2WPre = getGameEng().getLevel().getNature(heightPre-2, widthPre);
+		Nature hPreWPreP2 = null;
+		Nature hPreWPreP3 = null;
+		Nature hPreWPreM2 = null;
+		Nature hPreWPreM3 = null;
+		Nature hPreWPreP1 = null;
+		Nature hPreWPreM1 = null;
 		
-		Nature hPreWPreP2 = getGameEng().getLevel().getNature(heightPre, widthPre+2);
-		Nature hPreWPreP3 = getGameEng().getLevel().getNature(heightPre, widthPre+3);
-		Nature hPreWPreM2 = getGameEng().getLevel().getNature(heightPre, widthPre-2);
-		Nature hPreWPreM3 = getGameEng().getLevel().getNature(heightPre, widthPre-3);
+		Nature hPreP1WPre = null;
+		Nature hPreP1WPreP1 = null;
+		Nature hPreP1WPreM1 = null;
 		
-		Nature hPreM2WPreP2 = getGameEng().getLevel().getNature(heightPre-2, widthPre+2);
-		Nature hPreM2WPreM2 = getGameEng().getLevel().getNature(heightPre-2, widthPre-2);
+		Nature hPreM1WPreP1 = null;
+		Nature hPreM1WPreM1 = null;
+		
+		Nature hPreM2WPreM1 = null;
+		Nature hPreM2WPre = null;
+		Nature hPreM2WPreP1 = null;
+		Nature hPreM2WPreP2 = null;
+		Nature hPreM2WPreM2 = null;
+		
+		
+		
+		if(heightPre<heightPreLevel){
+			if(widthPre+1<widthPreLevel){
+				hPreWPreP1 = getGameEng().getLevel().getNature(heightPre, widthPre+1);
+			}
+			if(widthPre+2<widthPreLevel){
+				hPreWPreP2 = getGameEng().getLevel().getNature(heightPre, widthPre+2);
+			}
+			if(widthPre+3<widthPreLevel){
+				hPreWPreP3 = getGameEng().getLevel().getNature(heightPre, widthPre+3);
+			}
+			if(widthPre-3>=0){
+				hPreWPreM3 = getGameEng().getLevel().getNature(heightPre, widthPre-3);
+			}
+			if(widthPre-2>=0){
+				hPreWPreM2 = getGameEng().getLevel().getNature(heightPre, widthPre-2);
+			}
+			if(widthPre-1>=0){
+				hPreWPreM1 = getGameEng().getLevel().getNature(heightPre, widthPre-1);
+			}
+			if(heightPre+1<heightPreLevel){
+				if(widthPre+1<widthPreLevel){
+					hPreP1WPreP1 = getGameEng().getLevel().getNature(heightPre+1, widthPre+1);
+				}
+				if(widthPre<widthPreLevel){
+					hPreP1WPre = getGameEng().getLevel().getNature(heightPre+1, widthPre);
+				}
+				if(widthPre-1>=0){
+					hPreP1WPreM1 = getGameEng().getLevel().getNature(heightPre+1, widthPre-1);
+				}
+			}
+			
+		}
+		if(heightPre-1>=0){
+			if(widthPre+1<widthPreLevel){
+				hPreM1WPreP1 = getGameEng().getLevel().getNature(heightPre-1, widthPre+1);
+			}
+			if(widthPre-1>=0){
+				hPreM1WPreM1 = getGameEng().getLevel().getNature(heightPre-1, widthPre-1);
+			}
+			if(heightPre-2>=0){
+				if(widthPre<widthPreLevel){
+					hPreM2WPre = getGameEng().getLevel().getNature(heightPre-2, widthPre);
+				}
+				if(widthPre+1<widthPreLevel){
+					hPreM2WPreP1 = getGameEng().getLevel().getNature(heightPre-2, widthPre+1);
+				}
+				if(widthPre+2<widthPreLevel){
+					hPreM2WPreP2 = getGameEng().getLevel().getNature(heightPre-2, widthPre+2);
+				}
+				if(widthPre-1>=0){
+					hPreM2WPreM1 = getGameEng().getLevel().getNature(heightPre-2, widthPre-1);
+				}
+				if(widthPre-2>=0){
+					hPreM2WPreM2 = getGameEng().getLevel().getNature(heightPre-2, widthPre-2);
+				}
+				
+			}
+		}
+		
 		int nBTourBuilderPre=getNbTourBuilder();
 		int nbDallesPosesPre=getNbDallePose();
 		

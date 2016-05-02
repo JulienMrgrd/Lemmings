@@ -140,6 +140,68 @@ public class Lemming implements ILemming {
 				if(getNbToursBomber()==5){
 					System.out.println();
 					
+					if(height-2>=0){
+						if(height+1<gameEng.getLevel().getHeight()){
+							if(width-2>=0){
+								if(width+2<gameEng.getLevel().getWidth()){
+									for(int i=width-2;i<=width+2;i++){
+										if(gameEng.getLevel().getNature(height, i)==Nature.DIRT){
+											gameEng.getLevel().setNature(height, i, Nature.EMPTY);
+										}
+										if(gameEng.getLevel().getNature(height-1, i)==Nature.DIRT){
+											gameEng.getLevel().setNature(height-1, i, Nature.EMPTY);
+										}
+									}
+									for(int i=width-1;i<=width+1;i++){
+										if(gameEng.getLevel().getNature(height-2, i)==Nature.DIRT){
+											gameEng.getLevel().setNature(height-2, i, Nature.EMPTY);
+										}
+										if(gameEng.getLevel().getNature(height+1, i)==Nature.DIRT){
+											gameEng.getLevel().setNature(height+1, i, Nature.EMPTY);
+										}
+									}
+								}else{
+ 									for(int i=width-2;i<=width+1;i++){
+										if(gameEng.getLevel().getNature(height+1, i)==Nature.DIRT){
+											gameEng.getLevel().setNature(height+1, i, Nature.EMPTY);
+										}
+										if(gameEng.getLevel().getNature(height, i)==Nature.DIRT){
+											gameEng.getLevel().setNature(height, i, Nature.EMPTY);
+										}
+										if(gameEng.getLevel().getNature(height-1, i)==Nature.DIRT){
+											gameEng.getLevel().setNature(height-1, i, Nature.EMPTY);
+										}
+										if(gameEng.getLevel().getNature(height-2, i)==Nature.DIRT){
+											gameEng.getLevel().setNature(height-2, i, Nature.EMPTY);
+										}
+									}
+								}
+								
+							}else{
+								//width+2<gameEng.getLevel().getWidth() CAR TAILLE DU PLATEAU DE 4 AU MOINS width>=4
+								for(int i=width-1;i<=width+2;i++){
+									if(gameEng.getLevel().getNature(height+1, i)==Nature.DIRT){
+										gameEng.getLevel().setNature(height+1, i, Nature.EMPTY);
+									}
+									if(gameEng.getLevel().getNature(height, i)==Nature.DIRT){
+										gameEng.getLevel().setNature(height, i, Nature.EMPTY);
+									}
+									if(gameEng.getLevel().getNature(height-1, i)==Nature.DIRT){
+										gameEng.getLevel().setNature(height-1, i, Nature.EMPTY);
+									}
+									if(gameEng.getLevel().getNature(height-2, i)==Nature.DIRT){
+										gameEng.getLevel().setNature(height-2, i, Nature.EMPTY);
+									}
+								}
+							}
+						}
+					}else{
+						//TODO A FINIR
+						
+						
+						
+						
+					}
 					
 					if(height==gameEng.getLevel().getHeight()-2){//-1==METAL  -2 en bas du plateau
 						
@@ -148,8 +210,7 @@ public class Lemming implements ILemming {
 					gameEng.killLemming(id);
 					return;
 				}
-					
-				
+				nbTourBomber++;
 				
 			}
 			if (getEtat().contains(EtatLemming.CLIMBER)){ //GRIMPEUR
