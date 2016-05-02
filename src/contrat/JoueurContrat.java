@@ -65,7 +65,7 @@ public class JoueurContrat extends JoueurDecorateur{
 
 	@Override
 	public void reset() {
-		init(getGameEngine());
+		delegate.reset();
 		checkInvariants();
 	}
 	

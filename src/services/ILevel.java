@@ -91,4 +91,7 @@ public interface ILevel{
 	 */
 	void removeStopper(int h, int w);
 	
+	public void addEnter(Integer height, Integer width);
+	public void addExit(Integer height, Integer width);
+	
 }

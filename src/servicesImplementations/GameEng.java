@@ -1,5 +1,8 @@
 package servicesImplementations;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import enumeration.Nature;
 import services.IGameEng;
 import services.ILemming;
@@ -7,7 +10,7 @@ import services.ILevel;
 
 public class GameEng implements IGameEng {
 
-	private ILemming[] lemVivants;
+	private ILemming[] allLem;
 	private int sizeColony;
 
 	private int spawnedSpeed;
@@ -23,12 +26,16 @@ public class GameEng implements IGameEng {
 	// ============   Observateurs ============
 	@Override
 	public ILemming[] getLemVivants() {
-		return lemVivants;
+		List<ILemming> allVivants = new ArrayList<>();
+		for(ILemming lem : allLem){
+			if(lem!=null) allVivants.add(lem);
+		}
+		return (ILemming[]) allVivants.toArray(new ILemming[allVivants.size()]);
 	}
 
 	@Override
 	public ILemming getLemVivantById(int id) {
-		for(ILemming lem : lemVivants){
+		for(ILemming lem : getLemVivants()){
 			if(lem.getId()==id) return lem;
 		}
 		return null;
@@ -102,7 +109,7 @@ public class GameEng implements IGameEng {
 		this.sizeColony = sizeColony;
 		this.spawnedSpeed = spawnSpeed;
 
-		lemVivants = new ILemming[sizeColony];
+		allLem = new ILemming[sizeColony];
 		spawned = 0;
 		nbTours = 0;
 		score = "";
@@ -116,14 +123,14 @@ public class GameEng implements IGameEng {
 
 	@Override
 	public void addLemming(ILemming lem) {
-		lemVivants[spawned] = lem;
+		allLem[spawned] = lem;
 		spawned++;
 		nbLemVivants++;
 	}
 
 	@Override
 	public void killLemming(int idLem) {
-		lemVivants[idLem] = null;
+		allLem[idLem] = null;
 		nbLemVivants--;
 	}
 
@@ -146,7 +153,7 @@ public class GameEng implements IGameEng {
 				newLem.init(this);
 				addLemming(newLem);
 			}
-			for(ILemming lem : lemVivants) {
+			for(ILemming lem : getLemVivants()) {
 				if(lem!=null){
 					lem.step();
 				}
@@ -156,7 +163,7 @@ public class GameEng implements IGameEng {
 
 	@Override
 	public boolean containsIdColony(int idLem) {
-		for(ILemming lem : lemVivants){
+		for(ILemming lem : getLemVivants()){
 			if(lem.getId()==idLem) return true;
 		}
 		return false;
@@ -164,6 +171,7 @@ public class GameEng implements IGameEng {
 
 	@Override
 	public String toString() {
+		String caseSeparator = ":";
 		String [][] res = new String [getLevel().getHeight()][getLevel().getWidth()];
 		for (int i = 0; i < getLevel().getHeight(); i++)
 			for (int j = 0; j < getLevel().getWidth(); j++) {
@@ -190,9 +198,10 @@ public class GameEng implements IGameEng {
 		StringBuilder b = new StringBuilder();
 		for (int i = 0; i < getLevel().getHeight(); i++) {
 			for (int j = 0; j < getLevel().getWidth(); j++) {
-				b.append(res[i][j]);
+				if(j==getLevel().getWidth()-1) b.append(res[i][j]);
+				else b.append(res[i][j]+caseSeparator);
 			}
-			b.append("\n");
+			b.append("\r\n");
 		}
 		return b.toString();
 	}
@@ -209,6 +218,7 @@ public class GameEng implements IGameEng {
 	
 	@Override
 	public void reset(){
+		getLevel().reset();
 		init(getLevel(), getSizeColony(), getSpawnSpeed());
 	}
 

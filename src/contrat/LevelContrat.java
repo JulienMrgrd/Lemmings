@@ -179,7 +179,8 @@ public class LevelContrat extends LevelDecorateur{
 
 	@Override
 	public void reset() {
-		init(getHeight(), getWidth());
+		delegate.reset();
+		checkInvariants();
 	}
 
 	@Override
@@ -205,5 +206,19 @@ public class LevelContrat extends LevelDecorateur{
 		
 		if(! (getNature(h, w)==Nature.EMPTY)) throw new PostConditionError("getNature(h, w) != Nature.EMPTY");
 		checkInvariants();
+	}
+
+	@Override
+	public void addEnter(Integer height, Integer width) {
+		// TODO Auto-generated method stub
+		delegate.addEnter(height, width);
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void addExit(Integer height, Integer width) {
+		// TODO Auto-generated method stub
+		delegate.addExit(height, width);
+		// TODO Auto-generated method stub
 	}
 }

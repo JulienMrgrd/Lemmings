@@ -70,7 +70,6 @@ public class Joueur implements IJoueur {
 		for(EtatLemming etat : allTokens){
 			etat.reset();
 		}
-		gameEng.getLevel().reset();
 		gameEng.reset();
 	}
 

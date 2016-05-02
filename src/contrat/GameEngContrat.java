@@ -173,7 +173,7 @@ public class GameEngContrat extends GameEngDecorateur{
 	@Override
 	public void killLemming(int idLem) {
 		checkInvariants();
-		if(! (getNbLemVivants()>0) ) throw new PreConditionError("getNbLemVivants()>0");
+		if(! (getNbLemVivants()>0) ) throw new PreConditionError("getNbLemVivants()<=0");
 		if(! (containsIdColony(idLem)==true) ) throw new PreConditionError("containsIdColony("+idLem+")==false");
 		
 		int preGetLemVivantsSize = getNbLemVivants();
@@ -214,7 +214,7 @@ public class GameEngContrat extends GameEngDecorateur{
 	@Override
 	public boolean containsIdColony(int idLem) {
 		checkInvariants();
-		if(! (0 > idLem) ) throw new PreConditionError("0 <= idLem");
+		if(! (idLem >= 0) ) throw new PreConditionError("idLem<0");
 		if(! (idLem <= getSizeColony()) ) throw new PreConditionError("idLem > getSizeColony()");
 		
 		boolean res = delegate.containsIdColony(idLem);
@@ -247,7 +247,7 @@ public class GameEngContrat extends GameEngDecorateur{
 
 	@Override
 	public void reset() {
-		init(getLevel(), getSizeColony(), getSpawnSpeed());
+		delegate.reset();
 		checkInvariants();
 	}
 	

@@ -104,6 +104,18 @@ public class Level implements ILevel {
 	}
 	
 	@Override
+	public void addEnter(Integer height, Integer width) {
+		entranceHeight=height;
+		entranceWidth=width;
+	}
+
+	@Override
+	public void addExit(Integer height, Integer width) {
+		exitHeight=height;
+		exitWidth=width;
+	}
+	
+	@Override
 	public void reset(){
 		init(getHeight(), getWidth());
 	}
