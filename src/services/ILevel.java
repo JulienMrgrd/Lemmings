@@ -79,4 +79,16 @@ public interface ILevel{
 	
 	public void reset();
 	
+	/** pre : addStopper(h,w) require getNature(h,w)==Nature.EMPTY ^ !getEditing()
+	 * <br>
+	 * post : getNature(h,w) == STOPPER;
+	 */
+	void addStopper(int h, int w);
+	
+	/** pre : removeStopper(h,w) require getNature(h,w)==Nature.STOPPER ^ !getEditing()
+	 *  <br>
+	 *  post : getNature(h,w) == EMPTY;
+	 */
+	void removeStopper(int h, int w);
+	
 }

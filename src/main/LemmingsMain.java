@@ -13,8 +13,8 @@ public class LemmingsMain {
 		IGameEng gameEng=new GameEngContrat();
 		
 		int height=15, width=30;
-		int sizeColony=10, spawnSpeed=2;
-		int entH=6, entW=2, sortH=13, sortW=27;
+		int sizeColony=5, spawnSpeed=2;
+		int entH=6, entW=8, sortH=13, sortW=27;
 		System.out.printf("Hauteur %s, largeur %s\n", height, width);
 		System.out.printf("SizeColony %s, spawnSpeed %s\n", sizeColony, spawnSpeed);
 		System.out.printf("Entrée (%s,%s), sortie (%s, %s)\n", entH,entW,sortH,sortW);
@@ -25,15 +25,21 @@ public class LemmingsMain {
 		/////////////// EDITING /////////////
 		int cptH = sortH;
 		int cptW = entW;
-		for(int i=2; i<width-3; i++){
+		/*for(int i=2; i<width-3; i++){
 			if(cptH>entH){
 				level.setNature(cptH, cptW, Nature.METAL);
 				cptH--;
 				cptW++;
 			} else {
-				level.setNature(cptH, cptW++, Nature.METAL);
+				level.setNature(cptH, cptW++, Nature.DIRT);
 			}
 			
+		}*/
+		
+		for(int i=4; i<=width-5; i++){
+			for(int j=4; j<level.getHeight()-1;j++){
+				if(j!=7&&j!=5) level.setNature(j, i, Nature.DIRT);
+			}
 		}
 		
 		////////////// FIN EDITING //////////

@@ -94,6 +94,16 @@ public class Level implements ILevel {
 	}
 	
 	@Override
+	public void addStopper(int h, int w) {
+		setNature(h, w, Nature.STOPPER);
+	}
+	
+	@Override
+	public void removeStopper(int h, int w) {
+		setNature(h, w, Nature.EMPTY);
+	}
+	
+	@Override
 	public void reset(){
 		init(getHeight(), getWidth());
 	}

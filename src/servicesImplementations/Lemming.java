@@ -115,8 +115,9 @@ public class Lemming implements ILemming {
 			for(int i=0;i<this.etat.size();i++){
 				if(this.etat.get(i)!=EtatLemming.FLOATER || this.etat.get(i)!=EtatLemming.BOMBER || this.etat.get(i)!=EtatLemming.CLIMBER){
 					if(this.etat.get(i)==EtatLemming.STOPPER){
-						gameEng.getLevel().setNature(this.height, this.width, Nature.EMPTY);
-						gameEng.getLevel().setNature(this.height-1, this.width, Nature.EMPTY);
+						
+						gameEng.getLevel().removeStopper(this.height, this.width);
+						gameEng.getLevel().removeStopper(this.height-1, this.width);
 					}
 					this.etat.set(i, etat);
 				}
@@ -124,8 +125,8 @@ public class Lemming implements ILemming {
 			if(!this.etat.contains(etat)) this.etat.add(etat);
 		}
 		if(etat==EtatLemming.STOPPER){
-			gameEng.getLevel().setNature(this.height, this.width, Nature.STOPPER);
-			gameEng.getLevel().setNature(this.height-1, this.width, Nature.STOPPER);
+			gameEng.getLevel().addStopper(this.height, this.width);
+			gameEng.getLevel().addStopper(this.height-1, this.width);
 		}
 	}
 
@@ -135,85 +136,74 @@ public class Lemming implements ILemming {
 		if(gameEng.getLevel().getExitHeight() == height && gameEng.getLevel().getExitWidth() == width ){
 			gameEng.saveLemming(id);
 		}else {
-			if (getEtat().contains(EtatLemming.BOMBER)){
-				//TODO
+			//TODO A MODIFIER OBLIGATOIREMENT
+			if(width==8&&height==7){
+				setEtat(EtatLemming.DIGGER);
+			}
+			
+			if (getEtat().contains(EtatLemming.BOMBER)){ //OK
+				
 				if(getNbToursBomber()==5){
-					System.out.println();
 					
-					if(height-2>=0){
-						if(height+1<gameEng.getLevel().getHeight()){
-							if(width-2>=0){
-								if(width+2<gameEng.getLevel().getWidth()){
-									for(int i=width-2;i<=width+2;i++){
-										if(gameEng.getLevel().getNature(height, i)==Nature.DIRT){
-											gameEng.getLevel().setNature(height, i, Nature.EMPTY);
-										}
-										if(gameEng.getLevel().getNature(height-1, i)==Nature.DIRT){
-											gameEng.getLevel().setNature(height-1, i, Nature.EMPTY);
-										}
-									}
-									for(int i=width-1;i<=width+1;i++){
-										if(gameEng.getLevel().getNature(height-2, i)==Nature.DIRT){
-											gameEng.getLevel().setNature(height-2, i, Nature.EMPTY);
-										}
-										if(gameEng.getLevel().getNature(height+1, i)==Nature.DIRT){
-											gameEng.getLevel().setNature(height+1, i, Nature.EMPTY);
-										}
-									}
-								}else{
- 									for(int i=width-2;i<=width+1;i++){
-										if(gameEng.getLevel().getNature(height+1, i)==Nature.DIRT){
-											gameEng.getLevel().setNature(height+1, i, Nature.EMPTY);
-										}
-										if(gameEng.getLevel().getNature(height, i)==Nature.DIRT){
-											gameEng.getLevel().setNature(height, i, Nature.EMPTY);
-										}
-										if(gameEng.getLevel().getNature(height-1, i)==Nature.DIRT){
-											gameEng.getLevel().setNature(height-1, i, Nature.EMPTY);
-										}
-										if(gameEng.getLevel().getNature(height-2, i)==Nature.DIRT){
-											gameEng.getLevel().setNature(height-2, i, Nature.EMPTY);
-										}
-									}
+					if(width-2>=0){
+						if(width+2<gameEng.getLevel().getWidth()){
+							for(int i=width-2;i<=width+2;i++){
+								if(gameEng.getLevel().getNature(height, i)==Nature.DIRT){
+									gameEng.getLevel().remove(height, i);
 								}
-								
-							}else{
-								//width+2<gameEng.getLevel().getWidth() CAR TAILLE DU PLATEAU DE 4 AU MOINS width>=4
-								for(int i=width-1;i<=width+2;i++){
-									if(gameEng.getLevel().getNature(height+1, i)==Nature.DIRT){
-										gameEng.getLevel().setNature(height+1, i, Nature.EMPTY);
-									}
-									if(gameEng.getLevel().getNature(height, i)==Nature.DIRT){
-										gameEng.getLevel().setNature(height, i, Nature.EMPTY);
-									}
-									if(gameEng.getLevel().getNature(height-1, i)==Nature.DIRT){
-										gameEng.getLevel().setNature(height-1, i, Nature.EMPTY);
-									}
-									if(gameEng.getLevel().getNature(height-2, i)==Nature.DIRT){
-										gameEng.getLevel().setNature(height-2, i, Nature.EMPTY);
-									}
+								if(gameEng.getLevel().getNature(height-1, i)==Nature.DIRT){
+									gameEng.getLevel().remove(height-1, i);
+								}
+							}
+							for(int i=width-1;i<=width+1;i++){
+								if(gameEng.getLevel().getNature(height-2, i)==Nature.DIRT){
+									gameEng.getLevel().remove(height-2, i);
+								}
+								if(gameEng.getLevel().getNature(height+1, i)==Nature.DIRT){
+									gameEng.getLevel().remove(height+1, i);
+								}
+							}
+						}else{
+							for(int i=width-2;i<=width+1;i++){
+								if(gameEng.getLevel().getNature(height+1, i)==Nature.DIRT){
+									gameEng.getLevel().remove(height+1, i);
+								}
+								if(gameEng.getLevel().getNature(height, i)==Nature.DIRT){
+									gameEng.getLevel().remove(height, i);
+								}
+								if(gameEng.getLevel().getNature(height-1, i)==Nature.DIRT){
+									gameEng.getLevel().remove(height-1, i);
+								}
+								if(gameEng.getLevel().getNature(height-2, i)==Nature.DIRT){
+									gameEng.getLevel().remove(height-2, i);
 								}
 							}
 						}
 					}else{
-						//TODO A FINIR
-						
-						
-						
-						
+						//width+2<gameEng.getLevel().getWidth() CAR TAILLE DU PLATEAU DE 4 AU MOINS width>=4
+						for(int i=width-1;i<=width+2;i++){
+							if(gameEng.getLevel().getNature(height+1, i)==Nature.DIRT){
+								gameEng.getLevel().remove(height+1, i);
+							}
+							if(gameEng.getLevel().getNature(height, i)==Nature.DIRT){
+								gameEng.getLevel().remove(height, i);
+							}
+							if(gameEng.getLevel().getNature(height-1, i)==Nature.DIRT){
+								gameEng.getLevel().remove(height-1, i);
+							}
+							if(gameEng.getLevel().getNature(height-2, i)==Nature.DIRT){
+								gameEng.getLevel().remove(height-2, i);
+							}
+						}
 					}
-					
-					if(height==gameEng.getLevel().getHeight()-2){//-1==METAL  -2 en bas du plateau
-						
-					}
-					
 					gameEng.killLemming(id);
 					return;
 				}
 				nbTourBomber++;
-				
 			}
-			if (getEtat().contains(EtatLemming.CLIMBER)){ //GRIMPEUR
+
+
+			if (getEtat().contains(EtatLemming.CLIMBER)){ //GRIMPEUR //TODO A REVOIR
 				if(isDroitier){
 					if(gameEng.getLevel().getNature(height, width+1)!=Nature.EMPTY && 
 							gameEng.getLevel().getNature(height-1, width+1)!=Nature.EMPTY &&
@@ -224,10 +214,10 @@ public class Lemming implements ILemming {
 					}else{
 						setEtat(EtatLemming.FALLER);
 						setDirection();
-						}
+					}
 				}else {
 					if(gameEng.getLevel().getNature(height, width-1)!=Nature.EMPTY && 
-							gameEng.getLevel().getNature(height-1, width-1)!=Nature.EMPTY &&
+							gameEng.getLevel().getNature(height-1, width-1)!=Nature.EMPTY&&
 							height-2>=0 &&
 							gameEng.getLevel().getNature(height-2, width)==Nature.EMPTY){
 						height--;
@@ -239,13 +229,12 @@ public class Lemming implements ILemming {
 				}
 				
 			}
-			
 			if(!canMonter){
-				if(etat.contains(EtatLemming.WALKER)){ //MARCHEUR
+				if(etat.contains(EtatLemming.WALKER)){ //MARCHEUR //OK
 					if (gameEng.getLevel().getNature(height+1, width) == Nature.EMPTY){ 
 						setEtat(EtatLemming.FALLER);
 		
-					} else if (isDroitier){
+					} else if (isDroitier){ 
 						if (gameEng.getLevel().getNature(height-1, width+1) != Nature.EMPTY ||
 								(gameEng.getLevel().getNature(height, width+1) != Nature.EMPTY &&
 								height-2>0 && 
@@ -278,9 +267,9 @@ public class Lemming implements ILemming {
 							width = width-1; 
 						}
 					}
-				} else if (getEtat().contains(EtatLemming.FALLER)){ //TOMBEUR
+				} else if (getEtat().contains(EtatLemming.FALLER)){ //TOMBEUR //OK
 					
-					if(!getEtat().contains(EtatLemming.FLOATER)){  // Lemming pas FLOTTEUR
+					if(!getEtat().contains(EtatLemming.FLOATER)){  // Lemming pas FLOTTEUR //OK
 						if (gameEng.getLevel().getNature(height+1, width) != Nature.EMPTY) {
 							if (getNbCasesFalling() < 8) {
 								setEtat(EtatLemming.WALKER);
@@ -297,14 +286,15 @@ public class Lemming implements ILemming {
 							nbCasesFalling=0;
 							setEtat(EtatLemming.WALKER);
 						}else {
-							if(nbCasesFalling>0 && nbCasesFalling%2==0) height = height+1;
+							if(nbCasesFalling%2==0) height = height+1;
 							nbCasesFalling++;
 						}
 					}
 					
-				}else if(getEtat().contains(EtatLemming.DIGGER)){//CREUSEUR FAIRE LE BAS
+				}else if(getEtat().contains(EtatLemming.DIGGER)){//CREUSEUR FAIRE LE BAS //TODO MODIF FAITE
 					if(gameEng.getLevel().getNature(height+1, width)==Nature.EMPTY) setEtat(EtatLemming.FALLER);
-					else if(gameEng.getLevel().getNature(height+1, width)==Nature.METAL) setEtat(EtatLemming.WALKER);
+					else if(gameEng.getLevel().getNature(height+1, width)==Nature.METAL
+							|| gameEng.getLevel().getNature(height+1, width)==Nature.STOPPER) setEtat(EtatLemming.WALKER);
 					else if(gameEng.getLevel().getNature(height+1, width)==Nature.DIRT){
 						gameEng.getLevel().remove(height+1, width);
 						if(gameEng.getLevel().getNature(height+1, width+1)==Nature.DIRT) gameEng.getLevel().remove(height+1, width+1);
@@ -312,7 +302,7 @@ public class Lemming implements ILemming {
 						height++;
 					}
 					
-				}else if (getEtat().contains(EtatLemming.BUILDER)){//TODO CONSTRUCTEUR Faire Contrat et interface
+				}else if (getEtat().contains(EtatLemming.BUILDER)){
 					if(isDroitier){
 						 if(width+3<gameEng.getLevel().getWidth() && height-2>=0
 								 && gameEng.getLevel().getNature(height-2, width+2)==Nature.EMPTY
@@ -381,6 +371,7 @@ public class Lemming implements ILemming {
 									nbCreuse++;
 									width++;
 								}else{
+									nbCreuse=0;
 									setEtat(EtatLemming.WALKER);
 								}
 							}else{
@@ -414,7 +405,7 @@ public class Lemming implements ILemming {
 						}
 					}
 					
-				}else if (getEtat().contains(EtatLemming.MINER)){ // CREUSEUR EN DIAGONALE
+				}else if (getEtat().contains(EtatLemming.MINER)){ // CREUSEUR EN DIAGONALE //TODO PROBLEME
 					if(isDroitier){
 						if(gameEng.getLevel().getNature(height+1, width+1)==Nature.DIRT 
 								&& gameEng.getLevel().getNature(height, width+1)==Nature.DIRT ){
@@ -422,14 +413,14 @@ public class Lemming implements ILemming {
 							gameEng.getLevel().remove(height, width+1);
 							height++;
 							width++;
-						}else if(height-2<=0 && gameEng.getLevel().getNature(height-1, width+1)==Nature.DIRT
+						}else if(height-2>=0 && gameEng.getLevel().getNature(height-1, width+1)==Nature.DIRT
 								&& gameEng.getLevel().getNature(height-2, width+1)==Nature.DIRT){
 							gameEng.getLevel().remove(height-1, width+1);
 							gameEng.getLevel().remove(height-2, width+1);
 							height--;
 							width++;
 						}else{
-							setEtat(EtatLemming.WALKER);
+							this.setEtat(EtatLemming.WALKER);
 						}
 					}else{
 						if(gameEng.getLevel().getNature(height+1, width-1)==Nature.DIRT 
@@ -438,14 +429,14 @@ public class Lemming implements ILemming {
 							gameEng.getLevel().remove(height, width-1);
 							height++;
 							width--;
-						}else if(height-2<=0 && gameEng.getLevel().getNature(height-1, width-1)==Nature.DIRT
+						}else if(height-2>=0 && gameEng.getLevel().getNature(height-1, width-1)==Nature.DIRT
 								&& gameEng.getLevel().getNature(height-2, width-1)==Nature.DIRT){
 							gameEng.getLevel().remove(height-1, width-1);
 							gameEng.getLevel().remove(height-2, width-1);
 							height--;
 							width--;
 						}else{
-							setEtat(EtatLemming.WALKER);
+							this.setEtat(EtatLemming.WALKER);
 						}
 					}
 					

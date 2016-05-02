@@ -181,4 +181,29 @@ public class LevelContrat extends LevelDecorateur{
 	public void reset() {
 		init(getHeight(), getWidth());
 	}
+
+	@Override
+	public void addStopper(int h, int w) {
+		checkInvariants();
+		if(! (getNature(h, w)==Nature.EMPTY)) throw new PreConditionError("getNature(h, w) != Nature.EMPTY");
+		if(! (getEditing()==false)) throw new PreConditionError("getEditing()==true");
+		
+		delegate.addStopper(h, w);
+		
+		if(! (getNature(h, w)==Nature.STOPPER)) throw new PostConditionError("getNature(h, w) != Nature.STOPPER");
+		checkInvariants();
+		
+	}
+
+	@Override
+	public void removeStopper(int h, int w) {
+		checkInvariants();
+		if(! (getNature(h, w)==Nature.STOPPER)) throw new PreConditionError("getNature(h, w) != Nature.STOPPER");
+		if(! (getEditing()==false)) throw new PreConditionError("getEditing()==true");
+		
+		delegate.removeStopper(h, w);
+		
+		if(! (getNature(h, w)==Nature.EMPTY)) throw new PostConditionError("getNature(h, w) != Nature.EMPTY");
+		checkInvariants();
+	}
 }
