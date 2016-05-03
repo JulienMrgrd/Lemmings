@@ -27,7 +27,7 @@ public class GameEngContrat extends GameEngDecorateur{
 	@Override
 	public ILemming getLemVivantById(int id) {
 		checkInvariants();
-		if(! (0<id) ) throw new PreConditionError("id<=0");
+		if(! (id>=0) ) throw new PreConditionError("id<=0");
 		if(! (id<=getSizeColony()) ) throw new PreConditionError("id>getSizeColony");
 		if(! (containsIdColony(id)) ) throw new PreConditionError("!containsIdColony("+id+")");
 		ILemming res = delegate.getLemVivantById(id);

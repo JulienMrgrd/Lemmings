@@ -19,7 +19,7 @@ public interface IGameEng {
 	
 	ILemming[] getLemVivants();
 	
-	/** pre : getLemVivantById(id) require 0 < id <= getSizeColony() ^ containsIdColony(id) */
+	/** pre : getLemVivantById(id) require 0 <= id <= getSizeColony() ^ containsIdColony(id) */
 	ILemming getLemVivantById(int id);
 	int getSizeColony(); //Nombre de Lemming à créer
 	int getSpawnSpeed(); //Vitesse d'apparition des Lemming

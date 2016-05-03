@@ -3,7 +3,6 @@ package contrat;
 import decorateur.JoueurDecorateur;
 import enumeration.EtatLemming;
 import services.IGameEng;
-import services.ILemming;
 import servicesImplementations.Joueur;
 
 public class JoueurContrat extends JoueurDecorateur{
@@ -43,9 +42,9 @@ public class JoueurContrat extends JoueurDecorateur{
 	}
 
 	@Override
-	public void changeEtatLemming(ILemming lem, EtatLemming etat) {
+	public void changeEtatLemming(int idLem, String etat) {
 		checkInvariants();
-		delegate.changeEtatLemming(lem, etat);
+		delegate.changeEtatLemming(idLem, etat);
 		checkInvariants();
 	}
 

@@ -48,5 +48,13 @@ public enum EtatLemming {
 		private static final int TOKENDEBASE = 5;
 		private static final int MAXTOKEN = Integer.MAX_VALUE;
 	}
+	
+	public static EtatLemming getEtatByName(String name){
+		try{
+			return Enum.valueOf(EtatLemming.class, name.toUpperCase());
+		} catch (Exception e){
+			return null;
+		}
+	}
 
 }

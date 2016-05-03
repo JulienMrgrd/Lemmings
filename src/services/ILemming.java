@@ -3,7 +3,6 @@ package services;
 import java.util.List;
 
 import enumeration.EtatLemming;
-import enumeration.Nature;
 
 public interface ILemming {
 	

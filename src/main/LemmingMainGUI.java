@@ -13,8 +13,10 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -31,8 +33,8 @@ public class LemmingMainGUI extends Application {
 	private AnchorPane rootLayout;
 	
 	private GridPane grid;
-	private ImageView[][] allCases;
-	private Label resume; 
+	private Label[][] allCases;
+	
 	private TextArea sizeColonyText;
 	private Button playResetButton;
 	private Button boomButton, minusButton, plusButton;
@@ -41,12 +43,17 @@ public class LemmingMainGUI extends Application {
 					basherButton, minerButton;
 	private Button refreshButton;
 	private TextArea level;
+	
+	private Label sauvesVsCreesLabel,sauvesVsSizeColonyCpt,mortsVsVivantsLabel,
+					mortsVsVivantsCpt,tours,score;
+	private Button changeButton;
+	private TextField lemChange;
 
 	private IJoueur joueur;
 	private int sizeColony=10, spawnSpeed=2;
 	private int height, width;
 	private int entH, entW, exitH, exitW;
-	private int speedGame = 400; //ms
+	private int speedGame = 300; //ms
 	private int niveau = 1;
 
 	private String textButtonReset = "Reset";
@@ -92,12 +99,10 @@ public class LemmingMainGUI extends Application {
 	 */
 	public void initRootLayout() {
 		try {
-			// Load root layout from fxml file.
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(LemmingMainGUI.class.getResource("gui/view/PageView.fxml"));
 			rootLayout = (AnchorPane) loader.load();
 
-			// Show the scene containing the root layout.
 			Scene scene = new Scene(rootLayout);
 			primaryStage.setScene(scene);
 			primaryStage.show();
@@ -106,7 +111,22 @@ public class LemmingMainGUI extends Application {
 			grid.getColumnConstraints().remove(0);
 			grid.getRowConstraints().remove(0);
 
-			resume = (Label) scene.lookup("#resume");
+			lemChange = (TextField) scene.lookup("#lemChange");
+			changeButton = (Button) scene.lookup("#changeButton");
+			changeButton.setOnAction(new EventHandler<ActionEvent>() {
+				@Override public void handle(ActionEvent e) {
+					changeLemming(lemChange.getText());
+				}
+
+			});
+			
+			sauvesVsCreesLabel = (Label) scene.lookup("#sauvesVsCreesLabel");
+			sauvesVsSizeColonyCpt = (Label) scene.lookup("#sauvesVsSizeColonyCpt");
+			mortsVsVivantsLabel = (Label) scene.lookup("#mortsVsVivantsLabel");
+			mortsVsVivantsCpt = (Label) scene.lookup("#mortsVsVivantsCpt");
+			tours = (Label) scene.lookup("#tours");
+			score = (Label) scene.lookup("#score");
+			
 			sizeColonyText = (TextArea) scene.lookup("#sizeColony");
 
 			playResetButton = (Button) scene.lookup("#playButton");
@@ -116,6 +136,14 @@ public class LemmingMainGUI extends Application {
 						if(!sizeColonyText.getText().isEmpty() && sizeColonyText.getText().matches("[0-9]*")){
 							sizeColony = Integer.parseInt(sizeColonyText.getText());
 							joueur.changeSizeColony(sizeColony);
+						}
+						
+						if(joueur.getGameEngine().gameOver()==true){
+							joueur.reset();
+							Integer[] enterAndExit = LevelChooser.constructLevel(joueur.getGameEngine().getLevel(), niveau);
+							if(enterAndExit!=null){
+								changeEnterAndExit(enterAndExit[0],enterAndExit[1],enterAndExit[2],enterAndExit[3]);
+							}
 						}
 						joueur.getGameEngine().getLevel().goPlay(entH,entW, exitH, exitW);
 						playUI();
@@ -183,27 +211,22 @@ public class LemmingMainGUI extends Application {
 			
 			diggerButton = (Button) scene.lookup("#diggerButton");
 			diggerButton.setOnAction(lemChange(diggerButton));
-			
 			climberButton = (Button) scene.lookup("#climberButton");
 			climberButton.setOnAction(lemChange(climberButton));
-			
 			builderButton = (Button) scene.lookup("#builderButton");
 			builderButton.setOnAction(lemChange(builderButton));
-			
 			floaterButton = (Button) scene.lookup("#floaterButton");
 			floaterButton.setOnAction(lemChange(floaterButton));
-			
 			bomberButton = (Button) scene.lookup("#bomberButton");
 			bomberButton.setOnAction(lemChange(bomberButton));
-			
 			stopperButton = (Button) scene.lookup("#stopperButton");
 			stopperButton.setOnAction(lemChange(stopperButton));
-			
 			basherButton = (Button) scene.lookup("#basherButton");
 			basherButton.setOnAction(lemChange(basherButton));
-			
 			minerButton = (Button) scene.lookup("#minerButton");
 			minerButton.setOnAction(lemChange(minerButton));
+			
+			notPlayUI();
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -217,30 +240,56 @@ public class LemmingMainGUI extends Application {
 			}
 		};
 	}
+	
+	private void changeLemming(String text) {
+		try{
+			if(text.contains("/")){
+				String[] split = text.split("/");
+				int id = Integer.parseInt(split[1]);
+				if(split.length==2 && !split[0].isEmpty() && !split[1].isEmpty()){
+					joueur.changeEtatLemming(id, split[0]);
+					lemChange.setStyle("-fx-text-fill: black");
+				}
+			}
+		} catch (NumberFormatException e){
+			lemChange.setStyle("-fx-text-fill: red");
+		}
+	}
 
 	private void playUI() {
 		playResetButton.setText(textButtonReset);
-		toggleButtons();
+		toggleButtons(true);
 	}
 
 	private void notPlayUI() {
 		playResetButton.setText(textButtonPlay);
-		toggleButtons();
+		lemChange.setText("");
+		tours.setText("");
+		score.setText("");
+		mortsVsVivantsCpt.setText("");
+		sauvesVsSizeColonyCpt.setText("");
+		toggleButtons(false);
 	}
 	
-	private void toggleButtons(){
-		diggerButton.setDisable(!diggerButton.isDisabled());
-		climberButton.setDisable(!climberButton.isDisabled());
-		builderButton.setDisable(!builderButton.isDisabled());
-		floaterButton.setDisable(!floaterButton.isDisable());
-		bomberButton.setDisable(!bomberButton.isDisable());
-		stopperButton.setDisable(!stopperButton.isDisable());
-		basherButton.setDisable(!basherButton.isDisable());
-		minerButton.setDisable(!minerButton.isDisable());
-		boomButton.setDisable(!boomButton.isDisable());
-		sizeColonyText.setDisable(!sizeColonyText.isDisable());
-		level.setDisable(!level.isDisable());
-		refreshButton.setDisable(!refreshButton.isDisable());
+	private void toggleButtons(boolean value){
+		diggerButton.setDisable(!value);
+		climberButton.setDisable(!value);
+		builderButton.setDisable(!value);
+		floaterButton.setDisable(!value);
+		bomberButton.setDisable(!value);
+		stopperButton.setDisable(!value);
+		basherButton.setDisable(!value);
+		minerButton.setDisable(!value);
+		boomButton.setDisable(!value);
+		
+		sauvesVsCreesLabel.setDisable(!value);
+		mortsVsVivantsLabel.setDisable(!value);
+		changeButton.setDisable(!value);
+		lemChange.setDisable(!value);
+		
+		sizeColonyText.setDisable(value);
+		level.setDisable(value);
+		refreshButton.setDisable(value);
 	}
 
 	protected void displayPlateau() {
@@ -255,20 +304,21 @@ public class LemmingMainGUI extends Application {
 					public void run() {
 						if(playResetButton.getText().equals(textButtonPlay) ||
 								joueur.getGameEngine().gameOver()){
+							notPlayUI();
 							timer.cancel();
 							return;
 						} else {
-	
 							joueur.getGameEngine().step();
+							tours.setText("Tours n°"+joueur.getGameEngine().getNbTours());
+							mortsVsVivantsCpt.setText(joueur.getGameEngine().getNbLemMorts()
+									+" / "+joueur.getGameEngine().getNbLemVivants());
+							sauvesVsSizeColonyCpt.setText(joueur.getGameEngine().getNbLemSauves()
+									+" / "+sizeColony);
 							if(!joueur.getGameEngine().gameOver()){
-								System.out.println("Tours n°"+joueur.getGameEngine().getNbTours());
 								changePlateau(joueur.getGameEngine().toString());
 							} else {
-								System.out.println("Tours n°"+joueur.getGameEngine().getNbTours()+" : GameOver !");
-								System.out.printf("\nScore : \nLemmings sauvés = %s, en %s tours\n", 
-										joueur.getGameEngine().getScore().split("-")[0], joueur.getGameEngine().getScore().split("-")[1]);
-								changeResume(String.format("Score : Lemmings sauvés = %s, en %s tours", 
-										joueur.getGameEngine().getScore().split("-")[0], joueur.getGameEngine().getScore().split("-")[1]));
+								score.setText("Score : "+joueur.getGameEngine().getScore());
+								notPlayUI();
 								timer.cancel();
 								return;
 							}
@@ -282,12 +332,8 @@ public class LemmingMainGUI extends Application {
 					}
 				});
 			}
-		}, 0, getSpeedGame());
+		}, 0, getSpeedGame()); // SpeedGame peut changer
 
-	}
-
-	private void changeResume(String text) {
-		resume.setText(text);
 	}
 
 	private void changePlateau(String texte){
@@ -297,22 +343,31 @@ public class LemmingMainGUI extends Application {
 		if(allCases == null || allCases.length!=lines.length 
   		   || allCases[0].length!=(countColumn+1)){
 			
-			allCases = new ImageView[lines.length][countColumn+1];
+			allCases = new Label[lines.length][countColumn+1];
 		}
 		
 		for(int i=0; i<lines.length; i++){
 			String[] cols = lines[i].split(":");
 			for(int j=0; j<cols.length; j++){
 
-				ImageView oneCase = allCases[i][j];
+				Label oneCase = allCases[i][j];
+				ImageView image;
 				
-				if(oneCase==null || !oneCase.getAccessibleText().equals(cols[j])){ // si non-existant ou si on détecte une différence
+				if(oneCase==null || !oneCase.getText().equals(cols[j])){ // si non-existant ou si on détecte une différence
 					if(oneCase!=null) grid.getChildren().remove(allCases[i][j]); // Si case existante
-					oneCase = new ImageView(ImageLoader.getByRepresentation(cols[j]));
-					oneCase.setPreserveRatio(true);
-					oneCase.setFitHeight(23);
-					oneCase.setFitWidth(30);
-					oneCase.setAccessibleText(cols[j]);
+					
+					image = new ImageView(ImageLoader.getByRepresentation(cols[j]));
+					image.setFitHeight(28);
+					image.setFitWidth(30);
+					
+					if(cols[j].startsWith("LEM")){
+						image.setPreserveRatio(true);
+						oneCase = new Label(cols[j].replaceAll("[a-zA-Z]*", ""), image);
+					} else {
+						oneCase = new Label("", image);
+					}
+					
+					oneCase.setContentDisplay(ContentDisplay.LEFT);
 					allCases[i][j] = oneCase;
 					grid.add(oneCase, j, i);
 				}

@@ -186,7 +186,7 @@ public class GameEng implements IGameEng {
 					res[i][j] = "D";
 					break;
 				case STOPPER:
-					res[i][j] = "S";
+					res[i][j] = "STOPPER";
 					break;
 				}
 			}

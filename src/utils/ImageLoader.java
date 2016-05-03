@@ -11,6 +11,7 @@ public abstract class ImageLoader {
 	public static final Image EMPTY_IMG = getRessource("empty.png");
 	public static final Image ENTER_IMG = getRessource("enter.png");
 	public static final Image EXIT_IMG = getRessource("exit.png");
+	public static final Image STOP_IMG = getRessource("stop.png");
 
 	private static Image getRessource(String res){
 		return new Image(ImageLoader.class.getResource("/"+res).toString());
@@ -38,6 +39,9 @@ public abstract class ImageLoader {
 			
 		case "S":
 			return EXIT_IMG;
+			
+		case "STOPPER":
+			return STOP_IMG;
 			
 		default:
 			return EMPTY_IMG;

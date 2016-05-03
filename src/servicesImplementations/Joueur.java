@@ -44,11 +44,12 @@ public class Joueur implements IJoueur {
 	}
 
 	@Override
-	public void changeEtatLemming(ILemming lem, EtatLemming etat) {
-		EtatLemming etatLem = getEtat(etat);
+	public void changeEtatLemming(int idLem, String etat) {
+		EtatLemming etatLem = EtatLemming.getEtatByName(etat);
+		etatLem = getEtat(etatLem);
 		if(etatLem.getNbToken()>0){
 			etatLem.reduceToken();
-			lem.setEtat(etatLem);
+			getGameEngine().getLemVivantById(idLem).setEtat(etatLem);
 		}
 	}
 

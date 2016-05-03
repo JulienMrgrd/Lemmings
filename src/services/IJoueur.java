@@ -13,9 +13,11 @@ public interface IJoueur {
 	void init(IGameEng gE);
 
 	// OPERATORS
-	/** pre : changeEtatLemming(lem, etat) require getNbTokens(etat)>0 */
-	void changeEtatLemming(ILemming lem, EtatLemming etat);
+	/** pre : changeEtatLemming(idLem, etat) require getNbTokens(etat)>0 */
+	void changeEtatLemming(int id, String etat);
 	void destroyAllLem();
 	void reset();
+	
+	/** pre : changeSizeColony(sizeColony) require sizeColony>0 */
 	void changeSizeColony(int sizeColony);
 }
