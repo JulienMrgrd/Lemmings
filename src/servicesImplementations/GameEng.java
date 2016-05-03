@@ -191,7 +191,10 @@ public class GameEng implements IGameEng {
 				}
 			}
 		for (ILemming l : getLemVivants()){
-			if(l!=null) res[l.getHeight()][l.getWidth()] = Integer.toString(l.getId());
+			if(l!=null){
+				if(l.isDroitier()) res[l.getHeight()][l.getWidth()] = "LEMR"+Integer.toString(l.getId());
+				else  res[l.getHeight()][l.getWidth()] = "LEML"+Integer.toString(l.getId());
+			}
 		}
 		res[getLevel().getEntranceHeight()][getLevel().getEntranceWidth()] = "E";
 		res[getLevel().getExitHeight()][getLevel().getExitWidth()] = "S";
@@ -213,7 +216,10 @@ public class GameEng implements IGameEng {
 	
 	@Override
 	public void changeSizeColony(int newSizeColony) {
-		sizeColony = newSizeColony;
+		if(sizeColony != newSizeColony){
+			sizeColony=newSizeColony;
+			allLem = new ILemming[sizeColony];
+		}
 	}
 	
 	@Override

@@ -15,7 +15,7 @@ public interface IJoueur {
 	// OPERATORS
 	/** pre : changeEtatLemming(lem, etat) require getNbTokens(etat)>0 */
 	void changeEtatLemming(ILemming lem, EtatLemming etat);
-	void changeSpawnSpeed(int speedSpawn);
 	void destroyAllLem();
 	void reset();
+	void changeSizeColony(int sizeColony);
 }

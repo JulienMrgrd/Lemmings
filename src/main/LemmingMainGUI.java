@@ -1,7 +1,6 @@
 package main;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -16,27 +15,32 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import services.IGameEng;
 import services.IJoueur;
 import services.ILevel;
+import utils.ImageLoader;
 import utils.LevelChooser;
 
 public class LemmingMainGUI extends Application {
 
 	private Stage primaryStage;
 	private AnchorPane rootLayout;
-	private Map<String, Object> fxmlNamespace;
 	
 	private GridPane grid;
-	private Label[][] allCases;
+	private ImageView[][] allCases;
 	private Label resume; 
 	private TextArea sizeColonyText;
 	private Button playResetButton;
 	private Button boomButton, minusButton, plusButton;
+	private Button diggerButton, climberButton, builderButton,
+					floaterButton, bomberButton, stopperButton,
+					basherButton, minerButton;
+	private Button refreshButton;
+	private TextArea level;
 
 	private IJoueur joueur;
 	private int sizeColony=10, spawnSpeed=2;
@@ -73,12 +77,7 @@ public class LemmingMainGUI extends Application {
 		/////////////// EDITING /////////////
 		Integer[] enterAndExit = LevelChooser.constructLevel(level, niveau);
 		if(enterAndExit!=null){
-			entH=enterAndExit[0];
-			entW=enterAndExit[1];
-			exitH=enterAndExit[2];
-			exitW=enterAndExit[3];
-			level.addEnter(entH, entW);
-			level.addExit(exitH, exitW);
+			changeEnterAndExit(enterAndExit[0],enterAndExit[1],enterAndExit[2],enterAndExit[3]);
 		}
 
 		System.out.printf("Hauteur %s, largeur %s\n", height, width);
@@ -97,7 +96,6 @@ public class LemmingMainGUI extends Application {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(LemmingMainGUI.class.getResource("gui/view/PageView.fxml"));
 			rootLayout = (AnchorPane) loader.load();
-			fxmlNamespace = loader.getNamespace();
 
 			// Show the scene containing the root layout.
 			Scene scene = new Scene(rootLayout);
@@ -115,6 +113,10 @@ public class LemmingMainGUI extends Application {
 			playResetButton.setOnAction(new EventHandler<ActionEvent>() {
 				@Override public void handle(ActionEvent e) {
 					if(playResetButton.getText().equals("Play")){
+						if(!sizeColonyText.getText().isEmpty() && sizeColonyText.getText().matches("[0-9]*")){
+							sizeColony = Integer.parseInt(sizeColonyText.getText());
+							joueur.changeSizeColony(sizeColony);
+						}
 						joueur.getGameEngine().getLevel().goPlay(entH,entW, exitH, exitW);
 						playUI();
 						displayPlateau();
@@ -125,8 +127,7 @@ public class LemmingMainGUI extends Application {
 
 						Integer[] enterAndExit = LevelChooser.constructLevel(joueur.getGameEngine().getLevel(), niveau);
 						if(enterAndExit!=null){
-							joueur.getGameEngine().getLevel().addEnter(enterAndExit[0], enterAndExit[1]);
-							joueur.getGameEngine().getLevel().addExit(enterAndExit[2], enterAndExit[3]);
+							changeEnterAndExit(enterAndExit[0],enterAndExit[1],enterAndExit[2],enterAndExit[3]);
 						}
 						changePlateau(joueur.getGameEngine().toString());
 					}
@@ -153,18 +154,93 @@ public class LemmingMainGUI extends Application {
 					slowDownSpeedGame();
 				}
 			});
+			
+			level = (TextArea) scene.lookup("#level");
+			
+			refreshButton = (Button) scene.lookup("#refreshButton");
+			refreshButton.setOnAction(new EventHandler<ActionEvent>() {
+				@Override public void handle(ActionEvent e) {
+					if(level.getText().matches("[0-9]")){
+						int niv = Integer.parseInt(level.getText());
+						if(niv!=niveau){
+							Integer[] enterAndExit = LevelChooser.constructLevel(joueur.getGameEngine().getLevel(), niv);
+							if(enterAndExit!=null){
+								if(enterAndExit!=null){
+									changeEnterAndExit(enterAndExit[0],enterAndExit[1],enterAndExit[2],enterAndExit[3]);
+								}
+								changePlateau(joueur.getGameEngine().toString());
+								niveau = niv;
+								level.setStyle("-fx-text-fill: black");
+							} else {
+								level.setStyle("-fx-text-fill: red");
+							}
+						}
+					} else {
+						level.setStyle("-fx-text-fill: red");
+					}
+				}
+			});
+			
+			diggerButton = (Button) scene.lookup("#diggerButton");
+			diggerButton.setOnAction(lemChange(diggerButton));
+			
+			climberButton = (Button) scene.lookup("#climberButton");
+			climberButton.setOnAction(lemChange(climberButton));
+			
+			builderButton = (Button) scene.lookup("#builderButton");
+			builderButton.setOnAction(lemChange(builderButton));
+			
+			floaterButton = (Button) scene.lookup("#floaterButton");
+			floaterButton.setOnAction(lemChange(floaterButton));
+			
+			bomberButton = (Button) scene.lookup("#bomberButton");
+			bomberButton.setOnAction(lemChange(bomberButton));
+			
+			stopperButton = (Button) scene.lookup("#stopperButton");
+			stopperButton.setOnAction(lemChange(stopperButton));
+			
+			basherButton = (Button) scene.lookup("#basherButton");
+			basherButton.setOnAction(lemChange(basherButton));
+			
+			minerButton = (Button) scene.lookup("#minerButton");
+			minerButton.setOnAction(lemChange(minerButton));
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
+	private EventHandler<ActionEvent> lemChange(Button button) {
+		return new EventHandler<ActionEvent>() {
+			@Override public void handle(ActionEvent e) {
+				// TODO : action du bouton
+			}
+		};
+	}
+
 	private void playUI() {
 		playResetButton.setText(textButtonReset);
+		toggleButtons();
 	}
 
 	private void notPlayUI() {
 		playResetButton.setText(textButtonPlay);
+		toggleButtons();
+	}
+	
+	private void toggleButtons(){
+		diggerButton.setDisable(!diggerButton.isDisabled());
+		climberButton.setDisable(!climberButton.isDisabled());
+		builderButton.setDisable(!builderButton.isDisabled());
+		floaterButton.setDisable(!floaterButton.isDisable());
+		bomberButton.setDisable(!bomberButton.isDisable());
+		stopperButton.setDisable(!stopperButton.isDisable());
+		basherButton.setDisable(!basherButton.isDisable());
+		minerButton.setDisable(!minerButton.isDisable());
+		boomButton.setDisable(!boomButton.isDisable());
+		sizeColonyText.setDisable(!sizeColonyText.isDisable());
+		level.setDisable(!level.isDisable());
+		refreshButton.setDisable(!refreshButton.isDisable());
 	}
 
 	protected void displayPlateau() {
@@ -177,24 +253,31 @@ public class LemmingMainGUI extends Application {
 				javafx.application.Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
-						if(playResetButton.getText().equals(textButtonPlay)) timer.cancel();
-
-						joueur.getGameEngine().step();
-						if(!joueur.getGameEngine().gameOver()){
-							System.out.println("Tours n°"+joueur.getGameEngine().getNbTours());
-							changePlateau(joueur.getGameEngine().toString());
+						if(playResetButton.getText().equals(textButtonPlay) ||
+								joueur.getGameEngine().gameOver()){
+							timer.cancel();
+							return;
 						} else {
-							System.out.println("Tours n°"+joueur.getGameEngine().getNbTours()+" : GameOver !");
-							System.out.printf("\nScore : \nLemmings sauvés = %s, en %s tours\n", 
-									joueur.getGameEngine().getScore().split("-")[0], joueur.getGameEngine().getScore().split("-")[1]);
-							changeResume(String.format("Score : Lemmings sauvés = %s, en %s tours", 
-									joueur.getGameEngine().getScore().split("-")[0], joueur.getGameEngine().getScore().split("-")[1]));
-							timer.cancel();
-						}
-
-						if(period != speedGame){
-							displayPlateau(); // Recharge Timer avec le nouveau temps (changé par "+" et "-")
-							timer.cancel();
+	
+							joueur.getGameEngine().step();
+							if(!joueur.getGameEngine().gameOver()){
+								System.out.println("Tours n°"+joueur.getGameEngine().getNbTours());
+								changePlateau(joueur.getGameEngine().toString());
+							} else {
+								System.out.println("Tours n°"+joueur.getGameEngine().getNbTours()+" : GameOver !");
+								System.out.printf("\nScore : \nLemmings sauvés = %s, en %s tours\n", 
+										joueur.getGameEngine().getScore().split("-")[0], joueur.getGameEngine().getScore().split("-")[1]);
+								changeResume(String.format("Score : Lemmings sauvés = %s, en %s tours", 
+										joueur.getGameEngine().getScore().split("-")[0], joueur.getGameEngine().getScore().split("-")[1]));
+								timer.cancel();
+								return;
+							}
+	
+							if(period != speedGame){
+								displayPlateau(); // Recharge Timer avec le nouveau temps (changé par "+" et "-")
+								timer.cancel();
+								return;
+							}
 						}
 					}
 				});
@@ -214,23 +297,24 @@ public class LemmingMainGUI extends Application {
 		if(allCases == null || allCases.length!=lines.length 
   		   || allCases[0].length!=(countColumn+1)){
 			
-			allCases = new Label[lines.length][countColumn+1];
+			allCases = new ImageView[lines.length][countColumn+1];
 		}
-		
 		
 		for(int i=0; i<lines.length; i++){
 			String[] cols = lines[i].split(":");
 			for(int j=0; j<cols.length; j++){
 
-				Label oneCase = allCases[i][j];
-				if(oneCase==null){
-					oneCase = new Label(cols[j]);
+				ImageView oneCase = allCases[i][j];
+				
+				if(oneCase==null || !oneCase.getAccessibleText().equals(cols[j])){ // si non-existant ou si on détecte une différence
+					if(oneCase!=null) grid.getChildren().remove(allCases[i][j]); // Si case existante
+					oneCase = new ImageView(ImageLoader.getByRepresentation(cols[j]));
+					oneCase.setPreserveRatio(true);
+					oneCase.setFitHeight(23);
+					oneCase.setFitWidth(30);
+					oneCase.setAccessibleText(cols[j]);
 					allCases[i][j] = oneCase;
-					oneCase.setPrefSize(27, 20);
-					oneCase.setTextAlignment(TextAlignment.RIGHT);
 					grid.add(oneCase, j, i);
-				} else if(oneCase.getText()!=cols[j]){
-					oneCase.setText(cols[j]);
 				}
 			}
 		}
@@ -246,6 +330,15 @@ public class LemmingMainGUI extends Application {
 
 	private void speedUpSpeedGame(){
 		if(speedGame>100) speedGame-=50;
+	}
+	
+	private void changeEnterAndExit(int entH, int entW, int exitH, int exitW) {
+		this.entH=entH;
+		this.entW=entW;
+		this.exitH=exitH;
+		this.exitW=exitW;
+		joueur.getGameEngine().getLevel().addEnter(entH, entW);
+		joueur.getGameEngine().getLevel().addExit(exitH, exitW);
 	}
 
 	public static void main(String[] args) {

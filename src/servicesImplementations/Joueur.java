@@ -53,8 +53,8 @@ public class Joueur implements IJoueur {
 	}
 
 	@Override
-	public void changeSpawnSpeed(int speedSpawn) {
-		gameEng.changeSpawnSpeed(speedSpawn);
+	public void changeSizeColony(int sizeColony) {
+		gameEng.changeSizeColony(sizeColony);
 	}
 
 	@Override

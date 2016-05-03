@@ -50,9 +50,9 @@ public class JoueurContrat extends JoueurDecorateur{
 	}
 
 	@Override
-	public void changeSpawnSpeed(int speedSpawn) {
+	public void changeSizeColony(int sizeColony) {
 		checkInvariants();
-		delegate.changeSpawnSpeed(speedSpawn);
+		delegate.changeSizeColony(sizeColony);
 		checkInvariants();
 	}
 
