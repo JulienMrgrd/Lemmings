@@ -121,6 +121,10 @@ public class LemmingContrat extends LemmingDecorateur{
 		if(! (isDroitier()==true)) throw new PostConditionError("isDroitier()==false");
 		if(! (getEtat().contains(EtatLemming.FALLER))) throw new PostConditionError("!getEtat().contains(EtatLemming.FALLER)");
 		if(! (getNbCasesFalling() == 0))  throw new PostConditionError("getNbCasesFalling() != 0");
+		if(! (getNbToursBomber() == 0))  throw new PostConditionError("getNbToursBomber() != 0");
+		if(! (getNbTourBuilder() == 0))  throw new PostConditionError("getNbTourBuilder() != 0");
+		if(! (getNbDallePose() == 0))  throw new PostConditionError("getNbDallePose() != 0");
+		if(! (getNbCreuse() == 0))  throw new PostConditionError("getNbCreuse() != 0");
 		checkInvariants();
 	}
 
@@ -162,9 +166,22 @@ public class LemmingContrat extends LemmingDecorateur{
 	@Override
 	public void setEtat(EtatLemming etat) {
 		checkInvariants();
+		List<EtatLemming> etatPre = getEtat();
 		delegate.setEtat(etat);
-
-		if(! (getEtat().contains(etat))) throw new PostConditionError("!getEtat().contains(etat))");
+		if(etat==EtatLemming.STOPPER){
+			if(!(getGameEng().getLevel().getNature(getHeight(), getWidth())==Nature.STOPPER))throw new PostConditionError("getGameEng().getLevel().getNature(getHeight(), getWidth())!=Nature.STOPPER");
+			if(!(getGameEng().getLevel().getNature(getHeight()-1, getWidth())==Nature.STOPPER))throw new PostConditionError("getGameEng().getLevel().getNature(getHeight()-1, getWidth())!=Nature.STOPPER");
+		}
+		if(etatPre.contains(EtatLemming.FLOATER)){
+			if(! (getEtat().contains(EtatLemming.FLOATER))) throw new PostConditionError("!getEtat().contains(EtatLemming.FLOATER)");
+		}
+		if(etatPre.contains(EtatLemming.BOMBER)){
+			if(! (getEtat().contains(EtatLemming.BOMBER))) throw new PostConditionError("!getEtat().contains(EtatLemming.BOMBER)");	
+		}
+		if(etatPre.contains(EtatLemming.CLIMBER)){
+			if(! (getEtat().contains(EtatLemming.CLIMBER))) throw new PostConditionError("!getEtat().contains(EtatLemming.CLIMBER)");
+		}
+		if(! (getEtat().contains(etat))) throw new PostConditionError("!getEtat().contains(etat)");
 		checkInvariants();
 	}
 
@@ -522,31 +539,34 @@ public class LemmingContrat extends LemmingDecorateur{
 				if(! (getNbToursBomber() == nbToursBomberPre+1)) throw new PostConditionError("getNbToursBomber() != nbToursBomberPre+1");  
 			}
 			
+			
+			
 			if (etatPre.contains(EtatLemming.CLIMBER)){
 				if(isDroitierPre){
-					if(hPreWPreP1!=Nature.EMPTY && 
-							hPreM1WPreP1!=Nature.EMPTY &&
-							heightPre-2>=0 &&
-							hPreM2WPre==Nature.EMPTY){
-						if(! (getWidth() == widthPre)) throw new PostConditionError("getWidth() != getWidth()@pre");  
-						if(! (getHeight() == heightPre-1)) throw new PostConditionError("getHeight() != getHeight()@pre-1");   
-						canMonter=true;
-					}else {
-						if(!(getEtat().contains(EtatLemming.FALLER))) throw new PostConditionError("!getEtat().contains(EtatLemming.FALLER)");
-						if(!(isDroitier()!=isDroitierPre)) throw new PostConditionError("isDroitier()==isDroitierPre");
-					}
-				}else {
-					if(hPreWPreM1!=Nature.EMPTY && 
-							hPreM1WPreM1!=Nature.EMPTY &&
-							heightPre-2>=0 &&
-							hPreM2WPre==Nature.EMPTY){
-						if(! (getWidth() == widthPre)) throw new PostConditionError("getWidth() != getWidth()@pre");  
-						if(! (getHeight() == heightPre-1)) throw new PostConditionError("getHeight() != getHeight()@pre-1");   
-						canMonter=true;
-					}else {
-						if(!(getEtat().contains(EtatLemming.FALLER))) throw new PostConditionError("!getEtat().contains(EtatLemming.FALLER)");
-						if(!(isDroitier()!=isDroitierPre)) throw new PostConditionError("isDroitier()==isDroitierPre");
-					}
+					if(hPreWPreP1 != Nature.EMPTY 
+							&& hPreM1WPreP1!=Nature.EMPTY){
+						if(heightPre-2 >=0
+								&& hPreM2WPre==Nature.EMPTY){
+							if(!(getHeight()==heightPre-1)) throw new PostConditionError("getHeight()!=heightPre-1"); 
+							canMonter=true;
+						}else{
+							if(! (getEtat().contains(EtatLemming.FALLER))) throw new PostConditionError("getNbToursBomber() != nbToursBomberPre+1");  
+							if(!(isDroitier()!=isDroitierPre)) throw new PostConditionError("isDroitier()==isDroitierPre");
+						}
+					}else{}
+				}else{
+					if(hPreWPreM1 != Nature.EMPTY 
+							&& hPreM1WPreM1!=Nature.EMPTY){
+						if(heightPre-2 >=0
+								&& hPreM2WPre==Nature.EMPTY){
+							if(!(getHeight()==heightPre-1)) throw new PostConditionError("getHeight()!=heightPre-1"); 
+							canMonter=true;
+						}else{
+							if(! (getEtat().contains(EtatLemming.FALLER))) throw new PostConditionError("getNbToursBomber() != nbToursBomberPre+1");  
+							if(!(isDroitier()!=isDroitierPre)) throw new PostConditionError("isDroitier()==isDroitierPre");
+						}
+					}else{}
+					
 				}
 			}
 			if(!canMonter){
@@ -624,7 +644,7 @@ public class LemmingContrat extends LemmingDecorateur{
 				}else if(etatPre.contains(EtatLemming.DIGGER)){
 					if(hPreP1WPre==Nature.EMPTY) {
 						if(!(getEtat().contains(EtatLemming.FALLER))) throw new PostConditionError("!getEtat().contains(EtatLemming.FALLER)");
-					}else if(hPreP1WPre==Nature.METAL){
+					}else if(hPreP1WPre==Nature.METAL || hPreP1WPre==Nature.STOPPER){
 						if(!(getEtat().contains(EtatLemming.WALKER))) throw new PostConditionError("!getEtat().contains(EtatLemming.WALKER)");
 					}else if(hPreP1WPre==Nature.DIRT){
 						if(!(getGameEng().getLevel().getNature(heightPre+1, widthPre)==Nature.EMPTY)) throw new PostConditionError("getGameEng().getLevel().getNature(heightPre+1, widthPre)!=Nature.EMPTY");
@@ -634,7 +654,6 @@ public class LemmingContrat extends LemmingDecorateur{
 						if(hPreP1WPreM1==Nature.DIRT){
 							if(!(getGameEng().getLevel().getNature(heightPre+1, widthPre-1)==Nature.EMPTY)) throw new PostConditionError("getGameEng().getLevel().getNature(heightPre+1, widthPre-1)!=Nature.EMPTY");
 						}
-						if(! (getWidth() == widthPre)) throw new PostConditionError("getWidth() != getWidth()@pre");  
 						if(! (getHeight() == heightPre+1)) throw new PostConditionError("getHeight() != getHeight()@pre+1"); 
 					}
 				
@@ -692,16 +711,16 @@ public class LemmingContrat extends LemmingDecorateur{
 					}else {
 						if(isDroitierPre){
 							if(heightPre-2>=0 && hPreWPreP1 !=Nature.METAL
-									&& hPreP1WPreP1 !=Nature.METAL
+									&& hPreM2WPreP1 !=Nature.METAL
 									&& hPreM1WPreP1 !=Nature.METAL
 									&& hPreWPreM1 !=Nature.STOPPER
-									&& hPreP1WPreP1 !=Nature.STOPPER
+									&& hPreM2WPreP1 !=Nature.STOPPER
 									&& hPreM1WPreP1 !=Nature.STOPPER){
 								if(nbCreusePre<20){
 									if( hPreWPreP1==Nature.DIRT){
 										if(!(getGameEng().getLevel().getNature(heightPre, widthPre+1)==Nature.EMPTY)) throw new PostConditionError("getGameEng().getLevel().getNature(heightPre, widthPre+1)!=Nature.EMPTY");
 									}
-									if( hPreP1WPreP1==Nature.DIRT){
+									if( hPreM2WPreP1==Nature.DIRT){
 										if(!(getGameEng().getLevel().getNature(heightPre-2, widthPre+1)==Nature.EMPTY)) throw new PostConditionError("getGameEng().getLevel().getNature(heightPre-2, widthPre+1)!=Nature.EMPTY");
 									}
 									if( hPreM1WPreP1==Nature.DIRT){
@@ -719,16 +738,16 @@ public class LemmingContrat extends LemmingDecorateur{
 							}
 						} else {
 							if(heightPre-2>=0 && hPreWPreM1 !=Nature.METAL
-									&& hPreP1WPreM1 !=Nature.METAL
+									&& hPreM2WPreM1 !=Nature.METAL
 									&& hPreM1WPreM1 !=Nature.METAL
 									&& hPreWPreM1 !=Nature.STOPPER
-									&& hPreP1WPreM1 !=Nature.STOPPER
+									&& hPreM2WPreM1 !=Nature.STOPPER
 									&& hPreM1WPreM1 !=Nature.STOPPER){
 								if(nbCreusePre<20){
 									if( hPreWPreM1==Nature.DIRT){
 										if(!(getGameEng().getLevel().getNature(heightPre, widthPre-1)==Nature.EMPTY)) throw new PostConditionError("getGameEng().getLevel().getNature(heightPre, widthPre-1)!=Nature.EMPTY");
 									}
-									if( hPreP1WPreM1==Nature.DIRT){
+									if( hPreM2WPreM1==Nature.DIRT){
 										if(!(getGameEng().getLevel().getNature(heightPre-2, widthPre-1)==Nature.EMPTY)) throw new PostConditionError("getGameEng().getLevel().getNature(heightPre-2, widthPre-1)!=Nature.EMPTY");
 									}
 									if( hPreM1WPreM1==Nature.DIRT){
@@ -748,37 +767,98 @@ public class LemmingContrat extends LemmingDecorateur{
 					}
 				
 				}else if (etatPre.contains(EtatLemming.MINER)){ // CREUSEUR EN DIAGONALE
-					if(isDroitierPre){
-						if(hPreP1WPreP1 == Nature.DIRT 
-								&& hPreWPreP1==Nature.DIRT ){
-							if(!(getGameEng().getLevel().getNature(heightPre+1, widthPre+1)==Nature.EMPTY)) throw new PostConditionError("getGameEng().getLevel().getNature(heightPre+1, widthPre+1)!=Nature.EMPTY");
-							if(!(getGameEng().getLevel().getNature(heightPre, widthPre+1)==Nature.EMPTY)) throw new PostConditionError("getGameEng().getLevel().getNature(heightPre, widthPre+1)!=Nature.EMPTY");
-							if(! (getWidth() == widthPre+1)) throw new PostConditionError("getWidth() != getWidth()@pre+1");  
-							if(! (getHeight() == heightPre+1)) throw new PostConditionError("getHeight() != getHeight()@pre+1"); 
-						}else if(heightPre-2>=0 && hPreM1WPreP1==Nature.DIRT
-								&& hPreM2WPreP1 ==Nature.DIRT){
-							if(!(getGameEng().getLevel().getNature(heightPre-1, widthPre+1)==Nature.EMPTY)) throw new PostConditionError("getGameEng().getLevel().getNature(heightPre-1, widthPre+1)!=Nature.EMPTY");
-							if(!(getGameEng().getLevel().getNature(heightPre-2, widthPre+1)==Nature.EMPTY)) throw new PostConditionError("getGameEng().getLevel().getNature(heightPre-2, widthPre+1)!=Nature.EMPTY");
-							if(! (getWidth() == widthPre+1)) throw new PostConditionError("getWidth() != getWidth()@pre+1");  
-							if(! (getHeight() == heightPre-1)) throw new PostConditionError("getHeight() != getHeight()@pre-1"); 
+					if(hPreP1WPre==Nature.EMPTY){
+						if(!(getEtat().contains(EtatLemming.FALLER))) throw new PostConditionError("!getEtat().contains(EtatLemming.FALLER)");
+					}
+					else{
+						if(isDroitierPre){
+							
+							if(hPreP1WPreP1!=Nature.METAL
+									&&hPreP1WPreP1!=Nature.STOPPER
+									&&hPreWPreP1!=Nature.METAL
+									&&hPreWPreP1!=Nature.STOPPER){
+								if( hPreP1WPreP1==Nature.DIRT){
+									if(!(getGameEng().getLevel().getNature(heightPre+1, widthPre+1)==Nature.EMPTY)){
+										throw new PostConditionError("getGameEng().getLevel().getNature(heightPre+1, widthPre+1)!=Nature.EMPTY");
+									}
+								}
+								if( hPreWPreP1==Nature.DIRT){
+									if(!(getGameEng().getLevel().getNature(heightPre, widthPre+1)==Nature.EMPTY)){
+										throw new PostConditionError("getGameEng().getLevel().getNature(heightPre, widthPre+1)!=Nature.EMPTY");
+									}
+								}
+								if(!(getHeight()==heightPre+1)) throw new PostConditionError("getHeight()!=heightPre+1");
+								if(!(getWidth()==widthPre+1)) throw new PostConditionError("getWidth()!=widthPre+1");
+							
+							
+							}else if(heightPre-2>=0
+									 && hPreM2WPreP1!=Nature.METAL
+									 && hPreM2WPreP1!=Nature.STOPPER
+									 && hPreM1WPreP1!=Nature.METAL
+									 && hPreM1WPreP1!=Nature.STOPPER){
+								if( hPreM2WPreP1==Nature.DIRT){
+									if(!(getGameEng().getLevel().getNature(heightPre-2, widthPre+1)==Nature.EMPTY)){
+										throw new PostConditionError("getGameEng().getLevel().getNature(heightPre-2, widthPre+1)!=Nature.EMPTY");
+									}
+								}
+								if( hPreM1WPreP1==Nature.DIRT){
+									if(!(getGameEng().getLevel().getNature(heightPre-1, widthPre+1)==Nature.EMPTY)){
+										throw new PostConditionError("getGameEng().getLevel().getNature(heightPre-1, widthPre+1)!=Nature.EMPTY");
+									}
+								}
+								if( hPreWPreP1!=Nature.EMPTY){ 
+									if(!(getGameEng().getLevel().getNature(heightPre, widthPre+1)==Nature.EMPTY)){
+										throw new PostConditionError("getGameEng().getLevel().getNature(heightPre, widthPre+1)!=Nature.EMPTY");
+									}
+								}
+								if(!(getWidth()==widthPre+1)) throw new PostConditionError("getWidth()!=widthPre+1");
+							}else{
+								if(!(getEtat().contains(EtatLemming.WALKER))) throw new PostConditionError("!getEtat().contains(EtatLemming.WALKER)");
+							}
+							
 						}else{
-							if(!(getEtat().contains(EtatLemming.WALKER))) throw new PostConditionError("!getEtat().contains(EtatLemming.WALKER)");
-						}
-					}else{
-						if(hPreP1WPreM1==Nature.DIRT 
-								&& hPreWPreM1==Nature.DIRT ){
-							if(!(getGameEng().getLevel().getNature(heightPre+1, widthPre-1)==Nature.EMPTY)) throw new PostConditionError("getGameEng().getLevel().getNature(heightPre+1, widthPre-1)!=Nature.EMPTY");
-							if(!(getGameEng().getLevel().getNature(heightPre, widthPre-1)==Nature.EMPTY)) throw new PostConditionError("getGameEng().getLevel().getNature(heightPre, widthPre-1)!=Nature.EMPTY");
-							if(! (getWidth() == widthPre-1)) throw new PostConditionError("getWidth() != getWidth()@pre-1");  
-							if(! (getHeight() == heightPre+1)) throw new PostConditionError("getHeight() != getHeight()@pre+1"); 
-						}else if(heightPre-2>=0 && hPreM1WPreM1==Nature.DIRT
-								&& hPreM2WPreM1==Nature.DIRT){
-							if(!(getGameEng().getLevel().getNature(heightPre-1, widthPre-1)==Nature.EMPTY)) throw new PostConditionError("getGameEng().getLevel().getNature(heightPre-1, widthPre-1)!=Nature.EMPTY");
-							if(!(getGameEng().getLevel().getNature(heightPre-2, widthPre-1)==Nature.EMPTY)) throw new PostConditionError("getGameEng().getLevel().getNature(heightPre-2, widthPre-1)!=Nature.EMPTY");
-							if(! (getWidth() == widthPre-1)) throw new PostConditionError("getWidth() != getWidth()@pre-1");  
-							if(! (getHeight() == heightPre-1)) throw new PostConditionError("getHeight() != getHeight()@pre-1"); 
-						}else{
-							if(!(getEtat().contains(EtatLemming.WALKER))) throw new PostConditionError("!getEtat().contains(EtatLemming.WALKER)");
+							if(hPreP1WPreM1!=Nature.METAL
+									&&hPreP1WPreM1!=Nature.STOPPER
+									&&hPreWPreM1!=Nature.METAL
+									&&hPreWPreM1!=Nature.STOPPER){
+								if( hPreP1WPreM1==Nature.DIRT){
+									if(!(getGameEng().getLevel().getNature(heightPre+1, widthPre-1)==Nature.EMPTY)){
+										throw new PostConditionError("getGameEng().getLevel().getNature(heightPre+1, widthPre-1)!=Nature.EMPTY");
+									}
+								}
+								if( hPreWPreM1==Nature.DIRT){
+									if(!(getGameEng().getLevel().getNature(heightPre, widthPre-1)==Nature.EMPTY)){
+										throw new PostConditionError("getGameEng().getLevel().getNature(heightPre, widthPre-1)!=Nature.EMPTY");
+									}
+								}
+								if(!(getHeight()==heightPre+1)) throw new PostConditionError("getHeight()!=heightPre+1");
+								if(!(getWidth()==widthPre-1)) throw new PostConditionError("getWidth()!=widthPre-1");
+							
+							
+							}else if(heightPre-2>=0
+									 && hPreM2WPreM1!=Nature.METAL
+									 && hPreM2WPreM1!=Nature.STOPPER
+									 && hPreM1WPreM1!=Nature.METAL
+									 && hPreM1WPreM1!=Nature.STOPPER){
+								if( hPreM2WPreM1==Nature.DIRT){
+									if(!(getGameEng().getLevel().getNature(heightPre-2, widthPre-1)==Nature.EMPTY)){
+										throw new PostConditionError("getGameEng().getLevel().getNature(heightPre-2, widthPre-1)!=Nature.EMPTY");
+									}
+								}
+								if( hPreM1WPreM1==Nature.DIRT){
+									if(!(getGameEng().getLevel().getNature(heightPre-1, widthPre-1)==Nature.EMPTY)){
+										throw new PostConditionError("getGameEng().getLevel().getNature(heightPre-1, widthPre-1)!=Nature.EMPTY");
+									}
+								}
+								if( hPreWPreM1!=Nature.EMPTY){ 
+									if(!(getGameEng().getLevel().getNature(heightPre, widthPre-1)==Nature.EMPTY)){
+										throw new PostConditionError("getGameEng().getLevel().getNature(heightPre, widthPre-1)!=Nature.EMPTY");
+									}
+								}
+								if(!(getWidth()==widthPre-1)) throw new PostConditionError("getWidth()!=widthPre-1");
+							}else{
+								if(!(getEtat().contains(EtatLemming.WALKER))) throw new PostConditionError("!getEtat().contains(EtatLemming.WALKER)");
+							}
 						}
 					}
 				}
