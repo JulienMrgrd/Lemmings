@@ -191,6 +191,9 @@ public class LemmingMainGUI extends Application {
 					if(level.getText().matches("[0-9]")){
 						int niv = Integer.parseInt(level.getText());
 						if(niv!=niveau){
+							if(joueur.getGameEngine().gameOver()==true){
+								joueur.reset();
+							}
 							Integer[] enterAndExit = LevelChooser.constructLevel(joueur.getGameEngine().getLevel(), niv);
 							if(enterAndExit!=null){
 								if(enterAndExit!=null){
