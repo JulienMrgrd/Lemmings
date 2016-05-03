@@ -20,7 +20,7 @@ public interface ILemming {
 	IGameEng getGameEng();
 	int getNbCasesFalling();
 	int getNbToursBomber();
-	int getNbTourBuilder();
+	int getNbToursBuilder();
 	int getNbDallePose();
 	int getNbCreuse();
 	
@@ -35,7 +35,7 @@ public interface ILemming {
 	 * 			^ getEtat().contains(EtatLemming.FALLER)
 	 * 			^ getNbCasesFalling() == 0
 	 *			^ getNbToursBomber() == 0
-	 *			^ getNbTourBuilder() == 0
+	 *			^ getNbToursBuilder() == 0
 	 *			^ getNbDallePose() == 0
 	 *			^ getNbCreuse() ==0
 	 */
@@ -260,7 +260,7 @@ public interface ILemming {
 								 && getGameEng().getLevel().getNature(getHeight()@pre, getWidth()@pre+1)==Nature.EMPTY
 								 && getGameEng().getLevel().getNature(getHeight()@pre, getWidth()@pre+2)==Nature.EMPTY
 								 && getGameEng().getLevel().getNature(getHeight()@pre, getWidth()@pre+3)==Nature.EMPTY){
-							 if(getNbTourBuilder()@pre%3==0){
+							 if(getNbToursBuilder()@pre%3==0){
 								 getGameEng().getLevel().getNature(getHeight()@pre, getWidth()@pre+1)==Nature.DIRT;
 								 getGameEng().getLevel().getNature(getHeight()@pre, getWidth()@pre+2)==Nature.DIRT;
 								 getGameEng().getLevel().getNature(getHeight()@pre, getWidth()@pre+3)==Nature.DIRT;
@@ -268,7 +268,7 @@ public interface ILemming {
 								 getHeight()@pre==getHeight()@pre-1;
 								 getWidth()==getWidth()@pre+2;
 							 }
-							 getNbTourBuilder()==getNbTourBuilder()@pre+1;
+							 getNbToursBuilder()==getNbToursBuilder()@pre+1;
 						 }else{
 							 getEtat().contains(EtatLemming.WALKER);
 						 }
@@ -279,7 +279,7 @@ public interface ILemming {
 								 && getGameEng().getLevel().getNature(getHeight()@pre, getWidth()@pre-1)==Nature.EMPTY
 								 && getGameEng().getLevel().getNature(getHeight()@pre, getWidth()@pre-2)==Nature.EMPTY
 								 && getGameEng().getLevel().getNature(getHeight()@pre, getWidth()@pre-3)==Nature.EMPTY){
-							 if(getNbTourBuilder()@pre%3==0){
+							 if(getNbToursBuilder()@pre%3==0){
 							 	 getGameEng().getLevel().getNature(getHeight()@pre, getWidth()@pre-1)==Nature.DIRT;
 								 getGameEng().getLevel().getNature(getHeight()@pre, getWidth()@pre-2)==Nature.DIRT;
 								 getGameEng().getLevel().getNature(getHeight()@pre, getWidth()@pre-3)==Nature.DIRT;
@@ -287,7 +287,7 @@ public interface ILemming {
 								 getHeight()@pre==getHeight()@pre-1;
 								 getWidth()==getWidth()@pre-2;
 							 }
-							  getNbTourBuilder()==getNbTourBuilder()@pre+1;
+							  getNbToursBuilder()==getNbToursBuilder()@pre+1;
   						 }else{
 							 getEtat().contains(EtatLemming.WALKER);
 						 }

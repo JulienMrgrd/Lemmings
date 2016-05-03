@@ -82,9 +82,9 @@ public class LemmingContrat extends LemmingDecorateur{
 	}
 	
 	@Override
-	public int getNbTourBuilder() {
+	public int getNbToursBuilder() {
 		checkInvariants();
-		int res = delegate.getNbTourBuilder();
+		int res = delegate.getNbToursBuilder();
 		checkInvariants();
 		return res;
 	}
@@ -122,7 +122,7 @@ public class LemmingContrat extends LemmingDecorateur{
 		if(! (getEtat().contains(EtatLemming.FALLER))) throw new PostConditionError("!getEtat().contains(EtatLemming.FALLER)");
 		if(! (getNbCasesFalling() == 0))  throw new PostConditionError("getNbCasesFalling() != 0");
 		if(! (getNbToursBomber() == 0))  throw new PostConditionError("getNbToursBomber() != 0");
-		if(! (getNbTourBuilder() == 0))  throw new PostConditionError("getNbTourBuilder() != 0");
+		if(! (getNbToursBuilder() == 0))  throw new PostConditionError("getNbToursBuilder() != 0");
 		if(! (getNbDallePose() == 0))  throw new PostConditionError("getNbDallePose() != 0");
 		if(! (getNbCreuse() == 0))  throw new PostConditionError("getNbCreuse() != 0");
 		checkInvariants();
@@ -298,7 +298,7 @@ public class LemmingContrat extends LemmingDecorateur{
 			}
 		}
 		
-		int nBTourBuilderPre=getNbTourBuilder();
+		int nBTourBuilderPre=getNbToursBuilder();
 		int nbDallesPosesPre=getNbDallePose();
 		
 		delegate.step();
@@ -673,7 +673,7 @@ public class LemmingContrat extends LemmingDecorateur{
 								 if(!(getHeight()==heightPre-1))  throw new PostConditionError("getHeight()!=heightPre-1");
 								 if(!(getWidth()==widthPre+2))  throw new PostConditionError("getWidth()!=widthPre+2");
 							 }
-							 if(!(getNbTourBuilder()==nBTourBuilderPre+1)) throw new PostConditionError("getNbTourBuilder()!=nbDallesPosesPre+1");
+							 if(!(getNbToursBuilder()==nBTourBuilderPre+1)) throw new PostConditionError("getNbToursBuilder()!=nbDallesPosesPre+1");
 						 }else{
 							 if(!(getEtat().contains(EtatLemming.WALKER))) throw new PostConditionError("!getEtat().contains(EtatLemming.WALKER)");
 						 }
@@ -692,7 +692,7 @@ public class LemmingContrat extends LemmingDecorateur{
 								 if(!(getHeight()==heightPre-1))  throw new PostConditionError("getHeight()!=heightPre-1");
 								 if(!(getWidth()==widthPre-2))  throw new PostConditionError("getWidth()!=widthPre-2");
 							 }
-							 if(!(getNbTourBuilder()==nBTourBuilderPre+1)) throw new PostConditionError("getNbTourBuilder()!=nbDallesPosesPre+1");
+							 if(!(getNbToursBuilder()==nBTourBuilderPre+1)) throw new PostConditionError("getNbToursBuilder()!=nbDallesPosesPre+1");
  						 }else{
  							if(!(getEtat().contains(EtatLemming.WALKER))) throw new PostConditionError("!getEtat().contains(EtatLemming.WALKER)");
 						 }

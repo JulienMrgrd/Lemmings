@@ -63,7 +63,7 @@ public class Lemming implements ILemming {
 	}
 	
 	@Override
-	public int getNbTourBuilder() {
+	public int getNbToursBuilder() {
 		return nbTourBuilder;
 	}
 
@@ -145,14 +145,6 @@ public class Lemming implements ILemming {
 		if(gameEng.getLevel().getExitHeight() == height && gameEng.getLevel().getExitWidth() == width ){
 			gameEng.saveLemming(id);
 		}else {
-			//TODO A MODIFIER OBLIGATOIREMENT
-			/*if(width==8&&height==7 &&id==0){
-				setEtat(EtatLemming.DIGGER);
-			}*/
-			
-			if(width==2 &&height==13 &&id==4){
-				setEtat(EtatLemming.MINER);
-			}
 			
 			if (getEtat().contains(EtatLemming.BOMBER)){ //OK
 				
@@ -216,7 +208,7 @@ public class Lemming implements ILemming {
 			}
 
 
-			if (getEtat().contains(EtatLemming.CLIMBER)){ //GRIMPEUR //TODO A REVOIR
+			if (getEtat().contains(EtatLemming.CLIMBER)){ //GRIMPEUR
 				if(isDroitier){
 					if(gameEng.getLevel().getNature(height, width+1)!=Nature.EMPTY
 							&& gameEng.getLevel().getNature(height-1, width+1)!=Nature.EMPTY){
@@ -306,7 +298,7 @@ public class Lemming implements ILemming {
 						}
 					}
 					
-				}else if(getEtat().contains(EtatLemming.DIGGER)){//CREUSEUR FAIRE LE BAS //TODO MODIF FAITE
+				}else if(getEtat().contains(EtatLemming.DIGGER)){//CREUSEUR FAIRE LE BAS
 					if(gameEng.getLevel().getNature(height+1, width)==Nature.EMPTY){
 						setEtat(EtatLemming.FALLER);
 					}
@@ -427,7 +419,7 @@ public class Lemming implements ILemming {
 						}
 					}
 					
-				}else if (getEtat().contains(EtatLemming.MINER)){ // CREUSEUR EN DIAGONALE //TODO FAIRE DOC A REVOIR
+				}else if (getEtat().contains(EtatLemming.MINER)){ // CREUSEUR EN DIAGONALE
 					if(gameEng.getLevel().getNature(height+1, width)==Nature.EMPTY) {
 						setEtat(EtatLemming.FALLER);
 					}else{
