@@ -1,12 +1,9 @@
-package main;
+package tests.bug.main;
 
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import contrat.bug.GameEngContratBug;
-import contrat.bug.JoueurContratBug;
-import contrat.bug.LevelContratBug;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,6 +21,9 @@ import javafx.stage.Stage;
 import services.IGameEng;
 import services.IJoueur;
 import services.ILevel;
+import tests.bug.contrat.GameEngContratBug;
+import tests.bug.contrat.JoueurContratBug;
+import tests.bug.contrat.LevelContratBug;
 import utils.ImageLoader;
 import utils.LevelChooser;
 

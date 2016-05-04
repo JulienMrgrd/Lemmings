@@ -1,4 +1,4 @@
-package servicesImplementations.bug;
+package tests.bug.servicesImplementations;
 
 import enumeration.Nature;
 import services.ILevel;

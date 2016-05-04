@@ -1,4 +1,4 @@
-package contrat.bug;
+package tests.bug.contrat;
 
 import decorateur.GameEngDecorateur;
 import errors.InvariantError;
@@ -6,8 +6,7 @@ import errors.PostConditionError;
 import errors.PreConditionError;
 import services.ILemming;
 import services.ILevel;
-import servicesImplementations.GameEng;
-import servicesImplementations.bug.GameEngBug;
+import tests.bug.servicesImplementations.GameEngBug;
 
 public class GameEngContratBug extends GameEngDecorateur{
 

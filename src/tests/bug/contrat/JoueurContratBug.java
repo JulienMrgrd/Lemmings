@@ -1,9 +1,9 @@
-package contrat.bug;
+package tests.bug.contrat;
 
 import decorateur.JoueurDecorateur;
 import enumeration.EtatLemming;
 import services.IGameEng;
-import servicesImplementations.bug.JoueurBug;
+import tests.bug.servicesImplementations.JoueurBug;
 
 public class JoueurContratBug extends JoueurDecorateur{
 	

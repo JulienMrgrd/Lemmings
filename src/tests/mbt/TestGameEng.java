@@ -1,4 +1,4 @@
-package tests;
+package tests.mbt;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

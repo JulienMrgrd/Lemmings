@@ -1,11 +1,11 @@
-package contrat.bug;
+package tests.bug.contrat;
 
-import servicesImplementations.bug.LevelBug;
 import decorateur.LevelDecorateur;
 import enumeration.Nature;
 import errors.InvariantError;
 import errors.PostConditionError;
 import errors.PreConditionError;
+import tests.bug.servicesImplementations.LevelBug;
 
 public class LevelContratBug extends LevelDecorateur{
 	

@@ -1,9 +1,9 @@
-package contrat.bug;
+package tests.bug.contrat;
 
 import java.util.List;
 
 import services.IGameEng;
-import servicesImplementations.bug.LemmingBug;
+import tests.bug.servicesImplementations.LemmingBug;
 import decorateur.LemmingDecorateur;
 import enumeration.EtatLemming;
 import enumeration.Nature;
