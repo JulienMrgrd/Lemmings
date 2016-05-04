@@ -4,9 +4,6 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import contrat.GameEngContrat;
-import contrat.JoueurContrat;
-import contrat.LevelContrat;
 import contrat.bug.GameEngContratBug;
 import contrat.bug.JoueurContratBug;
 import contrat.bug.LevelContratBug;
@@ -57,7 +54,7 @@ public class LemmingMainGUIBug extends Application {
 	private int height, width;
 	private int entH, entW, exitH, exitW;
 	private int speedGame = 300; //ms
-	private int niveau = 1;
+	private int niveau = 2;
 
 	private String textButtonReset = "Reset";
 	private String textButtonPlay = "Play";
@@ -142,6 +139,7 @@ public class LemmingMainGUIBug extends Application {
 						}
 						
 						if(joueur.getGameEngine().gameOver()==true){
+							cleanResume();
 							joueur.reset();
 							Integer[] enterAndExit = LevelChooser.constructLevel(joueur.getGameEngine().getLevel(), niveau);
 							if(enterAndExit!=null){
@@ -242,7 +240,7 @@ public class LemmingMainGUIBug extends Application {
 	private EventHandler<ActionEvent> lemChange(Button button) {
 		return new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent e) {
-				// TODO : action du bouton
+				lemChange.setText(button.getText()+"/");
 			}
 		};
 	}
@@ -269,12 +267,15 @@ public class LemmingMainGUIBug extends Application {
 
 	private void notPlayUI() {
 		playResetButton.setText(textButtonPlay);
+		toggleButtons(false);
+	}
+	
+	private void cleanResume(){
 		lemChange.setText("");
-		tours.setText("");
 		score.setText("");
+		tours.setText("");
 		mortsVsVivantsCpt.setText("");
 		sauvesVsSizeColonyCpt.setText("");
-		toggleButtons(false);
 	}
 	
 	private void toggleButtons(boolean value){
