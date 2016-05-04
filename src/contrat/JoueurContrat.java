@@ -47,6 +47,9 @@ public class JoueurContrat extends JoueurDecorateur{
 	@Override
 	public void changeEtatLemming(int idLem, String etat) {
 		checkInvariants();
+		if(! (getGameEngine().containsIdColony(idLem)) ) throw new PreConditionError("getGameEngine().containsIdColony(idLem)==false");
+		if(! (getNbTokens(EtatLemming.getEtatByName(etat))>0) ) throw new PreConditionError("getNbTokens(EtatLemming.getEtatByName(etat))<=0");
+		
 		delegate.changeEtatLemming(idLem, etat);
 		checkInvariants();
 	}

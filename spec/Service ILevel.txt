@@ -1,5 +1,5 @@
 Service: ILevel
-Types: int, bool, IGameEng, Nature
+Types: int, bool, Nature
 
 
 Observators:

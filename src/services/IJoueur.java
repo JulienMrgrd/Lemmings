@@ -20,7 +20,7 @@ public interface IJoueur {
 	/** pre : changeSizeColony(sizeColony) require sizeColony>0 */
 	void changeSizeColony(int sizeColony);
 	
-	/** post : for(int i=0; i<getNbLemVivants; i++){
+	/** post : for(int i=0; i<getNbLemVivants(); i++){
 	 * 				getAllVivants()[i].getEtats().contains(EtatLemming.BOMBER);
 	 * 		   } */
 	void destroyAllLem();
