@@ -27,7 +27,7 @@ import services.ILevel;
 import utils.ImageLoader;
 import utils.LevelChooser;
 
-public class LemmingMainGUI extends Application {
+public class LemmingsMainGUI extends Application {
 
 	private Stage primaryStage;
 	private AnchorPane rootLayout;
@@ -100,7 +100,7 @@ public class LemmingMainGUI extends Application {
 	public void initRootLayout() {
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(LemmingMainGUI.class.getResource("gui/view/PageView.fxml"));
+			loader.setLocation(LemmingsMainGUI.class.getResource("gui/view/PageView.fxml"));
 			rootLayout = (AnchorPane) loader.load();
 
 			Scene scene = new Scene(rootLayout);
@@ -237,7 +237,7 @@ public class LemmingMainGUI extends Application {
 		}
 	}
 
-	private EventHandler<ActionEvent> lemChange(Button button) {
+	private EventHandler<ActionEvent> lemChange(final Button button) {
 		return new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent e) {
 				lemChange.setText(button.getText()+"/");

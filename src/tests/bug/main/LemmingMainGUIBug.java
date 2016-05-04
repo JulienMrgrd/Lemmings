@@ -237,7 +237,7 @@ public class LemmingMainGUIBug extends Application {
 		}
 	}
 
-	private EventHandler<ActionEvent> lemChange(Button button) {
+	private EventHandler<ActionEvent> lemChange(final Button button) {
 		return new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent e) {
 				lemChange.setText(button.getText()+"/");

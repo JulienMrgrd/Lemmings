@@ -5,6 +5,8 @@
   <!-- set global properties for this build -->
   <property name="src" location="src"/>
   <property name="bin" location="bin"/>
+  <property name="junit" location="lib/junit.jar"/>
+  <property name="javafx" location="lib/jfxrt.jar"/>
 
   <!-- METTRE ICI LE NOM DU BINOME -->
   <property name="nom1" value="Margarido Julien"/>
@@ -20,21 +22,18 @@
   <target name="compile" depends="init"
         description="compile the source " >
     <!-- Compile the java code from ${src} into ${build} -->
-    <javac debug="true" srcdir="${src}" excludes="" destdir="${bin}" includeantruntime="false" />
+    <javac debug="true" srcdir="${src}" excludes="" classpath="${junit}:${javafx}" destdir="${bin}" includeantruntime="false" />
   </target>
 
   <target name="run" depends="compile"
-          description="run application in release mode">
+          description="run application">
     <echo>================ Run Object Main ================</echo>
-    <java classname="src.main.LemmingsMainGUI"
-          classpath="${bin}">
+    <java classname="main.LemmingsMainGUI" fork="true" classpath="${bin}:${javafx}">
     </java>
   </target>
 
-  <target name="dist" depends="init,clean"
-        description="Generer la distribution" >
-    <!-- tout mettre dans l'archive -->
-    <jar basedir=".." jarfile="../Projet-Lemmings-${nom1}-${nom2}-${DSTAMP}.jar"/>
+  <target name="dist" depends="init,clean" description="Generer la distribution" >
+    <jar basedir=".." jarfile="../Projet-Lemmings-${nom1}-${nom2}.jar" includes="Lemmings/**/*"/>
   </target>
 
   <target name="clean"
