@@ -6,12 +6,12 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import contrat.GameEngContrat;
-import contrat.LevelContrat;
 import errors.PreConditionError;
 import services.IGameEng;
 import services.ILevel;
+import servicesImplementations.GameEng;
 import servicesImplementations.Lemming;
+import servicesImplementations.Level;
 
 public class TestGameEng {
 
@@ -19,18 +19,18 @@ public class TestGameEng {
 	IGameEng gameEng;
 	
 	private void resetGameEng(){
-		gameEng=new GameEngContrat();
+		gameEng=new GameEng();
 	}
 	
 	@Before
 	public void init(){
-		level=new LevelContrat();
+		level=new Level();
 		
 		int height = 15;
 		int width = 30;
 		level.init(height, width);
 		
-		gameEng=new GameEngContrat();
+		gameEng=new GameEng();
 		int sizeColony=10;
 		int spawnSpeed=2;
 		
@@ -38,7 +38,7 @@ public class TestGameEng {
 	}
 	
 	/**
-	 * Objectif de Test: getLemVivantById(int id) reussit
+	 * Objectif de Test: getLemVivantById(int id) reussi
 	 * 
 	 * Cas de Test: gameEng.getLemVivantById(int id)
 	 * 		 0 <= id <sizeColony && containsIdColony(id)
@@ -73,7 +73,7 @@ public class TestGameEng {
 	}
 	
 	/**
-	 * Objectif de Test: getLemVivantById(int id) retourne failed
+	 * Objectif de Test: getLemVivantById(int id) retourne failed id<0
 	 * 
 	 * Cas de Test: gameEng.getLemVivantById(int id)
 	 * 		 id<0
@@ -109,7 +109,7 @@ public class TestGameEng {
 	}
 	
 	/**
-	 * Objectif de Test: getLemVivantById(int id) retourne failed
+	 * Objectif de Test: getLemVivantById(int id) retourne failed id>sizeColony
 	 * 
 	 * Cas de Test: gameEng.getLemVivantById(int id)
 	 * 		 id>sizeColony
@@ -142,13 +142,13 @@ public class TestGameEng {
 	}
 	
 	/**
-	 * Objectif de Test: getLemVivantById(int id) retourne failed
+	 * Objectif de Test: getLemVivantById(int id) retourne failed !containsIdColony(id)
 	 * 
 	 * Cas de Test: gameEng.getLemVivantById(int id)
 	 * 		 !containsIdColony(id)
 	 * 
 	 * Condition initiale:
-	 * Tous les lemmings ont été ajouté
+	 * id du lemming pas ajouté
 	 * 
 	 * Operation:
 	 *  getLemVivantById(15)
@@ -173,10 +173,10 @@ public class TestGameEng {
 		assertTrue("id a tester '"+id+"', sizeColony = "+sizeColony+ " id<sizeColony ?",
 				id < sizeColony);
 	}
-	
+
 	
 	/**
-	 * Objectif de Test: init(ILevel level, int sizeColony, int spawnSpeed) reussit
+	 * Objectif de Test: init(ILevel level, int sizeColony, int spawnSpeed) reussi
 	 * 
 	 * Cas de Test: gameEng.init(ILevel level, int sizeColony, int spawnSpeed)
 	 * 		 sizeColony > 0 && spawnSpeed > 0
@@ -228,7 +228,6 @@ public class TestGameEng {
 		assertTrue("gameOver() = "+gameEng.gameOver()+" gameOver == 0 ? ",
 				gameEng.gameOver() == false);
 	}
-	
 	
 	
 	/**
@@ -338,11 +337,21 @@ public class TestGameEng {
 				gameEng.gameOver() == false);
 	}
 	
+	
 	/**
-	 * reussit
+	 * Objectif de Test: killLemming(int id) reussi
+	 * 
+	 * Cas de Test: gameEng.killLemming(int id)
+	 * 		 id >= 0 && containsIdColony(id)
+	 * 
+	 * Condition initiale:
+	 * Tous les lemmings ont été ajouté
+	 * 
+	 * Operation:
+	 *  killLemming(int id)
 	 */
 	@Test
-	public void killLemming(){
+	public void testKillLemming(){
 		int id=2;
 		
 		for(int i=0; i<gameEng.getSizeColony();i++){ //ON Ajoute manuellement tous les lemmings
@@ -362,12 +371,22 @@ public class TestGameEng {
 	
 	
 	/**
-	 * Lemming d'id 2 pas encore créé
+	 * Objectif de Test: killLemming(int id) retourne failed id<0
+	 * 
+	 * Cas de Test: gameEng.killLemming(int id)
+	 * 		 id<0
+	 * 
+	 * Condition initiale:
+	 * Tous les lemmings ont été ajouté
+	 * 
+	 * Operation:
+	 *  killLemming(-2)
+	 *  
 	 */
 	@Test
-	public void killLemming2(){
+	public void testKillLemming2(){
 		
-		int id=2;
+		int id=-2;
 		
 		assertTrue("getNbLemVivants() = '"+gameEng.getNbLemVivants()+"' getNbLemVivants>0 ?",
 				gameEng.getNbLemVivants()>0);
@@ -379,11 +398,23 @@ public class TestGameEng {
 		
 	}
 	
+	
+	
 	/**
+	 * Objectif de Test: killLemming(int id) retourne failed !containsIdColony(id)
+	 * 
+	 * Cas de Test: gameEng.killLemming(int id)
+	 * 		 !containsIdColony(id)
+	 * 
+	 * Condition initiale:
 	 * Lemming plus dans la liste
+	 *  
+	 * Operation:
+	 *  killLemming(id)
+	 *  
 	 */
 	@Test
-	public void killLemming3(){
+	public void testKillLemming3(){
 		int id=2;
 		
 		for(int i=0; i<gameEng.getSizeColony();i++){ //ON Ajoute manuellement tous les lemmings
@@ -402,12 +433,22 @@ public class TestGameEng {
 			assertFalse(e.toString(),true);
 		}
 	}
+
 	
 	/**
-	 * reussit
+	 * Objectif de Test: saveLemming(int id) reussi
+	 * 
+	 * Cas de Test: gameEng.saveLemming(int id)
+	 * 		 id >= 0 && containsIdColony(id)
+	 * 
+	 * Condition initiale:
+	 * Tous les lemmings ont été ajouté
+	 * 
+	 * Operation:
+	 *  saveLemming(int id)
 	 */
 	@Test
-	public void saveLemming(){
+	public void testSaveLemming(){
 		int id=2;
 		
 		for(int i=0; i<gameEng.getSizeColony();i++){ //ON Ajoute manuellement tous les lemmings
@@ -432,7 +473,7 @@ public class TestGameEng {
 	 * id<0
 	 */
 	@Test
-	public void saveLemming2(){
+	public void testSaveLemming2(){
 		int id=-2;
 		
 		for(int i=0; i<gameEng.getSizeColony();i++){ //ON Ajoute manuellement tous les lemmings
@@ -457,7 +498,7 @@ public class TestGameEng {
 	 * id trop grand
 	 */
 	@Test
-	public void saveLemming3(){
+	public void testSaveLemming3(){
 		int id=gameEng.getSizeColony();
 		
 		for(int i=0; i<gameEng.getSizeColony();i++){ //ON Ajoute manuellement tous les lemmings
@@ -482,7 +523,7 @@ public class TestGameEng {
 	 * liste pas encore créé
 	 */
 	@Test
-	public void saveLemming4(){
+	public void testSaveLemming4(){
 		int id=5;
 		
 		assertTrue("id = '"+id+"' id>=0 ?",
@@ -499,7 +540,7 @@ public class TestGameEng {
 	
 	
 	@Test
-	public void containsIdColony(){
+	public void testContainsIdColony(){
 		int id=5;
 		
 		assertTrue("id = '"+id+"' id>=0 ?",
@@ -509,7 +550,7 @@ public class TestGameEng {
 	}
 	
 	@Test
-	public void containsIdColony2(){
+	public void testContainsIdColony2(){
 		int id=-2;
 		
 		assertTrue("id = '"+id+"' id>=0 ?",
@@ -519,7 +560,7 @@ public class TestGameEng {
 	}
 	
 	@Test
-	public void containsIdColony3(){
+	public void testContainsIdColony3(){
 		int id=gameEng.getSizeColony();
 		
 		assertTrue("id = '"+id+"' id>=0 ?",
@@ -528,29 +569,42 @@ public class TestGameEng {
 				id<gameEng.getSizeColony());
 	}
 	
+	//TODO change spawn et sizeColony
 	
-	/*
-	public void changeSpawnSpeed(int newSpawnSpeed) {
-		checkInvariants();
-		if(! (newSpawnSpeed > 0) ) throw new PreConditionError("newSpawnSpeed <= 0");
-		
-		delegate.changeSpawnSpeed(newSpawnSpeed);
-		
-		if(! (getSpawnSpeed() == newSpawnSpeed) ) throw new PostConditionError("getSpawnSpeed() != newSpawnSpeed");
-		checkInvariants();
+	@Test
+	public void testChangeSpawnSpeed(){
+		int newSpawnSpeed=5;
+		assertTrue("newSpawnSpeed = '"+newSpawnSpeed+"' newSpawnSpeed>0 ?",
+				newSpawnSpeed>0);
 	}
 	
+	/**
+	 * SpawnSpeed<0
+	 */
+	@Test
+	public void testChangeSpawnSpeed2(){
+		int newSpawnSpeed=-5;
+		assertTrue("newSpawnSpeed = '"+newSpawnSpeed+"' newSpawnSpeed>0 ?",
+				newSpawnSpeed>0);
+	}
 	
+	public void testChangeSizeColony(){
+		int newSpawnSpeed=5;
+		assertTrue("newSpawnSpeed = '"+newSpawnSpeed+"' newSpawnSpeed>0 ?",
+				newSpawnSpeed>0);
+		assertTrue("getEditing = "+gameEng.getLevel().getEditing()+" getEditing() ? ",
+				gameEng.getLevel().getEditing());
+	}
 	
-	public void changeSizeColony(int newSizeColony) {
-		checkInvariants();
-		if(! (newSizeColony > 0) ) throw new PreConditionError("newSizeColony <= 0");
-		if(! (getLevel().getEditing()==true)) throw new PreConditionError("getLevel().getEditing()==false");
-		
-		delegate.changeSizeColony(newSizeColony);
-		
-		if(! (getSizeColony() == newSizeColony) ) throw new PostConditionError("getSizeColony() != newSizeColony");
-		checkInvariants();
-	}*/
-	
+	/**
+	 * SpawnSpeed<0
+	 */
+	@Test
+	public void testChangeSizeColony2(){
+		int newSpawnSpeed=-5;
+		assertTrue("newSpawnSpeed = '"+newSpawnSpeed+"' newSpawnSpeed>0 ?",
+				newSpawnSpeed>0);
+		assertTrue("getEditing = "+gameEng.getLevel().getEditing()+" getEditing() ? ",
+				gameEng.getLevel().getEditing());
+	}
 }
