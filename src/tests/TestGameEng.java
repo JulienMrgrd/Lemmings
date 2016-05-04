@@ -35,24 +35,24 @@ public class TestGameEng {
 		int spawnSpeed=2;
 		
 		gameEng.init(level, sizeColony, spawnSpeed);
-		
 	}
 	
 	/**
 	 * Objectif de Test: getLemVivantById(int id) reussit
 	 * 
-	 * Cas de Test: gameEng.GetLemVivantById(int id)
+	 * Cas de Test: gameEng.getLemVivantById(int id)
 	 * 		 0 <= id <sizeColony && containsIdColony(id)
 	 * 
-	 * Condition initial:
+	 * Condition initiale:
+	 * Tous les lemmings ont été ajouté
 	 * 
 	 * Operation:
 	 *  getLemVivantById(5)
-	 *  
 	 */
 	@Test
 	public void testGetLemVivantById(){
-		for(int i=0; i<gameEng.getSizeColony();i++){ //ON Ajoute manuellement tous les lemmings
+		for(int i=0; i<gameEng.getSizeColony();i++){ 
+			//ON Ajoute manuellement tous les lemmings
 			Lemming lem = new Lemming();
 			lem.init(gameEng);
 			gameEng.addLemming(lem);
@@ -62,22 +62,24 @@ public class TestGameEng {
 		assertTrue("id a tester '"+id+"' id>=0 ?",
 				id>=0);
 		try{
-			assertTrue("id a tester '"+id+"', containsIdColony(id) ?", gameEng.containsIdColony(id));
+			assertTrue("id a tester '"+id+"', containsIdColony(id) ?"
+					, gameEng.containsIdColony(id));
 		}catch(PreConditionError e){
 			assertFalse(e.toString(),true);
 		}
-		assertTrue("id a tester '"+id+"', sizeColony = "+sizeColony+ " id<sizeColony ?",
+		assertTrue("id a tester '"+id+"', sizeColony = "+sizeColony+ " "
+				+ "id<sizeColony ?",
 				id < sizeColony);
 	}
-	
 	
 	/**
 	 * Objectif de Test: getLemVivantById(int id) retourne failed
 	 * 
-	 * Cas de Test: gameEng.GetLemVivantById(int id)
+	 * Cas de Test: gameEng.getLemVivantById(int id)
 	 * 		 id<0
 	 * 
-	 * Condition initial:
+	 * Condition initiale:
+	 * Tous les lemmings ont été ajouté
 	 * 
 	 * Operation:
 	 *  getLemVivantById(-2)
@@ -85,7 +87,8 @@ public class TestGameEng {
 	 */
 	@Test
 	public void testGetLemVivantById2(){
-		for(int i=0; i<gameEng.getSizeColony();i++){ //ON Ajoute manuellement tous les lemmings
+		for(int i=0; i<gameEng.getSizeColony();i++){ 
+			//ON Ajoute manuellement tous les lemmings
 			Lemming lem = new Lemming();
 			lem.init(gameEng);
 			gameEng.addLemming(lem);
@@ -95,21 +98,24 @@ public class TestGameEng {
 		assertTrue("id a tester '"+id+"' id>=0 ?",
 				id>=0);
 		try{
-			assertTrue("id a tester '"+id+"', containsIdColony(id) ?", gameEng.containsIdColony(id));
+			assertTrue("id a tester '"+id+"', containsIdColony(id) ?",
+					gameEng.containsIdColony(id));
 		}catch(PreConditionError e){
 			assertFalse(e.toString(),true);
 		}
-		assertTrue("id a tester '"+id+"', sizeColony = "+sizeColony+ " id<sizeColony ?",
+		assertTrue("id a tester '"+id+"', sizeColony = "+sizeColony+ 
+				" id<sizeColony ?",
 				id < sizeColony);
 	}
 	
 	/**
 	 * Objectif de Test: getLemVivantById(int id) retourne failed
 	 * 
-	 * Cas de Test: gameEng.GetLemVivantById(int id)
+	 * Cas de Test: gameEng.getLemVivantById(int id)
 	 * 		 id>sizeColony
 	 * 
-	 * Condition initial:
+	 * Condition initiale:
+	 * Tous les lemmings ont été ajouté
 	 * 
 	 * Operation:
 	 *  getLemVivantById(15)
@@ -138,10 +144,11 @@ public class TestGameEng {
 	/**
 	 * Objectif de Test: getLemVivantById(int id) retourne failed
 	 * 
-	 * Cas de Test: gameEng.GetLemVivantById(int id)
+	 * Cas de Test: gameEng.getLemVivantById(int id)
 	 * 		 !containsIdColony(id)
 	 * 
-	 * Condition initial:
+	 * Condition initiale:
+	 * Tous les lemmings ont été ajouté
 	 * 
 	 * Operation:
 	 *  getLemVivantById(15)
@@ -175,10 +182,11 @@ public class TestGameEng {
 	 * 		 sizeColony > 0 && spawnSpeed > 0
 	 * 		 sizeColony = 10 && spawnSpeed =10
 	 * 
-	 * Condition initial:
+	 * Condition initiale:
+	 * Aucune
 	 * 
 	 * Operation:
-	 *  
+	 *  init(ILevel level, int sizeColony, int spawnSpeed)
 	 */
 	@Test
 	public void testInit(){
@@ -230,10 +238,11 @@ public class TestGameEng {
 	 * 		 sizeColony > 0 && spawnSpeed > 0
 	 * 		 sizeColony = 0 && spawnSpeed =10
 	 * 
-	 * Condition initial:
+	 * Condition initiale:
+	 * Aucune
 	 * 
 	 * Operation:
-	 *  
+	 *  init(ILevel level, int sizeColony, int spawnSpeed)
 	 */
 	@Test
 	public void testInit2(){
@@ -283,10 +292,11 @@ public class TestGameEng {
 	 * 		 sizeColony > 0 && spawnSpeed > 0
 	 * 		 sizeColony = 10 && spawnSpeed = 0
 	 * 
-	 * Condition initial:
+	 * Condition initiale:
+	 * Aucune
 	 * 
 	 * Operation:
-	 *  
+	 *  init(ILevel level, int sizeColony, int spawnSpeed)
 	 */
 	@Test
 	public void testInit3(){
@@ -328,7 +338,9 @@ public class TestGameEng {
 				gameEng.gameOver() == false);
 	}
 	
-	
+	/**
+	 * reussit
+	 */
 	@Test
 	public void killLemming(){
 		int id=2;
@@ -349,6 +361,9 @@ public class TestGameEng {
 	}
 	
 	
+	/**
+	 * Lemming d'id 2 pas encore créé
+	 */
 	@Test
 	public void killLemming2(){
 		
@@ -364,7 +379,9 @@ public class TestGameEng {
 		
 	}
 	
-	
+	/**
+	 * Lemming plus dans la liste
+	 */
 	@Test
 	public void killLemming3(){
 		int id=2;
@@ -386,7 +403,9 @@ public class TestGameEng {
 		}
 	}
 	
-	
+	/**
+	 * reussit
+	 */
 	@Test
 	public void saveLemming(){
 		int id=2;
@@ -409,6 +428,9 @@ public class TestGameEng {
 		}
 	}
 	
+	/**
+	 * id<0
+	 */
 	@Test
 	public void saveLemming2(){
 		int id=-2;
@@ -431,7 +453,9 @@ public class TestGameEng {
 		}
 	}
 	
-	
+	/**
+	 * id trop grand
+	 */
 	@Test
 	public void saveLemming3(){
 		int id=gameEng.getSizeColony();
@@ -454,6 +478,9 @@ public class TestGameEng {
 		}
 	}
 	
+	/**
+	 * liste pas encore créé
+	 */
 	@Test
 	public void saveLemming4(){
 		int id=5;
