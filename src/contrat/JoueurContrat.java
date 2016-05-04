@@ -2,7 +2,10 @@ package contrat;
 
 import decorateur.JoueurDecorateur;
 import enumeration.EtatLemming;
+import errors.PostConditionError;
+import errors.PreConditionError;
 import services.IGameEng;
+import services.ILemming;
 import servicesImplementations.Joueur;
 
 public class JoueurContrat extends JoueurDecorateur{
@@ -51,6 +54,8 @@ public class JoueurContrat extends JoueurDecorateur{
 	@Override
 	public void changeSizeColony(int sizeColony) {
 		checkInvariants();
+		if(! (sizeColony > 0) ) throw new PreConditionError("newSpawnSpeed <= 0");
+		
 		delegate.changeSizeColony(sizeColony);
 		checkInvariants();
 	}
@@ -59,6 +64,12 @@ public class JoueurContrat extends JoueurDecorateur{
 	public void destroyAllLem() {
 		checkInvariants();
 		delegate.destroyAllLem();
+		
+		for(ILemming lem : getGameEngine().getLemVivants()){
+			if(!lem.getEtats().contains(EtatLemming.BOMBER)){
+				throw new PostConditionError("lemming is not a BOMBER");
+			}
+		}
 		checkInvariants();
 	}
 
@@ -70,6 +81,6 @@ public class JoueurContrat extends JoueurDecorateur{
 	
 	@Override
 	protected void checkInvariants() {
-		// TODO Auto-generated method stub
+		// aucun pour l'instant
 	}
 }

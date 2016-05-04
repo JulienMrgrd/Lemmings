@@ -87,7 +87,14 @@ public interface ILevel{
 	 */
 	void removeStopper(int h, int w);
 	
+	/** pre : addEnter(height, width) require height>0 ^ width>0 ^ height<getHeight() ^ width<getWidth()
+	* <br>
+	* post : height==getEntranceHeight() ^ width==getEntranceWidth() */
 	public void addEnter(Integer height, Integer width);
+	
+	/** pre : addExit(height, width) require height>0 ^ width>0 ^ height<getHeight() ^ width<getWidth()
+	* <br>
+	* post : height==getExitHeight() ^ width==getExitWidth() */
 	public void addExit(Integer height, Integer width);
 	
 }

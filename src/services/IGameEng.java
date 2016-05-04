@@ -63,8 +63,12 @@ public interface IGameEng {
 	/** pre : containsIdColony(idLem) require 0 < idLem <= getSizeColony() */
 	boolean containsIdColony(int idLem);
 	
+	/** pre : changeSpawnSpeed(newSpawnSpeed) require 0 < newSpawnSpeed */
 	void changeSpawnSpeed(int newSpawnSpeed);
+	
+	/** pre : changeSizeColony(newSizeColony) require getEditing==true ^ 0 < newSizeColony */
 	void changeSizeColony(int newSizeColony);
+	
 	void reset();
 
 }

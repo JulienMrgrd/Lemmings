@@ -43,7 +43,7 @@ public class Lemming implements ILemming {
 	}
 
 	@Override
-	public List<EtatLemming> getEtat() {
+	public List<EtatLemming> getEtats() {
 		return etat;
 	}
 
@@ -146,7 +146,7 @@ public class Lemming implements ILemming {
 			gameEng.saveLemming(id);
 		}else {
 			
-			if (getEtat().contains(EtatLemming.BOMBER)){ //OK
+			if (getEtats().contains(EtatLemming.BOMBER)){ //OK
 				
 				if(getNbToursBomber()==5){
 					
@@ -208,7 +208,7 @@ public class Lemming implements ILemming {
 			}
 
 
-			if (getEtat().contains(EtatLemming.CLIMBER)){ //GRIMPEUR
+			if (getEtats().contains(EtatLemming.CLIMBER)){ //GRIMPEUR
 				if(isDroitier){
 					if(gameEng.getLevel().getNature(height, width+1)!=Nature.EMPTY
 							&& gameEng.getLevel().getNature(height-1, width+1)!=Nature.EMPTY){
@@ -274,9 +274,9 @@ public class Lemming implements ILemming {
 							width = width-1; 
 						}
 					}
-				} else if (getEtat().contains(EtatLemming.FALLER)){ //TOMBEUR //OK
+				} else if (getEtats().contains(EtatLemming.FALLER)){ //TOMBEUR //OK
 					
-					if(!getEtat().contains(EtatLemming.FLOATER)){  // Lemming pas FLOTTEUR //OK
+					if(!getEtats().contains(EtatLemming.FLOATER)){  // Lemming pas FLOTTEUR //OK
 						if (gameEng.getLevel().getNature(height+1, width) != Nature.EMPTY) {
 							if (getNbCasesFalling() < 8) {
 								setEtat(EtatLemming.WALKER);
@@ -298,7 +298,7 @@ public class Lemming implements ILemming {
 						}
 					}
 					
-				}else if(getEtat().contains(EtatLemming.DIGGER)){//CREUSEUR FAIRE LE BAS
+				}else if(getEtats().contains(EtatLemming.DIGGER)){//CREUSEUR FAIRE LE BAS
 					if(gameEng.getLevel().getNature(height+1, width)==Nature.EMPTY){
 						setEtat(EtatLemming.FALLER);
 					}
@@ -313,7 +313,7 @@ public class Lemming implements ILemming {
 						height++;
 					}
 					
-				}else if (getEtat().contains(EtatLemming.BUILDER)){
+				}else if (getEtats().contains(EtatLemming.BUILDER)){
 					if(isDroitier){
 						 if(width+3<gameEng.getLevel().getWidth() && height-2>=0
 								 && gameEng.getLevel().getNature(height-2, width+2)==Nature.EMPTY
@@ -354,12 +354,12 @@ public class Lemming implements ILemming {
 						 }
 					}
 					
-				}else if (getEtat().contains(EtatLemming.STOPPER)){//STOPPER
+				}else if (getEtats().contains(EtatLemming.STOPPER)){//STOPPER
 					if(gameEng.getLevel().getNature(height+1, width)==Nature.EMPTY){
 						setEtat(EtatLemming.FALLER);
 					}
 					
-				}else if (getEtat().contains(EtatLemming.BASHER)){ //DETRUIT LES MURS DANS SA DIRECTION
+				}else if (getEtats().contains(EtatLemming.BASHER)){ //DETRUIT LES MURS DANS SA DIRECTION
 					if(gameEng.getLevel().getNature(height+1, width)==Nature.EMPTY) setEtat(EtatLemming.FALLER);
 					else {
 						if(isDroitier){
@@ -419,7 +419,7 @@ public class Lemming implements ILemming {
 						}
 					}
 					
-				}else if (getEtat().contains(EtatLemming.MINER)){ // CREUSEUR EN DIAGONALE
+				}else if (getEtats().contains(EtatLemming.MINER)){ // CREUSEUR EN DIAGONALE
 					if(gameEng.getLevel().getNature(height+1, width)==Nature.EMPTY) {
 						setEtat(EtatLemming.FALLER);
 					}else{

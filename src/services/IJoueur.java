@@ -13,11 +13,18 @@ public interface IJoueur {
 	void init(IGameEng gE);
 
 	// OPERATORS
-	/** pre : changeEtatLemming(idLem, etat) require getNbTokens(etat)>0 */
-	void changeEtatLemming(int id, String etat);
-	void destroyAllLem();
-	void reset();
+	/** pre : changeEtatLemming(idLem, etat) require getGameEngine().containsIdColony(idLem)==true
+	 * 											   ^ getNbTokens(etat)>0 */
+	void changeEtatLemming(int idLem, String etat);
 	
 	/** pre : changeSizeColony(sizeColony) require sizeColony>0 */
 	void changeSizeColony(int sizeColony);
+	
+	/** post : for(int i=0; i<getNbLemVivants; i++){
+	 * 				getAllVivants()[i].getEtats().contains(EtatLemming.BOMBER);
+	 * 		   } */
+	void destroyAllLem();
+	
+	void reset();
+	
 }

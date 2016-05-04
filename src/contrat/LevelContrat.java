@@ -96,7 +96,6 @@ public class LevelContrat extends LevelDecorateur{
 		checkInvariants();
 	}
 
-
 	@Override
 	public void setNature(int h, int w, Nature nat) {
 		checkInvariants();
@@ -210,15 +209,31 @@ public class LevelContrat extends LevelDecorateur{
 
 	@Override
 	public void addEnter(Integer height, Integer width) {
-		// TODO Auto-generated method stub
+		checkInvariants();
+		if(! (height>0)) throw new PreConditionError("height <= 0");
+		if(! (width>0)) throw new PreConditionError("width <= 0");
+		if(! (height<getHeight())) throw new PreConditionError("height >= getHeight()");
+		if(! (width<getWidth())) throw new PreConditionError("width >= getWidth()");
+
 		delegate.addEnter(height, width);
-		// TODO Auto-generated method stub
+
+		if(! (height==getEntranceHeight())) throw new PostConditionError("height!=getEntranceHeight()");
+		if(! (width==getEntranceWidth())) throw new PostConditionError("width!=getEntranceWidth()");
+		checkInvariants();
 	}
 
 	@Override
 	public void addExit(Integer height, Integer width) {
-		// TODO Auto-generated method stub
+		checkInvariants();
+		if(! (height>0)) throw new PreConditionError("height <= 0");
+		if(! (width>0)) throw new PreConditionError("width <= 0");
+		if(! (height<getHeight())) throw new PreConditionError("height >= getHeight()");
+		if(! (width<getWidth())) throw new PreConditionError("width >= getWidth()");
+
 		delegate.addExit(height, width);
-		// TODO Auto-generated method stub
+
+		if(! (height==getExitHeight())) throw new PostConditionError("height!=getExitHeight()");
+		if(! (width==getExitWidth())) throw new PostConditionError("width!=getExitWidth()");
+		checkInvariants();
 	}
 }

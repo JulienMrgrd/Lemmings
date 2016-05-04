@@ -12,7 +12,7 @@ public interface ILemming {
 	int getHeight();
 	int getId();
 	boolean isDroitier();
-	List<EtatLemming> getEtat();
+	List<EtatLemming> getEtats();
 	IGameEng getGameEng();
 	int getNbCasesFalling();
 	int getNbToursBomber();
@@ -28,7 +28,7 @@ public interface ILemming {
 	 * 			^ getHeight() == gameEng.getLevel().getEntranceHeight()
 	 * 			^ getId() == gameEng.getSpawned()
 	 * 			^ isDroitier()
-	 * 			^ getEtat().contains(EtatLemming.FALLER)
+	 * 			^ getEtats().contains(EtatLemming.FALLER)
 	 * 			^ getNbCasesFalling() == 0
 	 *			^ getNbToursBomber() == 0
 	 *			^ getNbToursBuilder() == 0
@@ -52,19 +52,19 @@ public interface ILemming {
 	/**  post : isDroitier() != isDroitier()@pre */
 	void setDirection();
 	
-    /** post : getEtat().contains(etat) ^ 
+    /** post : getEtats().contains(etat) ^ 
      *         if(etat==EtatLemming.STOPPER){
      *         			gameEng.getLevel().getNature(height, width)==Nature.STOPPER;
 	 *					gameEng.getLevel().getNature(height-1, width)==Nature.STOPPER;
      *         }
-     *         if(getEtat()@pre.contains(EtatLemming.FLOATER)){
-     *         		getEtat().contains(EtatLemming.FLOATER)
+     *         if(getEtats()@pre.contains(EtatLemming.FLOATER)){
+     *         		getEtats().contains(EtatLemming.FLOATER)
      *         }
-     *         if(getEtat()@pre.contains(EtatLemming.BOMBER)){
-     *         		getEtat().contains(EtatLemming.BOMBER)
+     *         if(getEtats()@pre.contains(EtatLemming.BOMBER)){
+     *         		getEtats().contains(EtatLemming.BOMBER)
      *         }
-     *         if(getEtat()@pre.contains(EtatLemming.CLIMBER)){
-     *         		getEtat().contains(EtatLemming.CLIMBER)
+     *         if(getEtats()@pre.contains(EtatLemming.CLIMBER)){
+     *         		getEtats().contains(EtatLemming.CLIMBER)
      *         } 
      */
 	void setEtat(EtatLemming etat);
@@ -75,8 +75,7 @@ public interface ILemming {
 		if(getGameEng().getLevel().getExitHeight()@pre==getHeight()@pre && getGameEng().getLevel().getExitWidth()@pre==getWidth()@pre ){
 			getGameEng().getNbLemSauves()== getGameEng().getNbLemSauves()@pre+1
 		} else {
-			else {
-			if (getEtat().contains(EtatLemming.BOMBER)@pre){
+			if (getEtats().contains(EtatLemming.BOMBER)@pre){
 				if(getNbToursBomber()@pre==5){
 					
 					if(getWidth()@pre-2>=0){
@@ -137,7 +136,7 @@ public interface ILemming {
 			}
 			
 			
-			if (getEtat().contains(EtatLemming.CLIMBER)@pre){
+			if (getEtats().contains(EtatLemming.CLIMBER)@pre){
 				if(isDroitier()@pre){
 					if(getGameEng().getLevel().getNature(getHeight()@pre, getWidth()@pre+1)@pre!=Nature.EMPTY 
 							&& getGameEng().getLevel().getNature(getHeight()@pre-1, getWidth()@pre+1)@pre!=Nature.EMPTY){
@@ -146,7 +145,7 @@ public interface ILemming {
 							getHeight()==getHeight()@pre-1;
 							canMonter=true;
 						}else{
-							getEtat().contains(EtatLemming.FALLER);
+							getEtats().contains(EtatLemming.FALLER);
 							isDroitier() == !isDroitier()@pre;
 						}
 					}else{}
@@ -158,7 +157,7 @@ public interface ILemming {
 							getHeight()==getHeight()@pre-1;
 							canMonter=true;
 						}else{
-							getEtat().contains(EtatLemming.FALLER);
+							getEtats().contains(EtatLemming.FALLER);
 							isDroitier() == !isDroitier()@pre;
 						}
 					}else{}
@@ -166,9 +165,9 @@ public interface ILemming {
 	
 			}
 			if(!canMonter){
-				if(getEtat().contains(EtatLemming.WALKER)@pre){
+				if(getEtats().contains(EtatLemming.WALKER)@pre){
 					if (getGameEng().getLevel().getNature(getHeight()@pre+1, getWidth()@pre)@pre == Nature.EMPTY){ 
-						getEtat().contains(EtatLemming.FALLER);
+						getEtats().contains(EtatLemming.FALLER);
 		
 					} else if (isDroitier()@pre){
 						if (getGameEng().getLevel().getNature(getHeight()@pre-1, getWidth()@pre+1)@pre != Nature.EMPTY ||
@@ -204,12 +203,12 @@ public interface ILemming {
 						}
 					}
 					
-				} else if (getEtat().contains(EtatLemming.FALLER)@pre){
+				} else if (getEtats().contains(EtatLemming.FALLER)@pre){
 					
-					if(!getEtat().contains(EtatLemming.FLOATER)@pre){
+					if(!getEtats().contains(EtatLemming.FLOATER)@pre){
 						if (getGameEng().getLevel().getNature(getHeight()@pre+1, getWidth()@pre)@pre != Nature.EMPTY) {
 							if (getNbCasesFalling()@pre < 8) {
-								getEtat().contains(EtatLemming.WALKER);
+								getEtats().contains(EtatLemming.WALKER);
 								getNbCasesFalling()==0;
 							}else {
 								!getGameEng().containsIdColony(getId())
@@ -221,20 +220,20 @@ public interface ILemming {
 					}else{
 						if (getGameEng().getLevel().getNature(getHeight()@pre+1, getWidth()@pre)@pre != Nature.EMPTY){
 							getNbCasesFalling()==0;
-							getEtat().contains(EtatLemming.WALKER);
+							getEtats().contains(EtatLemming.WALKER);
 						}else {
 							if(getNbCasesFalling()@pre%2==0) getHeight() = getHeight()@pre+1;
 							getNbCasesFalling()==getNbCasesFalling()@pre+1;
 						}
 					}
 					
-				}else if(getEtat().contains(EtatLemming.DIGGER)@pre){
+				}else if(getEtats().contains(EtatLemming.DIGGER)@pre){
 					if(getGameEng().getLevel().getNature(getHeight()@pre+1, getWidth()@pre)@pre==Nature.EMPTY){
-					 	getEtat().contains(EtatLemming.FALLER);
+					 	getEtats().contains(EtatLemming.FALLER);
 				 	}
 					else if(getGameEng().getLevel().getNature(getHeight()@pre+1, getWidth()@pre)@pre==Nature.METAL
 							||getGameEng().getLevel().getNature(getHeight()@pre+1, getWidth()@pre)@pre==Nature.STOPPER){
-					 	getEtat().contains(EtatLemming.WALKER);
+					 	getEtats().contains(EtatLemming.WALKER);
 				 	}
 					else if(getGameEng().getLevel().getNature(getHeight()@pre+1, getWidth()@pre)@pre==Nature.DIRT){
 						getGameEng().getLevel().getNature(getHeight()@pre+1, getWidth()@pre)==Nature.EMPTY;
@@ -243,7 +242,7 @@ public interface ILemming {
 						getHeight()==getHeight()@pre+1;
 					}
 					
-				}else if (getEtat().contains(EtatLemming.BUILDER)@pre){
+				}else if (getEtats().contains(EtatLemming.BUILDER)@pre){
 					
 					if(isDroitier()@pre){
 						 if(getWidth()@pre+3<getGameEng().getLevel().getWidth()@pre && getHeight()@pre-2>=0
@@ -262,7 +261,7 @@ public interface ILemming {
 							 }
 							 getNbToursBuilder()==getNbToursBuilder()@pre+1;
 						 }else{
-							 getEtat().contains(EtatLemming.WALKER);
+							 getEtats().contains(EtatLemming.WALKER);
 						 }
 					}else{
 						 if(getWidth()@pre-3>=0 && getHeight()@pre-2>=0
@@ -281,17 +280,17 @@ public interface ILemming {
 							 }
 							  getNbToursBuilder()==getNbToursBuilder()@pre+1;
   						 }else{
-							 getEtat().contains(EtatLemming.WALKER);
+							 getEtats().contains(EtatLemming.WALKER);
 						 }
 					}
 					
-				}else if (getEtat().contains(EtatLemming.STOPPER)@pre){
+				}else if (getEtats().contains(EtatLemming.STOPPER)@pre){
 					if( getGameEng().getLevel().getNature(getHeight()@pre+1, getWidth()@pre)==Nature.EMPTY){
-						getEtat().contains(EtatLemming.FALLER))
+						getEtats().contains(EtatLemming.FALLER))
 					}
 					
-				}else if (getEtat().contains(EtatLemming.BASHER)@pre){ //DETRUIT LES MURS SUR SA LIGNE
-					if(getGameEng().getLevel().getNature(getHeight()@pre+1, getWidth()@pre)@pre==Nature.EMPTY) getEtat().contains(EtatLemming.FALLER);
+				}else if (getEtats().contains(EtatLemming.BASHER)@pre){ //DETRUIT LES MURS SUR SA LIGNE
+					if(getGameEng().getLevel().getNature(getHeight()@pre+1, getWidth()@pre)@pre==Nature.EMPTY) getEtats().contains(EtatLemming.FALLER);
 					else {
 						if(isDroitier()@pre){
 							if(getHeight()-2>=0 && getGameEng().getLevel().getNature(getHeight()@pre, getWidth()@pre+1)@pre!=Nature.METAL
@@ -313,11 +312,11 @@ public interface ILemming {
 									getWidth()=getWidth()@pre+1;
 									getNbCreuse()=getNbCreuse()@pre+1;
 								}else{
-									getEtat().contains(EtatLemming.WALKER);
+									getEtats().contains(EtatLemming.WALKER);
 									getNbCreuse()==0;
 								}
 							}else{
-								getEtat().contains(EtatLemming.WALKER);
+								getEtats().contains(EtatLemming.WALKER);
 								getNbCreuse()==0;
 							}
 						} else {
@@ -340,17 +339,17 @@ public interface ILemming {
 									getWidth()=getWidth()@pre-1;
 									getNbCreuse()=getNbCreuse()@pre+1;
 								}else{
-									getEtat().contains(EtatLemming.WALKER);
+									getEtats().contains(EtatLemming.WALKER);
 									getNbCreuse()==0;
 								}
 							}else{
-								getEtat().contains(EtatLemming.WALKER);
+								getEtats().contains(EtatLemming.WALKER);
 								getNbCreuse()==0;
 							}
 						}
 					}
 					
-				}else if (getEtat().contains(EtatLemming.MINER)@pre){ // CREUSEUR EN DIAGONALE
+				}else if (getEtats().contains(EtatLemming.MINER)@pre){ // CREUSEUR EN DIAGONALE
 					if(getGameEng().getLevel().getNature(getHeight()@pre+1, getWidth()@pre)==Nature.EMPTY) {
 						getEtat.contains(EtatLemming.FALLER);
 					}else{
@@ -384,7 +383,7 @@ public interface ILemming {
 								}
 								getWidth()=getWidth()@pre+1;
 							}else{
-								getEtat().contains(EtatLemming.WALKER);
+								getEtats().contains(EtatLemming.WALKER);
 							}
 						}else{
 						
@@ -419,7 +418,7 @@ public interface ILemming {
 								}
 								getWidth()=getWidth()@pre-1;
 							}else{
-								getEtat().contains(EtatLemming.WALKER);
+								getEtats().contains(EtatLemming.WALKER);
 							}
 						}
 					}
