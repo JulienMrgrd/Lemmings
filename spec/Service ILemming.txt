@@ -32,14 +32,14 @@ setWidth : [ILemming] * int ->  [ILemming]
 
 setDirection: [ILemming] -> [ILemming]
 setEtat : [ILemming] * EtatLemming -> [ILemming]
-step : [ILemming] * int -> [ILemming]
+step : [ILemming] -> [ILemming]
 
  
 Observations :
 
 [invariants]
 
-getHeight(Le) >= 0
+getHeight(Lem) >= 0
 getWidth(Lem) >= 0
 getHeight(Lem) < getGameEng().getLevel().getHeight()
 getWidth(Lem) < getGameEng().getLevel().getWidth()

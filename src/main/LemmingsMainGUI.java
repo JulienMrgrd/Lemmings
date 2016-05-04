@@ -100,7 +100,7 @@ public class LemmingsMainGUI extends Application {
 	public void initRootLayout() {
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(LemmingsMainGUI.class.getResource("gui/view/PageView.fxml"));
+			loader.setLocation(LemmingsMainGUI.class.getResource("/PageView.fxml"));
 			rootLayout = (AnchorPane) loader.load();
 
 			Scene scene = new Scene(rootLayout);

@@ -81,7 +81,7 @@ getEditing(init(level, h, w))==true
 getNature(setNature(level, h, w, nat), h, w) == nat
 
 [goPlay]
-getEditing(goPlay(level, entranceH, entranceW, exitH, exitW))
+getEditing(goPlay(level, entranceH, entranceW, exitH, exitW))==false
 getEntranceHeight(goPlay(level, entranceH, entranceW, exitH, exitW))==entranceH
 getEntranceWidth(goPlay(level, entranceH, entranceW, exitH, exitW))==entranceW
 getExitHeight(goPlay(level, entranceH, entranceW, exitH, exitW))==exitH

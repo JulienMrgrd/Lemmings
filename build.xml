@@ -5,6 +5,8 @@
   <!-- set global properties for this build -->
   <property name="src" location="src"/>
   <property name="bin" location="bin"/>
+  <property name="res" location="res"/>
+  <property name="images" location="res/images"/>
   <property name="junit" location="lib/junit.jar"/>
   <property name="hamcrest" location="lib/hamcrest-all-1.3.jar"/>
   <property name="javafx" location="lib/jfxrt.jar"/>
@@ -29,13 +31,46 @@
   <target name="run" depends="compile"
           description="run application">
     <echo>================ Run Object Main ================</echo>
-    <java classname="main.LemmingsMainGUI" fork="true" classpath="${bin}:${javafx}">
+    <java classname="main.LemmingsMainGUI" fork="true" classpath="${bin}:${javafx}:${res}:${images}">
     </java>
   </target>
 
   <target name="dist" depends="init,clean" description="Generer la distribution" >
     <jar basedir=".." jarfile="../Projet-Lemmings-${nom1}-${nom2}.jar" includes="Lemmings/**/*"/>
   </target>
+	
+  <target name="testGameEng" depends="compile">
+	  <echo> ==== RUN TEST Game Eng==== </echo>
+	  <junit printsummary="yes">
+		<classpath>
+			<pathelement location="${build}"/>
+			<pathelement location="${junit}"/>
+	 	</classpath>
+	   <test name="tests.mbt.TestGameEng"/>
+	 </junit>
+  </target>
+	
+   <target name="testLemming" depends="compile">
+		  <echo> ==== RUN TEST Lemming==== </echo>
+		  <junit printsummary="yes">
+			<classpath>
+				<pathelement location="${build}"/>
+				<pathelement location="${junit}"/>
+		 	</classpath>
+		   <test name="tests.mbt.TestLemming"/>
+		 </junit>
+  </target>	
+	
+  <target name="testLevel" depends="compile">
+		  <echo> ==== RUN TEST Level==== </echo>
+		  <junit printsummary="yes">
+			<classpath>
+				<pathelement location="${build}"/>
+				<pathelement location="${junit}"/>
+		 	</classpath>
+		   <test name="tests.mbt.TestLevel"/>
+		 </junit>
+  </target>	
 
   <target name="clean"
         description="clean up" >
