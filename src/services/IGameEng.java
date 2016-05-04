@@ -60,7 +60,7 @@ public interface IGameEng {
 	/** post: getNbTours() == getNbTours()@pre + 1 */
 	void step();
 	
-	/** pre : containsIdColony(idLem) require 0 < idLem <= getSizeColony() */
+	/** pre : containsIdColony(idLem) require 0 <= idLem < getSizeColony() */
 	boolean containsIdColony(int idLem);
 	
 	/** pre : changeSpawnSpeed(newSpawnSpeed) require 0 < newSpawnSpeed */
