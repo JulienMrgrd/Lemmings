@@ -1,0 +1,108 @@
+Service: ILevel
+Types: int, bool, IGameEng, Nature
+
+
+Observators:
+  
+getHeight: [ILevel] -> int
+getWidth : [ILevel] -> int
+getEntranceHeight : [ILevel] -> int
+getEntranceWidth : [ILevel] -> int
+getExitHeight : [ILevel] -> int
+getExitWidth : [ILevel] -> int
+getEditing : [ILevel]  -> bool
+getNature : [ILevel] * int * int  -> int
+	pre getNature(level, h, w) require h>=0 ^ w>=0 ^ h<=getHeight() ^ w<=getWidth()
+
+
+Constructors:
+
+init: [ILevel] * int * int -> [ILevel] 
+	pre init(level, h,w) require h>=5 ^ w>=4
+
+
+Operators : 
+
+setNature : [ILevel] * int * int * Nature -> [ILevel] 
+	pre setNature(level, h, w, nat) require h>=0 ^ w>=0 ^ h<=getHeight() ^ w<=getWidth() ^ getEditing()
+
+goPlay : [ILevel] * int * int * int * int -> [ILevel] 
+	pre goPlay(level, entranceH, entranceW, exitH, exitW) require getEditing() ^ 
+		entranceH>=0 ^ entranceW>=0 ^ entranceH<=getHeight() ^ entranceW<=getWidth() ^
+		exitH>=0 ^ exitW>=0 ^ exitH<=getHeight() ^ exitW<=getWidth() ^
+		for(i=0; i < getHeight(); i++){
+			getNature(i, 0)==Nature.METAL;
+			getNature(i, getWidth()-1)==Nature.METAL;
+		} ^
+		for(i=0; i < getWidth(); i++){
+			getNature(0, i)==Nature.METAL;
+			getNature(getHeight()-1, i)==Nature.METAL;
+		} ^ 
+		getNature(entranceH-1, entranceW)==Nature.EMPTY ^
+		getNature(entranceH+1, entranceW)==Nature.EMPTY ^
+		getNature(exitH-1, exitW)==Nature.EMPTY ^
+		getNature(exitH+1, exitW)==Nature.METAL 
+
+remove : [ILevel] * int * int -> [ILevel] 
+	pre remove(level, h, w) require getNature(h,w)==Nature.DIRT ^ !getEditing()
+
+build : [ILevel] * int * int -> [ILevel] 
+	pre build(level, h, w) require getNature(h,w)==Nature.EMPTY ^ !getEditing()
+
+reset : [ILevel] -> [ILevel] 
+
+addStopper : [ILevel] * int * int -> [ILevel] 
+	pre addStopper(level, h, w) require getNature(h,w)==Nature.EMPTY ^ !getEditing()
+
+removeStopper : [ILevel] * int * int -> [ILevel] 
+	pre removeStopper(level, h, w) require getNature(h,w)==Nature.STOPPER ^ !getEditing()
+
+addEnter : [ILevel] * int * int -> [ILevel] 
+	pre addEnter(level, height, width) require height>0 ^ width>0 ^ height<getHeight() ^ width<getWidth()
+
+addExit : [ILevel] * int * int -> [ILevel] 
+	pre addExit(level, height, width) require height>0 ^ width>0 ^ height<getHeight() ^ width<getWidth()
+
+
+ 
+Observations :
+
+[invariants]
+
+getHeight(level)>=5
+getWidth(level)>=4
+ 
+[init]
+getHeight(init(level, h, w)) == h
+getWidth(init(level, h, w)) == w
+getEditing(init(level, h, w))==true
+
+[setNature]
+getNature(setNature(level, h, w, nat), h, w) == nat
+
+[goPlay]
+getEditing(goPlay(level, entranceH, entranceW, exitH, exitW))
+getEntranceHeight(goPlay(level, entranceH, entranceW, exitH, exitW))==entranceH
+getEntranceWidth(goPlay(level, entranceH, entranceW, exitH, exitW))==entranceW
+getExitHeight(goPlay(level, entranceH, entranceW, exitH, exitW))==exitH
+getExitWidth(goPlay(level, entranceH, entranceW, exitH, exitW))==exitW 
+
+[remove]
+getNature(remove(level, h, w), h, w) == Nature.EMPTY
+
+[build]
+getNature(build(level, h, w), h, w) == Nature.DIRT
+
+[addStopper]
+getNature(addStopper(level, h, w), h, w) == Nature.STOPPER
+
+[removeStopper]
+getNature(removeStopper(level, h, w), h, w) == Nature.EMPTY
+
+[addEnter]
+getEntranceHeight(addEnter(level, h, w)) == h
+getEntranceWidth(addEnter(level, h, w)) == w
+
+[addExit]
+getExitHeight(addExit(level, h, w)) == h
+getExitWidth(addExit(level, h, w)) == w

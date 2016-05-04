@@ -1,0 +1,104 @@
+Service: IGameEng
+Types: int, bool, String, ILevel, ILemming
+
+
+Observators:
+  
+getLemVivants: [IGameEng]-> ILemming[]
+getLemVivantById : [IGameEng] * int -> ILemming
+	pre getLemVivantById(Ge, id) require 0 <= id <= getSizeColony() ^ containsIdColony(,id)
+
+getSizeColony : [IGameEng]-> int
+getSpawnSpeed : [IGameEng]-> int
+getLevel : [IGameEng]-> ILevel
+getNbTours : [IGameEng]-> int
+getSpawned : [IGameEng] -> int
+getNbLemSauves : [IGameEng] -> int
+getNbLemMorts : [IGameEng] -> int
+getNbLemVivants : [IGameEng] -> int
+
+getScore : [IGameEng] -> String
+	pre getScore(Ge) require gameOver()
+
+isObstacle : [IGameEng] * int * int -> boolean
+	pre isObstacle(Ge, h, w) require 0 <= h < getLevel().getHeight() ^ 0 <= w < getLevel().getWidth()
+
+gameOver : [IGameEng] -> boolean
+
+
+Constructors:
+
+init: [IGameEng] * ILevel * int * int -> [IGameEng]
+	pre init(Ge, level, sizeColony, spawnSpeed) require sizeColony > 0 ^ spawnSpeed > 0
+
+
+Operators : 
+
+addLemming : [IGameEng] * ILemming -> [IGameEng]
+	pre addLemming(Ge, lem) require getSpawned() < getSizeColony() ^ getLemVivants()[lem.getId()]==null 
+
+killLemming : [IGameEng] * int -> [IGameEng]
+	pre killLemming(Ge, idLem) require getNbLemVivants()>0 ^ containsIdColony(idLem)
+
+saveLemming : [IGameEng] * int -> [IGameEng]
+	pre saveLemming(Ge, idLem) require 0 <= idLem < getSizeColony() ^ containsIdColony(idLem)
+
+step : [IGameEng] -> [IGameEng]
+
+containsIdColony : [IGameEng] * int -> bool
+	pre containsIdColony(Ge, idLem) require 0 <= idLem < getSizeColony()
+
+changeSpawnSpeed : [IGameEng] * int -> [IGameEng]
+	pre changeSpawnSpeed(Ge, newSpawnSpeed) require 0 < newSpawnSpeed
+	
+changeSizeColony : [IGameEng] * int -> [IGameEng]
+	pre changeSizeColony(Ge, newSizeColony) require 0 < newSizeColony
+
+reset : [IGameEng] -> [IGameEng]
+
+
+ 
+Observations :
+
+[invariants]
+
+if(gameOver()) getNbLemVivants()==0
+if(gameOver()) getSpawned()==getSizeColony()
+getNbLemVivants() >= 0
+getNbLemMorts() >= 0
+getNbLemSauves() >= 0
+getSpawned() >= 0
+getNbLemVivants() <= getSizeColony()
+getNbLemMorts() <= getSizeColony()
+getNbLemSauves() <= getSizeColony()
+getSpawned() <= getSizeColony()
+getSpawned() == (getNbLemSauves() + getNbLemVivants() + getNbLemMorts())
+getNbTours()>=0
+
+[init]
+
+getLevel(init(Ge,level,sizeColony,spawnSpeed)) == level
+getSizeColony(init(Ge,level,sizeColony,spawnSpeed)) == sizeColony
+getSpawnSpeed(init(Ge,level,sizeColony,spawnSpeed)) == spawnSpeed
+getNbLemVivants(init(Ge,level,sizeColony,spawnSpeed))==0
+getSpawned(init(Ge,level,sizeColony,spawnSpeed))==0
+getNbTours(init(Ge,level,sizeColony,spawnSpeed))==0
+getNbLemSauves(init(Ge,level,sizeColony,spawnSpeed))==0
+gameOver(init(Ge,level,sizeColony,spawnSpeed))==false
+
+[addLemming]
+getSpawned() == getSpawned()@pre+1
+getNbLemVivants()==getNbLemVivants()@pre+1
+getLemVivants().contains(lem) 
+
+[killLemming]
+getNbLemVivants() == getNbLemVivants()@pre-1
+getNbLemMorts() == getNbLemMorts()@pre+1 
+containsIdColony(idLem)==false
+
+[saveLemming]
+getNbLemSauves()==getNbLemSauves()@pre+1
+getNbLemVivants()==getNbLemVivants()@pre-1
+
+[step]
+getNbTours() == getNbTours()@pre + 1

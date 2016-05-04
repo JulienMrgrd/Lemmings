@@ -164,8 +164,8 @@ public class GameEngContrat extends GameEngDecorateur{
 		
 		delegate.addLemming(lem);
 		
-		if(! (getSpawned() == preGetSpawned+1) ) throw new PostConditionError("getSpawned() != preGetSpawned+1");
-		if(! (getNbLemVivants()==preGetLemSize+1) ) throw new PostConditionError("getNbLemVivants()!=preGetLemSize+1");
+		if(! (getSpawned() == preGetSpawned+1) ) throw new PostConditionError("getSpawned() != getSpawned()@pre+1");
+		if(! (getNbLemVivants()==preGetLemSize+1) ) throw new PostConditionError("getNbLemVivants()!=getLemSize()@pre+1");
 		if(! (containsIdColony(lem.getId())==true) ) throw new PreConditionError("containsIdColony("+lem.getId()+")==false");
 		checkInvariants();
 	}
@@ -179,7 +179,7 @@ public class GameEngContrat extends GameEngDecorateur{
 		int preGetLemVivantsSize = getNbLemVivants();
 		delegate.killLemming(idLem);
 
-		if(! (getNbLemVivants() == preGetLemVivantsSize-1) ) throw new PostConditionError("getNbLemVivants() != preGetLemVivantsSize-1");
+		if(! (getNbLemVivants() == preGetLemVivantsSize-1) ) throw new PostConditionError("getNbLemVivants() != getLemVivantsSize()@pre-1");
 		if(! (containsIdColony(idLem)==false) ) throw new PostConditionError("containsIdColony(idLem)==true");
 		checkInvariants();
 	}
@@ -195,8 +195,8 @@ public class GameEngContrat extends GameEngDecorateur{
 		int preGetLemVivantsSize = getNbLemVivants();
 		delegate.saveLemming(idLem);
 
-		if(! (getNbLemSauves()==preGetNbLemSauves+1) ) throw new PostConditionError("getNbLemSauves()!=preGetNbLemSauves+1");
-		if(! (getNbLemVivants()==preGetLemVivantsSize-1) ) throw new PostConditionError("getNbLemVivants()!=preGetLemVivantsSize-1");
+		if(! (getNbLemSauves()==preGetNbLemSauves+1) ) throw new PostConditionError("getNbLemSauves()!=getNbLemSauves()@pre+1");
+		if(! (getNbLemVivants()==preGetLemVivantsSize-1) ) throw new PostConditionError("getNbLemVivants()!=getLemVivantsSize()@pre-1");
 		checkInvariants();
 	}
 
@@ -207,7 +207,7 @@ public class GameEngContrat extends GameEngDecorateur{
 		int preGetNbTours = getNbTours();
 		delegate.step();
 
-		if(! (getNbTours() == preGetNbTours + 1) ) throw new PostConditionError("getNbTours() != preGetNbTours + 1");
+		if(! (getNbTours() == preGetNbTours + 1) ) throw new PostConditionError("getNbTours() != getNbTours()@pre + 1");
 		checkInvariants();
 	}
 
@@ -256,7 +256,7 @@ public class GameEngContrat extends GameEngDecorateur{
 		if(delegate.gameOver()){
 			if(delegate.getNbLemVivants()!= 0){
 				throw new InvariantError("Gameover mais getNbLemVivants()!=0");
-			} else if (delegate.gameOver() && delegate.getSpawned()!=delegate.getSizeColony()){
+			} else if (delegate.getSpawned()!=delegate.getSizeColony()){
 				throw new InvariantError("Gameover mais getSpawned() != getSizeColony()");
 			}
 		}

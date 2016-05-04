@@ -3,7 +3,7 @@ package services;
 
 public interface IGameEng {
 	
-	// ============   Observation ============
+	// ============ OBSERVATORS ============
 	
 	ILemming[] getLemVivants();
 	
