@@ -149,7 +149,7 @@ public class GameEng implements IGameEng {
 			gameOver = true;
 		} else {
 			if(getSpawned()!=getSizeColony() && nbTours%getSpawnSpeed()==0){
-				Lemming newLem = new Lemming();
+				ILemming newLem = new Lemming();
 				newLem.init(this);
 				addLemming(newLem);
 			}

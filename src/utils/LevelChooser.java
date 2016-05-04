@@ -71,7 +71,7 @@ public abstract class LevelChooser {
 
 	private static Integer[] level2(ILevel level){
 		//		 EntH, EntW, SortH, SortW
-		Integer[] enterAndExit = {6, 2, 13, 26};
+		Integer[] enterAndExit = {6, 2, 13, 28};
 
 		int cptH = enterAndExit[2];
 		int cptW = enterAndExit[1];
@@ -100,10 +100,10 @@ public abstract class LevelChooser {
 
 	private static Integer[] level3(ILevel level){
 
-		Integer[] enterAndExit = {6, 2, 13, 27};
+		Integer[] enterAndExit = {6, 15, 13, 27};
 
-		for(int i=2; i<level.getWidth()-3; i++){
-			for(int j=8; j<level.getHeight()-2;j++){
+		for(int i=1; i<level.getWidth()-1; i++){
+			for(int j=8; j<level.getHeight()-3;j++){
 				level.setNature(j, i, Nature.DIRT);
 			}
 		}

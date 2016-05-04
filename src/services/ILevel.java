@@ -4,10 +4,6 @@ import enumeration.Nature;
 
 public interface ILevel{
 	
-	/*
-	 * TODO : Invariants
-	 */
-	
 	//	============= Observations ==============
 	public int getHeight();
 	public int getWidth();

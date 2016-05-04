@@ -3,18 +3,6 @@ package services;
 
 public interface IGameEng {
 	
-	/*
-	*   Service: GameEng
-	*   Types: int, bool, double, ILemming, ILevel, ???List???
-	*   
-	* [invariants]
-	* 	gameOver() min= (getNbLemVivants() == 0 ^ getSpawned() == getSizeColony())
-	* 	0 <= getSpawned() <= getSizeColony()
-	* 	0 <= getNbLemSauves() <= getSizeColony()
-	*/
-	
-	
-	
 	// ============   Observation ============
 	
 	ILemming[] getLemVivants();

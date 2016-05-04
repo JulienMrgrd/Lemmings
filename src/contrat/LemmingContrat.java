@@ -578,7 +578,7 @@ public class LemmingContrat extends LemmingDecorateur{
 		
 					} else if (isDroitierPre){ 
 						if ( hPreM1WPreP1 != Nature.EMPTY || (hPreWPreP1 != Nature.EMPTY && hPreM2WPreP1 != Nature.EMPTY)){ 
-							if(! (isDroitier() == false)) throw new PostConditionError("isDroitier()==true");  
+							if(! (isDroitier() == true)) throw new PostConditionError("isDroitier()==true");  
 							if(! (getWidth() == widthPre)) throw new PostConditionError("getWidth() != getWidth()@pre");  
 							if(! (getHeight() == heightPre)) throw new PostConditionError("getHeight() != getHeight()@pre");  
 		

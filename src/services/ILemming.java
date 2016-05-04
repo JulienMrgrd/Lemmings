@@ -7,10 +7,6 @@ import enumeration.EtatLemming;
 public interface ILemming {
 	
 	
-	/*
-	 * TODO : Invariants
-	 */
-
 	// ============= Observations ===============
 	int getWidth();
 	int getHeight();
@@ -76,10 +72,6 @@ public interface ILemming {
 	
 	/**
 	 * post: 
-	 * 
-		
-
-
 		if(getGameEng().getLevel().getExitHeight()@pre==getHeight()@pre && getGameEng().getLevel().getExitWidth()@pre==getWidth()@pre ){
 			getGameEng().getNbLemSauves()== getGameEng().getNbLemSauves()@pre+1
 		} else {

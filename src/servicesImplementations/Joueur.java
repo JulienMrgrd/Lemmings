@@ -61,7 +61,7 @@ public class Joueur implements IJoueur {
 	@Override
 	public void destroyAllLem() {
 		for(ILemming lem : gameEng.getLemVivants()){
-			gameEng.killLemming(lem.getId());
+			lem.setEtat(EtatLemming.BOMBER);
 		}
 	}
 	
